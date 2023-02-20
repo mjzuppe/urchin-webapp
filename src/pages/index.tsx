@@ -6,8 +6,10 @@ export default function Home() {
       <Head>
         <title>Playa - WebApp</title>
       </Head>
-      
-      <h1>Playa - WebApp</h1>
+
+      <h1>Home Page</h1>
     </>
   );
-};
+}
+
+// Use SSG here to get the data at build time
