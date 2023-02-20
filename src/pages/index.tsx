@@ -9,5 +9,5 @@ export default function Home() {
       
       <h1>Playa - WebApp</h1>
     </>
-  )
+  );
 };
