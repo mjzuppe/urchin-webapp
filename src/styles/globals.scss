@@ -1,0 +1,11 @@
+/*[Imports]*/
+@import './reset';
+@import './variables';
+
+// for spacing and sizing consistency across the app we use rem (e.g. 1rem = 16px)
+body {
+  background-color: $dark-background;
+  color: $white;
+  font-size: 1em;
+  padding: 2em 3em;
+}
