@@ -1,5 +1,166 @@
 @import '../../../styles/variables.scss';
+@import '../../../styles/mediaQueries.scss';
 
 .navbar {
-  border: 1px solid red;
+  position: fixed;
+  height: 70px;
+  width: 95vw;
+  margin: 0 auto;
+  border-radius: $radius-m;
+  // to center nav
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 1rem;
+
+  // @include breakpoint-max(phoneMax) {
+  //   width: 100vw;
+  //   padding-right: 0;
+  //   font-size: 14px;
+  // }
+}
+
+.flex_left {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+
+  // @include breakpoint-max(phoneMax) {
+  //   gap: 1rem;
+  // }
+
+  .logo {
+    margin-top: -0.25rem;
+  }
+}
+
+.navbar_links {
+  text-decoration: none;
+  color: $white;
+}
+
+.link_container {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+  // @include breakpoint-max(phoneMax) {
+  //   gap: 1rem;
+  // }
+}
+
+// WALLET UI
+.wallet_wrapper {
+  cursor: pointer;
+  position: relative;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 145px;
+}
+.wallet_dropdown {
+  position: absolute;
+  bottom: -170px;
+  left: -190px;
+  height: 150px;
+  width: 340px;
+  background: $background;
+  border: 1px solid $blue-white;
+  color: $white;
+  box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.15);
+  border-radius: $radius-m;
+  padding: 30px 35px;
+
+  .triangle {
+    position: absolute;
+    top: -11px;
+    left: 230px;
+    height: 22px;
+    width: 22px;
+    background-color: $background;
+    border-top: 1px solid $blue-white;
+    border-right: 1px solid $blue-white;
+    border-left: 1px solid $background;
+    border-bottom: 1px solid $background;
+    transform: rotate(-45deg);
+  }
+
+  .wallet_dropdown_container {
+    height: 100%;
+    width: 100%;
+  }
+
+  .wallet_dropdown_inner_top_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 20px;
+  }
+
+  .wallet_dropdown_inner_top {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  .disconnect {
+    font-size: 12px;
+    color: $orange;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .wallet_adapter_container {
+    width: 100%;
+  }
+
+  .btn_wallet_connect {
+    font-family: 'Inter';
+    font-weight: 600;
+    // fixed width to override the default width of the wallet adapter button
+    width: 270px;
+    height: 57px;
+    margin-top: 10px;
+    text-align: center;
+    justify-content: center;
+    font-size: 18px;
+    border-radius: 6px;
+    padding: 10px 20px;
+
+    &:not([disabled]):hover {
+      background-color: $orange;
+      opacity: 0.9;
+    }
+
+    &:disabled {
+      background: $white;
+      cursor: not-allowed;
+      // used here to overwrite default GenericOrange Btn behavior
+      pointer-events: revert;
+    }
+
+    @media (max-width: 1100px) {
+      width: 100%;
+    }
+  }
+  .connected {
+    background: $background;
+    border: 1px solid $blue-white;
+    color: $white;
+    justify-content: flex-start;
+    pointer-events: none;
+
+    &:not([disabled]):hover {
+      background-color: $background;
+    }
+  }
+
+  .disconnected {
+    background: $orange;
+    color: $white;
+    border: 1px solid $orange;
+  }
 }
