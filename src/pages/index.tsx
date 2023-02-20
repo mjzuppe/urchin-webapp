@@ -8,6 +8,12 @@ export default function Home() {
       </Head>
 
       <h1>Home Page</h1>
+      <button
+        type="button"
+        onClick={() => {
+          throw new Error("Sentry Frontend Error");
+        }}
+      ></button>
     </>
   );
 }
