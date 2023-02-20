@@ -25,7 +25,7 @@ export default function Navbar() {
   )}`;
 
   const { width } = useWindowSize();
-  const isMobile = width < 1100;
+  const isMobile = width < 1024;
 
   const walletMenuRef = useRef(null);
   useOnClickOutside(
@@ -47,21 +47,21 @@ export default function Navbar() {
   return (
     <nav className={classes.navbar}>
       <div className={classes.flex_left}>
-        {!isMobile && (
-          <Link
-            href={connected ? '/dashboard' : '/'}
-            className={classes.navbar_links}
-          >
-            <Image
-              src="/assets/supermassiv-logo-white.svg"
-              width={200}
-              height={50}
-              alt="Juice Box logo"
-              className={classes.logo}
-            />
-          </Link>
-        )}
-        {!connected && (
+        {/* {!isMobile && ( */}
+        <Link
+          href={connected ? '/dashboard' : '/'}
+          className={classes.navbar_links}
+        >
+          <Image
+            src="/assets/supermassiv-logo-white.svg"
+            width={isMobile ? 100 : 200}
+            height={isMobile ? 25 : 50}
+            alt="Juice Box logo"
+            className={classes.logo}
+          />
+        </Link>
+        {/* )} */}
+        {!connected && !isMobile && (
           // TODO: Anchor id to be provided
           <Link href="/" className={classes.navbar_links}>
             <p>Features</p>
@@ -71,9 +71,11 @@ export default function Navbar() {
 
       {/* TODO: Links TBC */}
       <div className={`${classes.link_container} ${classes.flex_right}`}>
-        <Link href="/" className={classes.navbar_links}>
-          <p>Getting Started</p>
-        </Link>
+        {!isMobile && (
+          <Link href="/" className={classes.navbar_links}>
+            <p>Getting Started</p>
+          </Link>
+        )}
         <Link href="/" className={classes.navbar_links}>
           <li>Docs</li>
         </Link>

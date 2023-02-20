@@ -15,11 +15,11 @@
   justify-content: space-between;
   padding-right: 1rem;
 
-  // @include breakpoint-max(phoneMax) {
-  //   width: 100vw;
-  //   padding-right: 0;
-  //   font-size: 14px;
-  // }
+  @include breakpoint-max(phoneMax) {
+    width: 100vw;
+    padding-right: 0;
+    font-size: 14px;
+  }
 }
 
 .flex_left {
@@ -27,12 +27,11 @@
   align-items: center;
   gap: 3rem;
 
-  // @include breakpoint-max(phoneMax) {
-  //   gap: 1rem;
-  // }
-
   .logo {
     margin-top: -0.25rem;
+    @include breakpoint-max(phoneMax) {
+      margin-left: 1rem;
+    }
   }
 }
 
@@ -74,6 +73,15 @@
   box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.15);
   border-radius: $radius-m;
   padding: 30px 35px;
+
+  @include breakpoint-max(phoneMax) {
+    bottom: -170px;
+    left: -160px;
+    width: 280px;
+    box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.15);
+    padding: 1rem 2rem;
+    height: 135px;
+  }
 
   .triangle {
     position: absolute;
@@ -142,8 +150,9 @@
       pointer-events: revert;
     }
 
-    @media (max-width: 1100px) {
+    @include breakpoint-max(phoneMax) {
       width: 100%;
+      padding: 1rem 2rem;
     }
   }
   .connected {
