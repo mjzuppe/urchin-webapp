@@ -1,0 +1,27 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mediaQueries.scss';
+
+.subnav {
+  // border: 1px solid red;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 500;
+  font-size: 1.35rem;
+
+  ul {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    color: $white;
+
+    li {
+      cursor: pointer;
+    }
+  }
+
+  li.active {
+    text-decoration: underline;
+    text-underline-offset: 0.6rem;
+  }
+}
