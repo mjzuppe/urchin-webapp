@@ -5,8 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-weight: 500;
-  font-size: 1.35rem;
+
   margin-bottom: 2rem;
 
   ul {
@@ -16,6 +15,8 @@
     color: $white;
 
     li {
+      font-weight: 500;
+      font-size: 1.35rem;
       cursor: pointer;
     }
   }

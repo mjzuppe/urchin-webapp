@@ -10,7 +10,11 @@ import '../styles/globals.scss';
 
 // Fonts
 import { Inter } from '@next/font/google';
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin'],
+  weight: 'variable',
+  display: 'swap',
+});
 
 // Components
 import Layout from '../components/layout';
