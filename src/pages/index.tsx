@@ -24,7 +24,6 @@ const Home: NextPage = (): JSX.Element => {
       <Head>
         <title>Playa - WebApp</title>
       </Head>
-
       {/* Wallet not connected */}
       {!connected && <StaticHomePage />}
       {/* Wallet connected */}
