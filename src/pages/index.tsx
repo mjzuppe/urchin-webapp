@@ -13,6 +13,7 @@ import Subnav from 'src/components/subnav';
 import TemplatesList from '@/components/templatesList';
 import EntriesList from '@/components/entriesList';
 import TaxonomiesList from '@/components/taxonomiesList';
+import StaticHomePage from '@/components/staticHomePage';
 
 const Home: NextPage = (): JSX.Element => {
   const { publicKey, connected } = useWallet();
@@ -25,12 +26,11 @@ const Home: NextPage = (): JSX.Element => {
       </Head>
 
       {/* Wallet not connected */}
-      {!connected && <h1>Static HOME PAGE</h1>}
+      {!connected && <StaticHomePage />}
       {/* Wallet connected */}
       {connected && (
         <>
           <Subnav />
-          {/* render component based on active tab */}
           {activeTab === 'Templates' && <TemplatesList />}
           {activeTab === 'Entries' && <EntriesList />}
           {activeTab === 'Taxonomies' && <TaxonomiesList />}
