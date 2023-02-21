@@ -13,10 +13,17 @@
     gap: 3rem;
     color: $blue-white;
 
+    @include breakpoint-max(phoneMax) {
+      gap: 1rem;
+    }
+
     li {
       font-weight: 500;
       font-size: 1.35rem;
       cursor: pointer;
+      @include breakpoint-max(phoneMax) {
+        font-size: 0.8rem;
+      }
     }
   }
 

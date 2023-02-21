@@ -1,11 +1,31 @@
 @import 'src/styles/variables';
-// @import 'src/styles/mediaQueries';`
+@import 'src/styles/mediaQueries';
 
 .list_row_content {
   margin: 1.5rem 0;
   display: flex;
   align-items: center;
   gap: 6rem;
+  @include breakpoint-max(phoneMax) {
+    display: revert;
+    margin: 1rem 0;
+  }
+}
+
+.mobile_flex {
+  display: flex;
+  @include breakpoint-max(phoneMax) {
+    align-items: baseline;
+    gap: 1rem;
+  }
+}
+.tablet_flex {
+  display: flex;
+  @include breakpoint-max(tabletMax) {
+    align-items: baseline;
+    gap: 1rem;
+    margin: 1rem 0 0 0;
+  }
 }
 
 .title {
@@ -21,6 +41,18 @@
     font-size: 0.9rem;
     color: rgba($white, 0.6);
   }
+
+  @include breakpoint-max(phoneMax) {
+    width: 160px;
+    margin-bottom: 0.4rem;
+    h3 {
+      font-size: 1rem;
+      margin-bottom: 0;
+    }
+    p {
+      font-size: 0.65rem;
+    }
+  }
 }
 
 .solana,
@@ -32,15 +64,32 @@
   font-size: 1.15rem;
   font-weight: 500;
   color: $white;
+  @include breakpoint-max(tabletMax) {
+    font-size: 0.65rem;
+    width: fit-content;
+  }
 }
 
 .entries_nbr {
-  width: 80px;
-  font-size: 0.9rem;
-  color: rgba($white, 0.4);
+  @include breakpoint-max(tabletMax) {
+    width: 200px;
+  }
+  p {
+    width: 80px;
+    color: rgba($white, 0.4);
+    text-align: left;
+    @include breakpoint-max(tabletMax) {
+      margin: 0.5rem 0;
+      font-size: 0.85rem;
+      width: 70px;
+    }
+  }
 }
 
 .edit {
   text-decoration: underline;
   text-underline-offset: 0.2rem;
+  @include breakpoint-max(tabletMax) {
+    font-size: 0.85rem;
+  }
 }

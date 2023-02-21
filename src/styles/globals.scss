@@ -12,12 +12,18 @@ body {
 
 main {
   padding: 0rem 3rem;
+  @include breakpoint-max(phoneMax) {
+    padding: 0rem 1.5rem;
+  }
 }
 
 .orange_link {
   color: $orange;
   text-decoration: underline;
   font-size: 1rem;
+  @include breakpoint-max(phoneMax) {
+    font-size: 0.8rem;
+  }
 }
 
 .filler {

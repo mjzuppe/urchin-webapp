@@ -25,6 +25,42 @@ const EntriesList = () => {
       solanaAddress: '3SJ...93A',
       arweaveAddress: '5SX...5AB',
     },
+    {
+      title: 'My first Post',
+      updatedAt: 'June 2nd 2023',
+      solanaAddress: '3SJ...93A',
+      arweaveAddress: '5SX...5AB',
+    },
+    {
+      title: 'Another post title',
+      updatedAt: 'May 27th 2022',
+      solanaAddress: '3SJ...93A',
+      arweaveAddress: '5SX...5AB',
+    },
+    {
+      title: 'My third post',
+      updatedAt: 'January 12th 2022',
+      solanaAddress: '3SJ...93A',
+      arweaveAddress: '5SX...5AB',
+    },
+    {
+      title: 'My first Post',
+      updatedAt: 'June 2nd 2023',
+      solanaAddress: '3SJ...93A',
+      arweaveAddress: '5SX...5AB',
+    },
+    {
+      title: 'Another post title',
+      updatedAt: 'May 27th 2022',
+      solanaAddress: '3SJ...93A',
+      arweaveAddress: '5SX...5AB',
+    },
+    {
+      title: 'My third post',
+      updatedAt: 'January 12th 2022',
+      solanaAddress: '3SJ...93A',
+      arweaveAddress: '5SX...5AB',
+    },
   ];
   return (
     <section className={classes.entries_list_section}>

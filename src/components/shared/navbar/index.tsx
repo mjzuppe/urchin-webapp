@@ -47,7 +47,6 @@ const Navbar = (): JSX.Element => {
   return (
     <nav className={classes.navbar}>
       <div className={classes.flex_left}>
-        {/* {!isMobile && ( */}
         <Link
           href={connected ? '/dashboard' : '/'}
           className={classes.navbar_links}

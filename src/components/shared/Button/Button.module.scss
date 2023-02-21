@@ -1,8 +1,9 @@
 @import 'src/styles/variables';
+@import 'src/styles/mediaQueries';
 
 .btn {
   text-align: center;
-  font-size: 14px;
+  font-size: 0.9rem;
   font-weight: 700;
   color: $white;
   background: $orange;
@@ -15,6 +16,10 @@
     color: $orange;
     background: $background;
     border: 1px solid $orange;
+  }
+
+  @include breakpoint-max(phoneMax) {
+    font-size: 0.75rem;
   }
 
   // &:disabled {
