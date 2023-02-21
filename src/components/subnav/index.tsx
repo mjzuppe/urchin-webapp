@@ -29,7 +29,7 @@ const Subnav = (): JSX.Element => {
             onClick={handleTabClick(tab)}
             className={`${active === tab ? classes.active : ''}`}
           >
-            {tab}
+            <button>{tab}</button>
           </li>
         ))}
       </ul>
