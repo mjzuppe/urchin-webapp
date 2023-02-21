@@ -2,7 +2,7 @@
 import classes from './TaxonomiesList.module.scss';
 
 // Components
-import Button from 'src/components/shared/Button';
+import Button from '@/components/shared/button';
 
 const TaxonomiesList = () => {
   return (

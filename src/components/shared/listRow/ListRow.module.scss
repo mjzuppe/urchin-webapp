@@ -1,0 +1,46 @@
+@import 'src/styles/variables';
+// @import 'src/styles/mediaQueries';`
+
+.list_row_content {
+  margin: 1.5rem 0;
+  display: flex;
+  align-items: center;
+  gap: 6rem;
+}
+
+.title {
+  width: 250px;
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: $white;
+    margin-bottom: 0.4rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: rgba($white, 0.6);
+  }
+}
+
+.solana,
+.arweave {
+  width: 150px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: $white;
+}
+
+.entries_nbr {
+  width: 80px;
+  font-size: 0.9rem;
+  color: rgba($white, 0.4);
+}
+
+.edit {
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}

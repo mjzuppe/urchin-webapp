@@ -14,6 +14,7 @@
   align-items: center;
   justify-content: space-between;
   padding-right: 1rem;
+  background: $background;
 
   @include breakpoint-max(phoneMax) {
     width: 100vw;
