@@ -1,8 +1,22 @@
+// Styles
+import classes from './TaxonomiesList.module.scss';
+
+// Components
+import Button from 'src/components/shared/Button';
+
 const TaxonomiesList = () => {
   return (
-    <div>
-      <h1>Taxonomies List</h1>
-    </div>
+    <section className={classes.taxonomies_list_section}>
+      {/* action buttons */}
+      <div className={classes.actions_buttons}>
+        <Button
+          btnText={'Create New'}
+          type={'button'}
+          callBack={() => console.log('Create New')}
+        />
+      </div>
+      {/* Taxonomies List */}
+    </section>
   );
 };
 export default TaxonomiesList;
