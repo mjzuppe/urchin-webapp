@@ -5,7 +5,6 @@ import Head from 'next/head';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 // redux
-
 import { useAppSelector } from 'src/utils/useAppSelector';
 
 // Components
