@@ -14,7 +14,7 @@ import useOnClickOutside from '../../../utils/useOnClickOutside';
 import useWindowSize from '@/utils/useWindowSize';
 
 // Components
-export default function Navbar() {
+const Navbar = (): JSX.Element => {
   const { publicKey, connected, disconnect } = useWallet();
   const [openWalletDropdown, setOpenWalletDropdown] = useState(false);
 
@@ -77,7 +77,7 @@ export default function Navbar() {
           </Link>
         )}
         <Link href="/" className={classes.navbar_links}>
-          <li>Docs</li>
+          <p>Docs</p>
         </Link>
 
         {/* Wallet */}
@@ -176,4 +176,6 @@ export default function Navbar() {
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;
