@@ -36,7 +36,7 @@ const Navbar = (): JSX.Element => {
   );
 
   const walletDropdownHandler = () => {
-    setOpenWalletDropdown(true);
+    setOpenWalletDropdown(!openWalletDropdown);
   };
 
   // disconnect wallet
