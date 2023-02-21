@@ -1,5 +1,10 @@
 import type { AppProps } from 'next/app';
 import { useMemo } from 'react';
+
+// Redux
+import { Provider } from 'react-redux';
+import store from '../redux/store';
+
 // Styles
 import '../styles/globals.scss';
 
@@ -97,15 +102,17 @@ export default function App({ Component, pageProps }: AppProps) {
   );
   return (
     <div className={inter.className}>
-      <ConnectionProvider endpoint={endpoint}>
-        <WalletProvider wallets={wallets} autoConnect>
-          <WalletModalProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </WalletModalProvider>
-        </WalletProvider>
-      </ConnectionProvider>
+      <Provider store={store}>
+        <ConnectionProvider endpoint={endpoint}>
+          <WalletProvider wallets={wallets} autoConnect>
+            <WalletModalProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </WalletModalProvider>
+          </WalletProvider>
+        </ConnectionProvider>
+      </Provider>
     </div>
   );
 }
