@@ -29,6 +29,7 @@
 
   .logo {
     margin-top: -0.25rem;
+    margin-left: 2rem;
     @include breakpoint-max(phoneMax) {
       margin-left: 1rem;
     }
@@ -41,13 +42,9 @@
 }
 
 .link_container {
-  list-style: none;
   display: flex;
   align-items: center;
   gap: 3rem;
-  // @include breakpoint-max(phoneMax) {
-  //   gap: 1rem;
-  // }
 }
 
 // WALLET UI
