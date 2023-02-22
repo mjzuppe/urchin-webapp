@@ -2,7 +2,7 @@
 import classes from './TemplatesList.module.scss';
 
 // Components
-import Button from '../shared/button';
+import ButtonSmall from '../shared/buttonSmall';
 import ListRow from '../shared/listRow';
 
 const mockdata = [
@@ -34,12 +34,12 @@ const TemplatesList = () => {
     <section className={classes.templates_list_section}>
       {/* action buttons */}
       <div className={classes.actions_buttons}>
-        <Button
+        <ButtonSmall
           btnText={'Create New'}
           type={'button'}
           callBack={() => console.log('Create New')}
         />
-        <Button
+        <ButtonSmall
           btnText={'Import'}
           callBack={() => console.log('Import')}
           type={'button'}

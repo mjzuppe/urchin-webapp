@@ -1,7 +1,7 @@
 //styles
-import classes from './Button.module.scss';
+import classes from './ButtonSmall.module.scss';
 
-interface ButtonProps {
+interface ButtonSmallProps {
   className?: string;
   btnText: string;
   callBack?: () => any;
@@ -11,7 +11,7 @@ interface ButtonProps {
   id?: string;
 }
 
-const Button: React.FC<ButtonProps> = ({
+const ButtonSmall: React.FC<ButtonSmallProps> = ({
   className,
   btnText,
   callBack,
@@ -41,4 +41,4 @@ const Button: React.FC<ButtonProps> = ({
   );
 };
 
-export default Button;
+export default ButtonSmall;

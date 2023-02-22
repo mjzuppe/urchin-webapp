@@ -2,7 +2,7 @@
 import classes from './TaxonomiesList.module.scss';
 
 // Components
-import Button from '../shared/button';
+import ButtonSmall from '../shared/buttonSmall';
 import ListRow from '../shared/listRow';
 
 const mockdata = [
@@ -28,7 +28,7 @@ const TaxonomiesList = () => {
     <section className={classes.taxonomies_list_section}>
       {/* action buttons */}
       <div className={classes.actions_buttons}>
-        <Button
+        <ButtonSmall
           btnText={'Create New'}
           type={'button'}
           callBack={() => console.log('Create New')}

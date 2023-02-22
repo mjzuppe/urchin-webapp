@@ -2,7 +2,7 @@
 import classes from './EntriesList.module.scss';
 
 // Components
-import Button from '../shared/button';
+import ButtonSmall from '../shared/buttonSmall';
 import ListRow from '../shared/listRow';
 
 const EntriesList = () => {
@@ -30,7 +30,7 @@ const EntriesList = () => {
     <section className={classes.entries_list_section}>
       {/* action buttons */}
       <div className={classes.actions_buttons}>
-        <Button
+        <ButtonSmall
           btnText={'Create New'}
           type={'button'}
           callBack={() => console.log('Create New')}
