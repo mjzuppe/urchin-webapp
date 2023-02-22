@@ -3,6 +3,25 @@ import classes from './TaxonomiesList.module.scss';
 
 // Components
 import Button from '@/components/shared/button';
+import ListRow from '@/components/shared/listRow';
+
+const mockdata = [
+  {
+    title: 'Music',
+    updatedAt: 'June 2nd 2023',
+    solanaAddress: '3SJ...93A',
+  },
+  {
+    title: 'Lifestyle',
+    updatedAt: 'May 27th 2022',
+    solanaAddress: '3SJ...93A',
+  },
+  {
+    title: 'Fashion',
+    updatedAt: 'January 12th 2022',
+    solanaAddress: '3SJ...93A',
+  },
+];
 
 const TaxonomiesList = () => {
   return (
@@ -16,6 +35,19 @@ const TaxonomiesList = () => {
         />
       </div>
       {/* Taxonomies List */}
+      <div className={classes.taxonomies_list}>
+        {mockdata.map((template) => {
+          const { title, updatedAt, solanaAddress } = template;
+          return (
+            <ListRow
+              key={title}
+              title={title}
+              updatedAt={updatedAt}
+              solanaAddress={solanaAddress}
+            />
+          );
+        })}
+      </div>
     </section>
   );
 };
