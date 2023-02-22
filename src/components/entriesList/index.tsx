@@ -2,47 +2,11 @@
 import classes from './EntriesList.module.scss';
 
 // Components
-import Button from '../shared/button';
-import ListRow from '../shared/listRow';
+import Button from '@/components/shared/button';
+import ListRow from '@/components/shared/listRow';
 
 const EntriesList = () => {
   const mockdata = [
-    {
-      title: 'My first Post',
-      updatedAt: 'June 2nd 2023',
-      solanaAddress: '3SJ...93A',
-      arweaveAddress: '5SX...5AB',
-    },
-    {
-      title: 'Another post title',
-      updatedAt: 'May 27th 2022',
-      solanaAddress: '3SJ...93A',
-      arweaveAddress: '5SX...5AB',
-    },
-    {
-      title: 'My third post',
-      updatedAt: 'January 12th 2022',
-      solanaAddress: '3SJ...93A',
-      arweaveAddress: '5SX...5AB',
-    },
-    {
-      title: 'My first Post',
-      updatedAt: 'June 2nd 2023',
-      solanaAddress: '3SJ...93A',
-      arweaveAddress: '5SX...5AB',
-    },
-    {
-      title: 'Another post title',
-      updatedAt: 'May 27th 2022',
-      solanaAddress: '3SJ...93A',
-      arweaveAddress: '5SX...5AB',
-    },
-    {
-      title: 'My third post',
-      updatedAt: 'January 12th 2022',
-      solanaAddress: '3SJ...93A',
-      arweaveAddress: '5SX...5AB',
-    },
     {
       title: 'My first Post',
       updatedAt: 'June 2nd 2023',
