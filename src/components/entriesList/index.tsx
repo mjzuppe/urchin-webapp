@@ -2,7 +2,7 @@
 import classes from './EntriesList.module.scss';
 
 // Components
-import Button from '../shared/button';
+import Button from './../shared/button';
 import ListRow from '../shared/listRow';
 
 const EntriesList = () => {
