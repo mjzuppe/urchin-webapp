@@ -47,10 +47,7 @@ const Navbar = (): JSX.Element => {
   return (
     <nav className={classes.navbar}>
       <div className={classes.flex_left}>
-        <Link
-          href={connected ? '/dashboard' : '/'}
-          className={classes.navbar_links}
-        >
+        <Link href="/" className={classes.navbar_links}>
           <Image
             src="/assets/supermassiv-logo-white.svg"
             width={isMobile ? 100 : 200}
