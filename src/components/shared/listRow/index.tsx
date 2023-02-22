@@ -4,10 +4,10 @@ import Image from 'next/image';
 import classes from './ListRow.module.scss';
 
 // redux
-import { useAppSelector } from 'src/utils/useAppSelector';
+import { useAppSelector } from '../../../utils/useAppSelector';
 
 // Utils
-import useWindowSize from '@/utils/useWindowSize';
+import useWindowSize from '../../../utils/useWindowSize';
 
 // Components
 import Separator from '../separator';

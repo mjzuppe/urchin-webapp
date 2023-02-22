@@ -2,8 +2,8 @@
 import classes from './TemplatesList.module.scss';
 
 // Components
-import Button from '@/components/shared/button';
-import ListRow from '@/components/shared/listRow';
+import Button from '../shared/button';
+import ListRow from '../shared/listRow';
 
 const mockdata = [
   {
