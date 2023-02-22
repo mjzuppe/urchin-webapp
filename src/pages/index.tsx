@@ -9,10 +9,10 @@ import { useAppSelector } from 'src/utils/useAppSelector';
 
 // Components
 import Subnav from 'src/components/subnav';
-import TemplatesList from '@/components/templatesList';
-import EntriesList from '@/components/entriesList';
-import TaxonomiesList from '@/components/taxonomiesList';
-import StaticHomePage from '@/components/staticHomePage';
+import TemplatesList from 'src/components/templatesList';
+import EntriesList from 'src/components/entriesList';
+import TaxonomiesList from 'src/components/taxonomiesList';
+import StaticHomePage from 'src/components/staticHomePage';
 
 const Home: NextPage = (): JSX.Element => {
   const { publicKey, connected } = useWallet();
