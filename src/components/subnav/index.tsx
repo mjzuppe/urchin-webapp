@@ -8,6 +8,7 @@ import { useAppDispatch } from '../../utils/useAppDispatch';
 
 // Redux
 import { setActiveTab } from '../../redux/slices/subNav';
+import { setCurrentProcess } from '../../redux/slices/process';
 
 const Subnav = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -20,6 +21,11 @@ const Subnav = (): JSX.Element => {
       dispatch(setActiveTab(tab));
     };
   };
+
+  const quickUploadHandler = () => {
+    dispatch(setCurrentProcess('quickUpload'));
+  };
+
   return (
     <div className={classes.subnav}>
       <ul>
@@ -34,8 +40,11 @@ const Subnav = (): JSX.Element => {
         ))}
       </ul>
       <div>
-        {/* TODO: Use link instead?? on Click render quickUpload component */}
-        <button type="button" className="orange_link">
+        <button
+          type="button"
+          className="orange_link"
+          onClick={quickUploadHandler}
+        >
           Quick Upload
         </button>
       </div>

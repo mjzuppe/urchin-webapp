@@ -1,0 +1,16 @@
+@import 'src/styles/variables';
+
+.quickUpload_content_top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  h3 {
+    font-size: 1.5rem;
+  }
+}
+
+.quickUpload_content {
+  border: 1px solid red;
+  max-width: 900px;
+}
