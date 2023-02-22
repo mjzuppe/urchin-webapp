@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useState, useRef, useCallback } from 'react';
 
 //styles
@@ -8,7 +9,11 @@ import classes from './Navbar.module.scss';
 // Libs
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-
+const WalletMultiButtonDynamic = dynamic(
+  async () =>
+    (await import('@solana/wallet-adapter-react-ui')).WalletMultiButton,
+  { ssr: false }
+);
 // Utils
 import useOnClickOutside from '../../../utils/useOnClickOutside';
 import useWindowSize from '../../../utils/useWindowSize';
@@ -146,14 +151,14 @@ const Navbar = (): JSX.Element => {
                   )}
                 </div>
                 <div className={classes.wallet_adapter_container}>
-                  <WalletMultiButton
+                  <WalletMultiButtonDynamic
                     className={`${classes.btn_wallet_connect} ${
                       connected ? classes.connected : classes.disconnected
                     }`}
                     // onClick={handleConnectWalletClick}
                   >
                     {!connected ? 'Connect Wallet' : null}
-                  </WalletMultiButton>
+                  </WalletMultiButtonDynamic>
                 </div>
               </div>
             </div>
