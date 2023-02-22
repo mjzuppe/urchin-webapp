@@ -1,7 +1,7 @@
 @import 'src/styles/variables';
 
 .pagination_section {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
