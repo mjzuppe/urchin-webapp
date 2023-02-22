@@ -28,7 +28,7 @@ const ListRow = ({
   entriesNbr,
 }: ListRowProps) => {
   const { width } = useWindowSize();
-  const isDesktop = width > 1024;
+  const isDesktop = width! > 1024;
 
   const activeTab = useAppSelector((state: any) => state.subNav.activeTab);
 

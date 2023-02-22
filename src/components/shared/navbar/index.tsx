@@ -25,7 +25,7 @@ const Navbar = (): JSX.Element => {
   )}`;
 
   const { width } = useWindowSize();
-  const isMobile = width < 1024;
+  const isMobile = width! < 1024;
 
   const walletMenuRef = useRef(null);
   useOnClickOutside(
@@ -56,7 +56,6 @@ const Navbar = (): JSX.Element => {
             className={classes.logo}
           />
         </Link>
-        {/* )} */}
         {!connected && !isMobile && (
           // TODO: Anchor id to be provided
           <Link href="/" className={classes.navbar_links}>
