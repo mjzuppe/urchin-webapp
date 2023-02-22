@@ -10,8 +10,8 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 // Utils
-import useOnClickOutside from 'src/utils/useOnClickOutside';
-import useWindowSize from '@/utils/useWindowSize';
+import useOnClickOutside from '../../../utils/useOnClickOutside';
+import useWindowSize from '../../../utils/useWindowSize';
 
 // Components
 const Navbar = (): JSX.Element => {

@@ -2,8 +2,8 @@
 import classes from './EntriesList.module.scss';
 
 // Components
-import Button from 'src/components/shared/button';
-import ListRow from 'src/components/shared/listRow';
+import Button from '../shared/button';
+import ListRow from '../shared/listRow';
 
 const EntriesList = () => {
   const mockdata = [
