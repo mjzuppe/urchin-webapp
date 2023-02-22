@@ -4,10 +4,10 @@ import { useState } from 'react';
 import classes from './Subnav.module.scss';
 
 // Utils
-import { useAppDispatch } from 'src/utils/useAppDispatch';
+import { useAppDispatch } from '../../utils/useAppDispatch';
 
 // Redux
-import { setActiveTab } from 'src/redux/slices/subNav';
+import { setActiveTab } from '../../redux/slices/subNav';
 
 const Subnav = (): JSX.Element => {
   const dispatch = useAppDispatch();
