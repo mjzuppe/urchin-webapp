@@ -14,11 +14,14 @@
   align-items: center;
   justify-content: space-between;
   padding-right: 1rem;
+  background: $background;
 
   @include breakpoint-max(phoneMax) {
     width: 100vw;
     padding-right: 0;
     font-size: 14px;
+    height: 60px;
+    border-bottom: 1px solid $white;
   }
 }
 
@@ -29,6 +32,7 @@
 
   .logo {
     margin-top: -0.25rem;
+    margin-left: 2rem;
     @include breakpoint-max(phoneMax) {
       margin-left: 1rem;
     }
@@ -41,13 +45,9 @@
 }
 
 .link_container {
-  list-style: none;
   display: flex;
   align-items: center;
   gap: 3rem;
-  // @include breakpoint-max(phoneMax) {
-  //   gap: 1rem;
-  // }
 }
 
 // WALLET UI

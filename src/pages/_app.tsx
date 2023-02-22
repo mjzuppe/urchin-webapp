@@ -1,11 +1,20 @@
 import type { AppProps } from 'next/app';
 import { useMemo } from 'react';
+
+// Redux
+import { Provider } from 'react-redux';
+import store from '../redux/store';
+
 // Styles
 import '../styles/globals.scss';
 
 // Fonts
 import { Inter } from '@next/font/google';
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin'],
+  weight: 'variable',
+  display: 'swap',
+});
 
 // Components
 import Layout from '../components/layout';
@@ -97,15 +106,17 @@ export default function App({ Component, pageProps }: AppProps) {
   );
   return (
     <div className={inter.className}>
-      <ConnectionProvider endpoint={endpoint}>
-        <WalletProvider wallets={wallets} autoConnect>
-          <WalletModalProvider>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </WalletModalProvider>
-        </WalletProvider>
-      </ConnectionProvider>
+      <Provider store={store}>
+        <ConnectionProvider endpoint={endpoint}>
+          <WalletProvider wallets={wallets} autoConnect>
+            <WalletModalProvider>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </WalletModalProvider>
+          </WalletProvider>
+        </ConnectionProvider>
+      </Provider>
     </div>
   );
 }

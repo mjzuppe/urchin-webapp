@@ -10,11 +10,11 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 // Utils
-import useOnClickOutside from '../../../utils/useOnClickOutside';
+import useOnClickOutside from 'src/utils/useOnClickOutside';
 import useWindowSize from '@/utils/useWindowSize';
 
 // Components
-export default function Navbar() {
+const Navbar = (): JSX.Element => {
   const { publicKey, connected, disconnect } = useWallet();
   const [openWalletDropdown, setOpenWalletDropdown] = useState(false);
 
@@ -25,7 +25,7 @@ export default function Navbar() {
   )}`;
 
   const { width } = useWindowSize();
-  const isMobile = width < 1024;
+  const isMobile = width! < 1024;
 
   const walletMenuRef = useRef(null);
   useOnClickOutside(
@@ -36,7 +36,7 @@ export default function Navbar() {
   );
 
   const walletDropdownHandler = () => {
-    setOpenWalletDropdown(true);
+    setOpenWalletDropdown(!openWalletDropdown);
   };
 
   // disconnect wallet
@@ -47,11 +47,7 @@ export default function Navbar() {
   return (
     <nav className={classes.navbar}>
       <div className={classes.flex_left}>
-        {/* {!isMobile && ( */}
-        <Link
-          href={connected ? '/dashboard' : '/'}
-          className={classes.navbar_links}
-        >
+        <Link href="/" className={classes.navbar_links}>
           <Image
             src="/assets/supermassiv-logo-white.svg"
             width={isMobile ? 100 : 200}
@@ -60,7 +56,6 @@ export default function Navbar() {
             className={classes.logo}
           />
         </Link>
-        {/* )} */}
         {!connected && !isMobile && (
           // TODO: Anchor id to be provided
           <Link href="/" className={classes.navbar_links}>
@@ -77,7 +72,7 @@ export default function Navbar() {
           </Link>
         )}
         <Link href="/" className={classes.navbar_links}>
-          <li>Docs</li>
+          <p>Docs</p>
         </Link>
 
         {/* Wallet */}
@@ -176,4 +171,6 @@ export default function Navbar() {
       </div>
     </nav>
   );
-}
+};
+
+export default Navbar;
