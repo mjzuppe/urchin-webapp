@@ -1,9 +1,16 @@
+import { useState } from 'react';
+
 // Styles
 import classes from './TaxonomiesList.module.scss';
+
+// utils
+import paginate from '../../utils/paginate';
+import { PAGE_SIZE as pageSize } from '../../utils/constants';
 
 // Components
 import ButtonSmall from '../shared/buttonSmall';
 import ListRow from '../shared/listRow';
+import Pagination from '../shared/pagination';
 
 const mockdata = [
   {
@@ -24,6 +31,12 @@ const mockdata = [
 ];
 
 const TaxonomiesList = () => {
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const paginatedData = paginate(mockdata, currentPage, pageSize);
+
+  const onPageChange = (page: number) => {
+    setCurrentPage(page);
+  };
   return (
     <section className={classes.taxonomies_list_section}>
       {/* action buttons */}
@@ -36,7 +49,7 @@ const TaxonomiesList = () => {
       </div>
       {/* Taxonomies List */}
       <div className={classes.taxonomies_list}>
-        {mockdata.map((template) => {
+        {paginatedData.map((template: any) => {
           const { title, updatedAt, solanaAddress } = template;
           return (
             <ListRow
@@ -48,6 +61,12 @@ const TaxonomiesList = () => {
           );
         })}
       </div>
+      <Pagination
+        items={mockdata.length}
+        pageSize={pageSize}
+        currentPage={currentPage}
+        onPageChange={onPageChange}
+      />
     </section>
   );
 };
