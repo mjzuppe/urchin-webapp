@@ -2,7 +2,7 @@
 import classes from './EntriesList.module.scss';
 
 // Components
-// import Button from '../shared/button';
+import Button from '../shared/button';
 import ListRow from '../shared/listRow';
 
 const EntriesList = () => {
@@ -30,11 +30,11 @@ const EntriesList = () => {
     <section className={classes.entries_list_section}>
       {/* action buttons */}
       <div className={classes.actions_buttons}>
-        {/* <Button
+        <Button
           btnText={'Create New'}
           type={'button'}
           callBack={() => console.log('Create New')}
-        /> */}
+        />
       </div>
       {/* Entries List */}
       <div className={classes.templates_list}>
