@@ -5,7 +5,7 @@ import classes from './Subnav.module.scss';
 
 // Utils
 import { useAppDispatch } from '../../utils/useAppDispatch';
-
+import { useAppSelector } from '../../utils/useAppSelector';
 // Redux
 import { setActiveTab } from '../../redux/slices/subNav';
 import { setCurrentProcess } from '../../redux/slices/process';
@@ -13,7 +13,8 @@ import { setCurrentProcess } from '../../redux/slices/process';
 const Subnav = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const tabs = ['Templates', 'Entries', 'Taxonomies'];
-  const [active, setActive] = useState(tabs[0]);
+  const activeTab = useAppSelector((state: any) => state.subNav.activeTab);
+  const [active, setActive] = useState(activeTab || tabs[0]);
 
   const handleTabClick = (tab: string) => {
     return () => {
