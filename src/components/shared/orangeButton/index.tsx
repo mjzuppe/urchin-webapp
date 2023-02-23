@@ -1,7 +1,7 @@
 //styles
-import classes from './ButtonSmall.module.scss';
+import classes from './OrangeButton.module.scss';
 
-interface ButtonSmallProps {
+interface OrangeButtonProps {
   className?: string;
   btnText: string;
   callBack?: () => any;
@@ -11,7 +11,7 @@ interface ButtonSmallProps {
   id?: string;
 }
 
-const ButtonSmall: React.FC<ButtonSmallProps> = ({
+const OrangeButton: React.FC<OrangeButtonProps> = ({
   className,
   btnText,
   callBack,
@@ -41,4 +41,4 @@ const ButtonSmall: React.FC<ButtonSmallProps> = ({
   );
 };
 
-export default ButtonSmall;
+export default OrangeButton;

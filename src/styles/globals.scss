@@ -26,6 +26,68 @@ main {
   }
 }
 
+.blue_white_link {
+  color: #dae3ea;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
 .filler {
   flex: 1;
+}
+
+.muted_text_small {
+  font-size: 0.8rem;
+  color: rgba($white, 0.6);
+}
+
+//  FORMS GLOBALS
+// .form {
+
+// }
+
+.input_wrapper {
+  margin-bottom: 2rem;
+}
+
+.form_label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.form_input {
+  font-size: 1rem;
+  background: $dark-grey;
+  border-radius: $radius-s;
+  border: none;
+  padding: 0.5rem 1rem;
+  height: 2.5rem;
+  width: 100%;
+  color: $white;
+  &:focus {
+    outline: 1px solid $orange;
+  }
+  &::placeholder {
+    color: rgba($white, 0.6);
+    font-size: 0.9rem;
+  }
+}
+.form_textarea {
+  font-size: 1rem;
+  background: $dark-grey;
+  border-radius: $radius-s;
+  border: none;
+  padding: 0.5rem 1rem;
+  min-height: 150px;
+  width: 100%;
+  color: $white;
+  resize: none;
+  &:focus {
+    outline: 1px solid $orange;
+  }
+  &::placeholder {
+    color: rgba($white, 0.6);
+    font-size: 0.9rem;
+  }
 }
