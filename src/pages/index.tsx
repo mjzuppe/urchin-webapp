@@ -27,7 +27,6 @@ const Home: NextPage = (): JSX.Element => {
   const currentProcess = useAppSelector(
     (state: any) => state.process.currentProcess
   );
-  console.log('currentProcess', currentProcess);
 
   useEffect(() => {
     dispatch(setCurrentProcess(currentProcess));
