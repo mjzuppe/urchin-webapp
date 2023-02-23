@@ -26,8 +26,19 @@ main {
   }
 }
 
+.blue_white_link {
+  color: #dae3ea;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
 .filler {
   flex: 1;
+}
+
+.muted_text_small {
+  font-size: 0.8rem;
+  color: rgba($white, 0.6);
 }
 
 //  FORMS GLOBALS

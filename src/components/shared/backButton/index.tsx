@@ -9,7 +9,7 @@ const BackButton = ({
   return (
     <button
       type="button"
-      className={classes.backButton}
+      className={`${classes.backButton} blue_white_link`}
       onClick={onClickHandler}
     >
       Back
