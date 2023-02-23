@@ -21,11 +21,4 @@
   @include breakpoint-max(phoneMax) {
     font-size: 0.75rem;
   }
-
-  // &:disabled {
-  //   pointer-events: none;
-  //   border: 1px solid $silver;
-  //   color: $silver;
-  //   background-color: transparent;
-  // }
 }
