@@ -15,7 +15,7 @@ import { FileUploader } from 'react-drag-drop-files';
 
 // Components
 import BackButton from '../shared/backButton';
-import OrangeButton from '../shared/OrangeButton';
+import OrangeButton from '../shared/orangeButton';
 
 interface File {
   name: string;
