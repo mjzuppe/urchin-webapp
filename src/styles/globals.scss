@@ -42,9 +42,6 @@ main {
 }
 
 //  FORMS GLOBALS
-// .form {
-
-// }
 
 .input_wrapper {
   margin-bottom: 2rem;
@@ -54,6 +51,11 @@ main {
   display: block;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  &[data-required='required']::after {
+    content: '*';
+    color: $white;
+    padding-left: 5px;
+  }
 }
 
 .form_input {
@@ -71,6 +73,12 @@ main {
   &::placeholder {
     color: rgba($white, 0.6);
     font-size: 0.9rem;
+  }
+  @include breakpoint-max(phoneMax) {
+    font-size: 0.8rem;
+    &::placeholder {
+      font-size: 0.8rem;
+    }
   }
 }
 .form_textarea {

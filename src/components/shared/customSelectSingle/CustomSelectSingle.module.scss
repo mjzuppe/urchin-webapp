@@ -1,0 +1,147 @@
+@import 'src/styles/variables';
+
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  // scrollbar styling
+  /* width */
+  ::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
+  /* Track */
+  ::-webkit-scrollbar-track {
+    // background: $silver;
+    border-radius: 20px;
+    margin: 0 10px;
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: $white;
+    border-radius: 20px;
+  }
+
+  .multiSelect {
+    text-transform: capitalize;
+    // search input container
+    :global(.searchWrapper) {
+      cursor: pointer;
+      border: none;
+      padding: 5px;
+      padding-bottom: 0;
+      height: 40px;
+      :global(.icon_down_dir) {
+        width: auto;
+        background: $dark-grey;
+        border-radius: $radius-s;
+        display: flex;
+        align-items: center;
+        margin-top: 0;
+        padding-right: 9px;
+
+        &::before {
+          content: none;
+        }
+      }
+
+      :global(.searchBox) {
+        padding: 0.5rem 1rem;
+        position: absolute;
+        top: 5px;
+        bottom: 5px;
+        z-index: -1;
+        color: #fff;
+        margin-top: -5px;
+        background: $dark-grey;
+        border-radius: $radius-s;
+        height: 40px;
+        width: 100%;
+      }
+
+      //multi Select overries
+      :global(.chip) {
+        font-size: 14px;
+        line-height: 17px;
+        background-color: $dark-grey;
+        color: $white;
+        border-radius: 2px;
+        column-gap: 7px;
+        align-items: center;
+      }
+
+      // single Select overrides
+      &:global(.singleSelect) {
+        padding: 0;
+
+        :global(.singleChip) {
+          text-transform: capitalize;
+          color: $white;
+          margin: 0;
+          padding: 10px;
+          background: $dark-grey;
+          width: 100%;
+          height: 100%;
+          border-radius: $radius-s;
+        }
+
+        & :global(.searchBox) {
+          // padding: 10px;
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    // options list container
+    :global(.optionListContainer) {
+      margin-top: 0;
+      border-top: 1px solid $blue-white;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+
+      max-height: 300px;
+      overflow-y: auto;
+      background: $dark-grey;
+
+      :global(.optionContainer) {
+        margin-top: 5px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        border: none;
+        border-radius: 0;
+        max-height: unset;
+      }
+
+      :global(.option) {
+        position: relative;
+        margin-top: -2px;
+        display: flex;
+        font-size: 0.9rem;
+        border-radius: $radius-s;
+
+        &:hover {
+          background-color: rgba($grey, 0.3);
+        }
+
+        // divider line
+        &:not(:last-child) {
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: 1px;
+            left: 10px;
+            right: 10px;
+            height: 0.5px;
+            background-color: $dark-grey;
+            opacity: 0.75;
+          }
+        }
+      }
+
+      :global(.option.selected) {
+        color: $orange;
+      }
+    }
+  }
+}

@@ -6,6 +6,7 @@ import classes from './QuickUpload.module.scss';
 
 // Utils
 import { useAppDispatch } from '../../utils/useAppDispatch';
+import useForceUpdate from '../../utils/useForceUpdate';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
@@ -38,10 +39,6 @@ const QuickUpload = (): JSX.Element => {
     dispatch(setCurrentProcess('default'));
   };
 
-  const useForceUpdate = () => {
-    const [value, setValue] = useState(false);
-    return () => setValue(!value);
-  };
   const forceUpdate = useForceUpdate();
 
   const handleFileOnChange = (file: File) => {
@@ -57,7 +54,7 @@ const QuickUpload = (): JSX.Element => {
   };
 
   return (
-    <div className={classes.quickUpload_section}>
+    <section className={classes.quickUpload_section}>
       <BackButton onClickHandler={handleBackClick} />
       <div className={classes.quickUpload_content_top}>
         <h3>Quick Upload</h3>
@@ -143,7 +140,7 @@ const QuickUpload = (): JSX.Element => {
           </div>
         </form>
       </div>
-    </div>
+    </section>
   );
 };
 

@@ -19,6 +19,7 @@ import EntriesList from '../components/entriesList';
 import TaxonomiesList from '../components/taxonomiesList';
 import StaticHomePage from '../components/staticHomePage';
 import QuickUpload from '../components/quickUpload';
+import CreateEditTaxonomies from '../components/createaxonomies';
 
 const Home: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -49,6 +50,9 @@ const Home: NextPage = (): JSX.Element => {
         </>
       )}
       {connected && currentProcess === 'quickUpload' && <QuickUpload />}
+      {connected && currentProcess === 'createTaxonomies' && (
+        <CreateEditTaxonomies />
+      )}
     </>
   );
 };
