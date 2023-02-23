@@ -11,6 +11,81 @@
 }
 
 .quickUpload_content {
-  border: 1px solid red;
   max-width: 900px;
+}
+
+.upload_section {
+  display: flex;
+  align-items: flex-end;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.upload_section_left {
+  width: fit-content;
+}
+.upload_section_right {
+  width: 490px;
+  height: 200px;
+  overflow: auto;
+  // To have scrollbar outside div
+  padding-right: 10px;
+  // border: 1px solid red;
+  /* scrollbar width */
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: rgba($white, 0.4);
+  }
+}
+
+.drop_area {
+  position: relative;
+  background: $dark-grey;
+  width: 450px;
+  height: 200px;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 15px;
+  border: 2px dashed rgba($white, 0.5);
+  overflow: hidden;
+}
+
+.uploaded_file {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba($dark-grey, 0.5);
+  border-radius: $radius-s;
+  padding: 0 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.file_name {
+  color: $white;
+  font-size: 0.8rem;
+  font-weight: 500;
+  width: 300px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.remove_file_link {
+  font-size: 0.8rem;
+}
+
+.no_files_text {
+  font-size: 1.1rem;
+  color: rgba($white, 0.6);
+  margin: 5rem auto;
+  width: fit-content;
 }
