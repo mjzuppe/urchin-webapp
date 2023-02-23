@@ -15,6 +15,7 @@
   justify-content: space-between;
   padding-right: 1rem;
   background: $background;
+  z-index: 100;
 
   @include breakpoint-max(phoneMax) {
     width: 100vw;
