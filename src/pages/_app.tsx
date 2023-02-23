@@ -2,8 +2,9 @@ import type { AppProps } from 'next/app';
 import { useMemo } from 'react';
 
 // Redux
+import { store, persistor } from '../redux/store';
 import { Provider } from 'react-redux';
-import store from '../redux/store';
+import { PersistGate } from 'redux-persist/integration/react';
 
 // Styles
 import '../styles/globals.scss';
@@ -107,15 +108,18 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={inter.className}>
       <Provider store={store}>
-        <ConnectionProvider endpoint={endpoint}>
-          <WalletProvider wallets={wallets} autoConnect>
-            <WalletModalProvider>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </WalletModalProvider>
-          </WalletProvider>
-        </ConnectionProvider>
+        {/* TODO: add loading component below */}
+        <PersistGate loading={null} persistor={persistor}>
+          <ConnectionProvider endpoint={endpoint}>
+            <WalletProvider wallets={wallets} autoConnect>
+              <WalletModalProvider>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </WalletModalProvider>
+            </WalletProvider>
+          </ConnectionProvider>
+        </PersistGate>
       </Provider>
     </div>
   );
