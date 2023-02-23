@@ -8,7 +8,7 @@ import paginate from '../../utils/paginate';
 import { PAGE_SIZE as pageSize } from '../../utils/constants';
 
 // Components
-import ButtonSmall from '../shared/buttonSmall';
+import OrangeButton from '../shared/OrangeButton';
 import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
 
@@ -45,7 +45,7 @@ const EntriesList = () => {
     <section className={classes.entries_list_section}>
       {/* action buttons */}
       <div className={classes.actions_buttons}>
-        <ButtonSmall
+        <OrangeButton
           btnText={'Create New'}
           type={'button'}
           callBack={() => console.log('Create New')}
