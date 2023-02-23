@@ -1,4 +1,5 @@
 @import 'src/styles/variables';
+@import 'src/styles/mediaQueries';
 
 .quickUpload_content_top {
   display: flex;
@@ -8,10 +9,23 @@
   h3 {
     font-size: 1.5rem;
   }
+  @include breakpoint-max(phoneMax) {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    .save_btn {
+      margin-top: 1rem;
+      width: 100%;
+    }
+  }
 }
 
 .quickUpload_content {
   max-width: 900px;
+  @include breakpoint-max(phoneMax) {
+    max-width: 100%;
+    padding-bottom: 2rem;
+  }
 }
 
 .upload_section {
@@ -19,10 +33,20 @@
   align-items: flex-end;
   gap: 2rem;
   margin-bottom: 2rem;
+  @include breakpoint-max(phoneMax) {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .upload_section_left {
   width: fit-content;
+  @include breakpoint-max(tabletMax) {
+    width: 600px;
+  }
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+  }
 }
 .upload_section_right {
   width: 490px;
@@ -30,7 +54,6 @@
   overflow: auto;
   // To have scrollbar outside div
   padding-right: 10px;
-  // border: 1px solid red;
   /* scrollbar width */
   &::-webkit-scrollbar {
     width: 2px;
@@ -40,9 +63,17 @@
   &::-webkit-scrollbar-thumb {
     background: rgba($white, 0.4);
   }
+  @include breakpoint-max(phoneMax) {
+    padding-right: 0;
+    height: 100%;
+  }
+  @include breakpoint-max(tabletMax) {
+    width: 100%;
+  }
 }
 
 .drop_area {
+  cursor: pointer;
   position: relative;
   background: $dark-grey;
   width: 450px;
@@ -55,6 +86,13 @@
   row-gap: 15px;
   border: 2px dashed rgba($white, 0.5);
   overflow: hidden;
+
+  @include breakpoint-max(tabletMax) {
+    width: 350px;
+  }
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+  }
 }
 
 .uploaded_file {

@@ -15,7 +15,7 @@ import { FileUploader } from 'react-drag-drop-files';
 
 // Components
 import BackButton from '../shared/backButton';
-import ButtonSmall from '../shared/buttonSmall';
+import OrangeButton from '../shared/OrangeButton';
 
 interface File {
   name: string;
@@ -61,11 +61,12 @@ const QuickUpload = (): JSX.Element => {
       <BackButton onClickHandler={handleBackClick} />
       <div className={classes.quickUpload_content_top}>
         <h3>Quick Upload</h3>
-        <ButtonSmall
+        <OrangeButton
           btnText="Save"
           type="submit"
           // TODO: change callback when available
           callBack={() => console.log('save')}
+          className={classes.save_btn}
         />
       </div>
       <div className={classes.quickUpload_content}>
