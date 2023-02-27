@@ -8,7 +8,7 @@ const persistConfig = {
   key: 'root',
   storage,
   // will not be persisted
-  // blacklist: ['subNav'],
+  // blacklist: ['taxonomies'],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
