@@ -9,5 +9,5 @@ jobs:
     steps:
       - run: echo "🎉 Start prod deployment"
       - run: mkdir ~/.ssh && echo "${{ secrets.SSH_PROD_PRIVATE_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-      - run: ssh -o StrictHostKeyChecking=no playa@54.163.51.26 ". ./playa.co/.deploy/prod.sh"
-    - run: echo "🍏 This prod deployment job's status is ${{ job.status }}."
+      - run: ssh -o StrictHostKeyChecking=no urchin@3.82.65.158 ". ./urchin.so/.deploy/prod.sh"
+      - run: echo "🍏 This prod deployment job's status is ${{ job.status }}."
