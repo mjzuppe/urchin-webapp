@@ -43,8 +43,8 @@ const TaxonomiesList = () => {
     setCurrentPage(page);
   };
 
-  const createEditTaxonomiesHandler = () => {
-    dispatch(setCurrentProcess('createTaxonomies'));
+  const taxonomiesEditorHandler = () => {
+    dispatch(setCurrentProcess('taxonomiesEditor'));
   };
 
   return (
@@ -54,7 +54,7 @@ const TaxonomiesList = () => {
         <OrangeButton
           btnText={'Create New'}
           type={'button'}
-          callBack={createEditTaxonomiesHandler}
+          callBack={taxonomiesEditorHandler}
         />
       </div>
       {/* Taxonomies List */}

@@ -1,0 +1,34 @@
+@import '../../styles/variables.scss';
+@import '../../styles/mediaQueries.scss';
+
+.templates_editor_nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 2rem;
+
+  ul {
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    color: $blue-white;
+
+    @include breakpoint-max(phoneMax) {
+      gap: 1rem;
+    }
+
+    li {
+      font-weight: 500;
+      font-size: 1.2rem;
+      cursor: pointer;
+      @include breakpoint-max(phoneMax) {
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  li.active {
+    text-decoration: underline;
+    text-underline-offset: 0.6rem;
+  }
+}

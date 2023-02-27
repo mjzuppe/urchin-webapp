@@ -66,9 +66,9 @@ const TaxonomiesRow = (): JSX.Element => {
   return (
     <>
       {taxonomies?.map((taxonomie, index) => (
-        <div className={classes.row_container} key={index}>
-          <div className={classes.row_form}>
-            <div className={`${classes.single_input} input_wrapper`}>
+        <div className={classes.taxonomies_row_container} key={index}>
+          <div className="single_row_form">
+            <div className={`single_input input_wrapper`}>
               <label className="form_label" data-required={'required'}>
                 Label
               </label>
@@ -84,7 +84,7 @@ const TaxonomiesRow = (): JSX.Element => {
                 onBlur={(event) => onBlurTaxonomyHandler(event, index)}
               />
             </div>
-            <div className={`${classes.single_input} input_wrapper`}>
+            <div className={`single_input input_wrapper`}>
               <CustomSelectSingle
                 id="parent"
                 name="parent"

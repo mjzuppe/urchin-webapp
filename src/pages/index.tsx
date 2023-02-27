@@ -19,7 +19,8 @@ import EntriesList from '../components/entriesList';
 import TaxonomiesList from '../components/taxonomiesList';
 import StaticHomePage from '../components/staticHomePage';
 import QuickUpload from '../components/quickUpload';
-import CreateEditTaxonomies from '../components/createaxonomies';
+import TaxonomiesEditor from '../components/taxonomiesEditor';
+import TemplatesEditor from '../components/templatesEditor';
 
 const Home: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -38,9 +39,9 @@ const Home: NextPage = (): JSX.Element => {
       <Head>
         <title>Playa - WebApp</title>
       </Head>
-      {/* Wallet not connected */}
+
       {!connected && <StaticHomePage />}
-      {/* Wallet connected */}
+
       {connected && currentProcess === 'default' && (
         <>
           <Subnav />
@@ -50,9 +51,10 @@ const Home: NextPage = (): JSX.Element => {
         </>
       )}
       {connected && currentProcess === 'quickUpload' && <QuickUpload />}
-      {connected && currentProcess === 'createTaxonomies' && (
-        <CreateEditTaxonomies />
+      {connected && currentProcess === 'taxonomiesEditor' && (
+        <TaxonomiesEditor />
       )}
+      {connected && currentProcess === 'templatesEditor' && <TemplatesEditor />}
     </>
   );
 };

@@ -6,6 +6,10 @@ import classes from './TemplatesList.module.scss';
 // utils
 import paginate from '../../utils/paginate';
 import { PAGE_SIZE as pageSize } from '../../utils/constants';
+import { useAppDispatch } from '../../utils/useAppDispatch';
+
+// Redux
+import { setCurrentProcess } from '../../redux/slices/process';
 
 // Components
 import OrangeButton from '../shared/orangeButton';
@@ -37,11 +41,16 @@ const mockdata = [
 ];
 
 const TemplatesList = () => {
+  const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const paginatedData = paginate(mockdata, currentPage, pageSize);
 
   const onPageChange = (page: number) => {
     setCurrentPage(page);
+  };
+
+  const templatesEditorHandler = () => {
+    dispatch(setCurrentProcess('templatesEditor'));
   };
 
   return (
@@ -51,7 +60,7 @@ const TemplatesList = () => {
         <OrangeButton
           btnText={'Create New'}
           type={'button'}
-          callBack={() => console.log('Create New')}
+          callBack={templatesEditorHandler}
         />
         <OrangeButton
           btnText={'Import'}
