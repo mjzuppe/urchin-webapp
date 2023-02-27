@@ -4,7 +4,7 @@ interface SingleOptionProps {
   info: any;
 }
 
-const SingleOption = ({ info }) => {
+const SingleOption = ({ info }: SingleOptionProps) => {
   return (
     <div className={classes.SingleOption}>
       <div className={classes.text_wrapper}>
