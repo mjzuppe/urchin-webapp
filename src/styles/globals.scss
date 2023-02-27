@@ -1,0 +1,93 @@
+/*[Imports]*/
+@import './reset';
+@import './variables';
+@import './mediaQueries';
+
+// for spacing and sizing consistency across the app we use rem (e.g. 1rem = 16px)
+body {
+  background-color: $background;
+  color: $white;
+  font-size: 1rem;
+}
+
+main {
+  padding: 0rem 3rem;
+  @include breakpoint-max(phoneMax) {
+    padding: 0rem 1.5rem;
+  }
+}
+
+.orange_link {
+  color: $orange;
+  text-decoration: underline;
+  font-size: 1rem;
+  @include breakpoint-max(phoneMax) {
+    font-size: 0.8rem;
+  }
+}
+
+.blue_white_link {
+  color: #dae3ea;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.filler {
+  flex: 1;
+}
+
+.muted_text_small {
+  font-size: 0.8rem;
+  color: rgba($white, 0.6);
+}
+
+//  FORMS GLOBALS
+// .form {
+
+// }
+
+.input_wrapper {
+  margin-bottom: 2rem;
+}
+
+.form_label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.form_input {
+  font-size: 1rem;
+  background: $dark-grey;
+  border-radius: $radius-s;
+  border: none;
+  padding: 0.5rem 1rem;
+  height: 2.5rem;
+  width: 100%;
+  color: $white;
+  &:focus {
+    outline: 1px solid $orange;
+  }
+  &::placeholder {
+    color: rgba($white, 0.6);
+    font-size: 0.9rem;
+  }
+}
+.form_textarea {
+  font-size: 1rem;
+  background: $dark-grey;
+  border-radius: $radius-s;
+  border: none;
+  padding: 0.5rem 1rem;
+  min-height: 150px;
+  width: 100%;
+  color: $white;
+  resize: none;
+  &:focus {
+    outline: 1px solid $orange;
+  }
+  &::placeholder {
+    color: rgba($white, 0.6);
+    font-size: 0.9rem;
+  }
+}

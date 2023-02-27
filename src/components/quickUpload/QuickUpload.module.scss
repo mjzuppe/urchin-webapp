@@ -1,0 +1,129 @@
+@import 'src/styles/variables';
+@import 'src/styles/mediaQueries';
+
+.quickUpload_content_top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  h3 {
+    font-size: 1.5rem;
+  }
+  @include breakpoint-max(phoneMax) {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    .save_btn {
+      margin-top: 1rem;
+      width: 100%;
+    }
+  }
+}
+
+.quickUpload_content {
+  max-width: 900px;
+  @include breakpoint-max(phoneMax) {
+    max-width: 100%;
+    padding-bottom: 2rem;
+  }
+}
+
+.upload_section {
+  display: flex;
+  align-items: flex-end;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  @include breakpoint-max(phoneMax) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.upload_section_left {
+  width: fit-content;
+  @include breakpoint-max(tabletMax) {
+    width: 600px;
+  }
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+  }
+}
+.upload_section_right {
+  width: 490px;
+  height: 200px;
+  overflow: auto;
+  // To have scrollbar outside div
+  padding-right: 10px;
+  /* scrollbar width */
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: rgba($white, 0.4);
+  }
+  @include breakpoint-max(phoneMax) {
+    padding-right: 0;
+    height: 100%;
+  }
+  @include breakpoint-max(tabletMax) {
+    width: 100%;
+  }
+}
+
+.drop_area {
+  cursor: pointer;
+  position: relative;
+  background: $dark-grey;
+  width: 450px;
+  height: 200px;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 15px;
+  border: 2px dashed rgba($white, 0.5);
+  overflow: hidden;
+
+  @include breakpoint-max(tabletMax) {
+    width: 350px;
+  }
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+  }
+}
+
+.uploaded_file {
+  height: 50px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: rgba($dark-grey, 0.5);
+  border-radius: $radius-s;
+  padding: 0 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.file_name {
+  color: $white;
+  font-size: 0.8rem;
+  font-weight: 500;
+  width: 300px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.remove_file_link {
+  font-size: 0.8rem;
+}
+
+.no_files_text {
+  font-size: 1.1rem;
+  color: rgba($white, 0.6);
+  margin: 5rem auto;
+  width: fit-content;
+}

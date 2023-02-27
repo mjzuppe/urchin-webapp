@@ -1,0 +1,10 @@
+@import 'src/styles/variables';
+@import 'src/styles/mediaQueries';
+
+.backButton {
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+  @include breakpoint-max(phoneMax) {
+    margin-bottom: 1rem;
+  }
+}

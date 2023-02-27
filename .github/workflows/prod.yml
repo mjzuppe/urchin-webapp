@@ -1,0 +1,13 @@
+# name: Prod deployment
+# on:
+#   push:
+#     branches:
+#       - main
+# jobs:
+#   Explore-GitHub-Actions:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - run: echo "🎉 Start prod deployment"
+#       - run: mkdir ~/.ssh && echo "${{ secrets.SSH_PROD_PRIVATE_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+#       - run: ssh -o StrictHostKeyChecking=no playa@54.163.51.26 ". ./playa.co/.deploy/prod.sh"
+#     - run: echo "🍏 This prod deployment job's status is ${{ job.status }}."

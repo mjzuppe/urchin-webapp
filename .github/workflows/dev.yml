@@ -1,0 +1,13 @@
+name: Dev deployment
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 Start dev deployment"
+      - run: mkdir ~/.ssh && echo "${{ secrets.SSH_DEV_PRIVATE_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+      - run: ssh -o StrictHostKeyChecking=no playa@54.163.51.26 ". ./dev.playa.co/.deploy/dev.sh"
+      - run: echo "🍏 This dev deployment job's status is ${{ job.status }}."
