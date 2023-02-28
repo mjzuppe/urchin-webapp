@@ -4,16 +4,14 @@ import { useState } from 'react';
 import classes from './TemplatesEditor.module.scss';
 
 // Libs
+
 //  Utils
 import { useAppDispatch } from '../../utils/useAppDispatch';
 import { useAppSelector } from '../../utils/useAppSelector';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
-import {
-  addNewTemplate,
-  setTemplatesEditorActiveTab,
-} from '../../redux/slices/templates';
+import { setTemplatesEditorActiveTab } from '../../redux/slices/templates';
 
 // Components
 import BackButton from '../shared/backButton';
@@ -27,11 +25,8 @@ const TemplatesEditor = (): JSX.Element => {
     (state: any) => state.templates.templatesEditorActiveTab
   );
   const [active, setActive] = useState(templatesEditorActiveTab || tabs[0]);
-  // const templates = useAppSelector((state) => state.templates.templates);
-  // const initialTaxonomiesCount = templates.length;
-  // const [taxonomiesCount, setTaxonomiesCount] = useState<number>(
-  //   initialTaxonomiesCount
-  // );
+  const templates = useAppSelector((state) => state.templates.templates);
+  console.log('templates', templates);
 
   // Handlers
   const handleBackClick = () => {
@@ -45,11 +40,16 @@ const TemplatesEditor = (): JSX.Element => {
     };
   };
 
+  const handleSaveClick = () => {
+    console.log('handleSaveClick');
+    // save template
+  };
+
   return (
     <section className={classes.templates_editor_section}>
       <BackButton onClickHandler={handleBackClick} />
       {/* Breadcrumbs section */}
-      <div className={classes.breadcrumbs_section}>
+      <div className="breadcrumbs_section">
         <p>Templates &gt; Blog Post</p>
       </div>
       <div className="editors_action_btn_wrapper">
@@ -59,8 +59,8 @@ const TemplatesEditor = (): JSX.Element => {
           btnText={'Save'}
           type="submit"
           // TODO: change callback when available (add template in templates array from redux)
-          callBack={() => console.log('save')}
-          className={classes.save_btn}
+          callBack={handleSaveClick}
+          className="save_btn"
         />
       </div>
       {/*  Templates Editor Nav */}

@@ -39,7 +39,7 @@ const TaxonomiesEditor = (): JSX.Element => {
     <section className={classes.taxonomies_editor_section}>
       <BackButton onClickHandler={handleBackClick} />
       {/* Breadcrumbs section */}
-      <div className={classes.breadcrumbs_section}>
+      <div className="breadcrumbs_section">
         <p>Taxonomies &gt; Categories</p>
       </div>
       <div className="editors_action_btn_wrapper">
@@ -50,7 +50,7 @@ const TaxonomiesEditor = (): JSX.Element => {
           type="submit"
           // TODO: change callback when available
           callBack={() => console.log('save')}
-          className={classes.save_btn}
+          className="save_btn"
         />
       </div>
       {/* Taxonomies form */}

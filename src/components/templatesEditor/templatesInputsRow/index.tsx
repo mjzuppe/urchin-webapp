@@ -1,39 +1,37 @@
 // Styles
 import classes from './TemplatesInputsRow.module.scss';
-import { useState } from 'react';
 
 // Types
-import { TemplatesInputs } from '../../../types/TemplatesInputs';
+import { Templates, TemplatesInputs } from '../../../types/Templates';
 
 // Utils
 import { useAppDispatch } from '../../../utils/useAppDispatch';
 import { useAppSelector } from '../../../utils/useAppSelector';
 
 // redux
-import { deleteTemplate } from '../../../redux/slices/templates';
+import {
+  addNewTemplateInput,
+  deleteTemplateInput,
+} from '../../../redux/slices/templates';
 
 // Components
 import Separator from '../../shared/separator';
 import { CustomSelectSingle } from '../../shared/customSelectSingle';
 import { CustomCheckBox } from '../../shared/customCheckBox';
 
-const TemplatesInputsRow = (): JSX.Element => {
-  const dispatch = useAppDispatch();
-  // const templates = useAppSelector((state) => state.templates.templates);
-  // console.log('templates', templates);
-  const [templateInputs, setTemplateInputs] = useState<TemplatesInputs>([
-    {
-      label: '',
-      type: 'text',
-      validateInputs: false,
-    },
-  ]);
-  console.log('templateInputs', templateInputs);
+interface TemplatesInputsRowProps {
+  templateInputs: TemplatesInputs;
+  setTemplateInputs: React.Dispatch<React.SetStateAction<TemplatesInputs>>;
+  // currentTemplate: Templates;
+}
 
-  const removeRowHandler = (index: number) => {
-    if (templateInputs.length <= 1) return;
-    dispatch(deleteTemplate({ templateIndex: index }));
-  };
+const TemplatesInputsRow = ({
+  templateInputs,
+  setTemplateInputs,
+}: // currentTemplate,
+TemplatesInputsRowProps): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const templates = useAppSelector((state) => state.templates.templates);
 
   const onChangeTemplateInputHandler = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -44,8 +42,8 @@ const TemplatesInputsRow = (): JSX.Element => {
       [name]: value,
       index,
     };
-    console.log('newTemplateInput', newTemplateInput);
-
+    // change only the correct index
+    console.log('name', name);
     if (name === 'validateInputs') {
       setTemplateInputs((prevState) => {
         const newState = [...prevState];
@@ -60,6 +58,38 @@ const TemplatesInputsRow = (): JSX.Element => {
       newState[index] = { ...newState[index], ...newTemplateInput };
       return newState;
     });
+
+    dispatch(
+      addNewTemplateInput({
+        templateIndex: templates.length - 1,
+        input: templateInputs,
+      })
+    );
+  };
+
+  const onBlurTaxonomyHandler = () => {
+    dispatch(
+      addNewTemplateInput({
+        templateIndex: templates.length - 1,
+        input: templateInputs,
+      })
+    );
+  };
+
+  const removeRowHandler = (index: number) => {
+    if (templateInputs.length <= 1) return;
+    setTemplateInputs((prevState) => {
+      const newState = [...prevState];
+      newState.splice(index, 1);
+      return newState;
+    });
+
+    dispatch(
+      deleteTemplateInput({
+        templateIndex: templates.length - 1,
+        inputIndex: index,
+      })
+    );
   };
 
   return (
@@ -80,7 +110,7 @@ const TemplatesInputsRow = (): JSX.Element => {
                 value={templateInput.label || ''}
                 maxLength={24}
                 onChange={(event) => onChangeTemplateInputHandler(event, index)}
-                // onBlur={(event) => onBlurTaxonomyHandler(event, index)}
+                onBlur={onBlurTaxonomyHandler}
               />
             </div>
             <div className={`single_input input_wrapper`}>
@@ -100,6 +130,7 @@ const TemplatesInputsRow = (): JSX.Element => {
                 onChange={(event: any) =>
                   onChangeTemplateInputHandler(event, index)
                 }
+                onBlur={onBlurTaxonomyHandler}
                 value={templateInput.type}
                 className={`${classes.genres_container}`}
                 placeholder={'No parent Selected'}
@@ -118,28 +149,33 @@ const TemplatesInputsRow = (): JSX.Element => {
                   placeholder="Enter the select options"
                   className="form_input"
                   value={templateInput.options || ''}
-                  maxLength={24}
                   onChange={(event) =>
                     onChangeTemplateInputHandler(event, index)
                   }
-                  // onBlur={(event) => onBlurTaxonomyHandler(event, index)}
+                  onBlur={onBlurTaxonomyHandler}
                 />
               </div>
             )}
             {/* validate Inputs */}
-            <div className={`input_wrapper checkBox_input`}>
-              <CustomCheckBox
-                name={'validateInputs'}
-                id={'validateInputs'}
-                label={'Validate Inputs'}
-                onChange={(event: any) =>
-                  onChangeTemplateInputHandler(event, index)
-                }
-                checked={Boolean(templateInput.validateInputs)}
-              />
-            </div>
+            {(templateInput.type === 'text' ||
+              templateInput.type === 'textarea') && (
+              <div
+                className={`input_wrapper checkBox_input ${classes.checkbox}`}
+              >
+                <CustomCheckBox
+                  name={'validateInputs'}
+                  id={`validateInputs-${index}`}
+                  label={'Validate Inputs'}
+                  onChange={(event: any) =>
+                    onChangeTemplateInputHandler(event, index)
+                  }
+                  checked={Boolean(templateInput.validateInputs)}
+                  onBlur={onBlurTaxonomyHandler}
+                />
+              </div>
+            )}
             {/* Min/maxlength */}
-            {templateInput.validateInputs && templateInput.type === 'text' && (
+            {templateInput.validateInputs && (
               <>
                 <div className={`number_input input_wrapper`}>
                   <label className="form_label">Min Length</label>
@@ -153,7 +189,7 @@ const TemplatesInputsRow = (): JSX.Element => {
                       onChangeTemplateInputHandler(event, index)
                     }
                     min={0}
-                    // onBlur={(event) => onBlurTaxonomyHandler(event, index)}
+                    onBlur={onBlurTaxonomyHandler}
                   />
                 </div>
                 <div className={`number_input input_wrapper`}>
@@ -168,7 +204,7 @@ const TemplatesInputsRow = (): JSX.Element => {
                       onChangeTemplateInputHandler(event, index)
                     }
                     min={0}
-                    // onBlur={(event) => onBlurTaxonomyHandler(event, index)}
+                    onBlur={onBlurTaxonomyHandler}
                   />
                 </div>
               </>
@@ -176,14 +212,12 @@ const TemplatesInputsRow = (): JSX.Element => {
 
             <span className="filler"></span>
             <div className={classes.action_btn_wrapper}>
-              {index >= 1 && (
-                <button
-                  className={`${classes.btn_text} blue_white_link`}
-                  onClick={() => removeRowHandler(index)}
-                >
-                  Remove
-                </button>
-              )}
+              <button
+                className={`${classes.btn_text} blue_white_link`}
+                onClick={() => removeRowHandler(index)}
+              >
+                Remove
+              </button>
             </div>
           </div>
           <Separator />

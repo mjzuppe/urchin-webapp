@@ -8,35 +8,58 @@ import { useAppDispatch } from '../../../utils/useAppDispatch';
 import { useAppSelector } from '../../../utils/useAppSelector';
 
 // redux
-import {
-  addNewTemplate,
-  deleteTemplate,
-} from '../../../redux/slices/templates';
+
+// Types
+import { TemplatesInputs } from '../../../types/Templates';
 
 // Components
-import Separator from '../../shared/separator';
 import OrangeButton from '../../shared/orangeButton';
 import TemplatesInputsRow from '../templatesInputsRow';
 
 const TemplatesInputsList = (): JSX.Element => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
 
-  const template = useAppSelector((state) => state.templates.templates);
+  const templates = useAppSelector((state) => state.templates.templates);
+  const currentTemplate = templates[templates.length - 1];
+  console.log('currentTemplate', currentTemplate);
+  const [templateInputs, setTemplateInputs] = useState<TemplatesInputs>(
+    currentTemplate.inputs.length > 0
+      ? currentTemplate.inputs
+      : [
+          {
+            label: '',
+            type: 'text',
+            validateInputs: false,
+          },
+        ]
+  );
 
-  const initialTemplateInputsCount = template.length;
+  const initialTemplateInputsCount = templateInputs.length;
   const [templateInputsCount, setTemplateInputsCount] = useState<number>(
     initialTemplateInputsCount
   );
 
   const addRowHandler = () => {
-    dispatch(addNewTemplate({ label: null, parent: null }));
+    setTemplateInputs((prevState) => {
+      const newState = [...prevState];
+      newState.push({
+        label: '',
+        type: 'text',
+        validateInputs: false,
+      });
+      return newState;
+    });
     setTemplateInputsCount(templateInputsCount + 1);
   };
 
   return (
     <section className={classes.templates_inputs_list}>
       <div className={classes.templates_inputs_form}>
-        <TemplatesInputsRow />
+        <TemplatesInputsRow
+          templateInputs={templateInputs}
+          setTemplateInputs={setTemplateInputs}
+          // currentTemplate={currentTemplate}
+        />
       </div>
       <div className="create_btn_wrapper">
         <OrangeButton

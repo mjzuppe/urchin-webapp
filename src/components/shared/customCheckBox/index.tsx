@@ -8,7 +8,7 @@ interface CustomCheckBoxProps {
   className?: string;
   name: string;
   label?: string;
-  id: string;
+  id?: string;
   isRequired: boolean;
   onChange?: ChangeEventHandler;
   onBlur?: FocusEventHandler<HTMLInputElement>;
@@ -19,7 +19,7 @@ export const CustomCheckBox = (props: CustomCheckBoxProps) => {
   return (
     <div className={`${props.className} ${CustomCheckBoxStyles.wrapper}`}>
       <label
-        htmlFor={props.name}
+        htmlFor={props.id}
         className={CustomCheckBoxStyles.label}
         data-required={props.isRequired && 'required'}
       >

@@ -12,7 +12,7 @@ import Image from 'next/image';
 
 interface CustomSelectSingleProps {
   onChange?: any;
-  // onBlur?: any;
+  onBlur?: any;
   className?: string;
   name: string;
   label?: string;
@@ -31,7 +31,7 @@ interface CustomSelectSingleProps {
 
 export const CustomSelectSingle = ({
   onChange,
-  // onBlur,
+  onBlur,
   className,
   name,
   label,
@@ -57,14 +57,14 @@ export const CustomSelectSingle = ({
     onChange(event);
   };
 
-  // const handleBlur = () => {
-  //   const event = {
-  //     target: {
-  //       name,
-  //       value: selectedState,
-  //     },
-  //   };
-  // };
+  const handleBlur = () => {
+    const event = {
+      target: {
+        name,
+        value: selectedState,
+      },
+    };
+  };
 
   return (
     <div className={`${className} ${classes.wrapper}`}>
@@ -76,7 +76,7 @@ export const CustomSelectSingle = ({
         {label}
       </label>
 
-      <div tabIndex={0}>
+      <div tabIndex={0} onBlur={handleBlur}>
         <Multiselect
           singleSelect
           id={id}

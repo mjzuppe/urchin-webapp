@@ -6,6 +6,9 @@
   align-items: center;
   justify-content: space-between;
   padding-bottom: 2rem;
+  @include breakpoint-max(phoneMax) {
+    padding-bottom: 0;
+  }
 
   ul {
     display: flex;
@@ -22,7 +25,7 @@
       font-size: 1.2rem;
       cursor: pointer;
       @include breakpoint-max(phoneMax) {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
       }
     }
   }

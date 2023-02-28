@@ -41,6 +41,14 @@ main {
   color: rgba($white, 0.6);
 }
 
+// Breadcrumbs
+.breadcrumbs_section {
+  @include breakpoint-max(phoneMax) {
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+  }
+}
+
 //  FORMS GLOBALS
 .input_wrapper {
   margin-bottom: 2rem;
@@ -103,7 +111,7 @@ main {
   width: 100%;
   display: flex;
   margin-top: 2rem;
-  align-items: flex-end;
+  align-items: center;
   gap: 2rem;
   @include breakpoint-max(phoneMax) {
     display: revert;
@@ -119,39 +127,24 @@ main {
 }
 
 .number_input {
-  width: 180px;
+  width: 150px;
   appearance: textfield;
   @include breakpoint-max(phoneMax) {
     width: 100%;
   }
 }
 
-// input[type='number']::-webkit-outer-spin-button,
-// input[type='number']::-webkit-inner-spin-button {
-//   -webkit-appearance: none;
-//   background: red;
-//   color: red;
-//   width: 1em;
-//   position: absolute;
-//   top: 0;
-//   right: 0;
-//   bottom: 0;
-// }
-// input[type='number']::-webkit-inner-spin-button:hover,
-// input[type='number']::-webkit-inner-spin-button:active {
-//   box-shadow: 0 0 2px #0cf;
-//   opacity: 0.8;
-// }
-// input[type='number'] {
-//   -webkit-appearance: textfield;
-//   -moz-appearance: textfield;
-//   appearance: textfield;
-// }
-
-// input[type='number']::-webkit-inner-spin-button,
-// input[type='number']::-webkit-outer-spin-button {
-//   -webkit-appearance: none;
-// }
+.number_input input::-webkit-outer-spin-button,
+.number_input input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  background: no-repeat center url('../../public/assets/chevron-up-down.svg');
+  width: 2em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 1;
+}
 
 .checkBox_input {
   width: 170px;
@@ -166,7 +159,6 @@ main {
     align-items: flex-start;
     margin-bottom: 1rem;
     .save_btn {
-      margin-top: 1rem;
       width: 100%;
     }
   }
