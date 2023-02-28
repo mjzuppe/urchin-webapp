@@ -113,7 +113,7 @@ main {
   margin-top: 2rem;
   align-items: center;
   gap: 2rem;
-  @include breakpoint-max(phoneMax) {
+  @include breakpoint-max(tabletMax) {
     display: revert;
     margin-bottom: 1rem;
   }
@@ -166,6 +166,9 @@ main {
 
 .create_btn_wrapper {
   text-align: center;
+  @include breakpoint-max(phoneMax) {
+    padding-bottom: 1rem;
+  }
 }
 
 #create_btn {
