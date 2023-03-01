@@ -8,6 +8,7 @@ import { useAppSelector } from '../../../utils/useAppSelector';
 // redux
 import {
   deleteTaxonomy,
+  updateTaxonomyGrandParent,
   updateTaxonomyLabel,
   updateTaxonomyParent,
 } from '../../../redux/slices/taxonomies';
@@ -21,6 +22,16 @@ const TaxonomiesRow = (): JSX.Element => {
 
   const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
 
+  const findParent = (parent: any) => {
+    const parentIndex = taxonomies.findIndex(
+      (taxonomy) => taxonomy.label.toLowerCase() === parent
+    );
+    if (parentIndex !== -1) {
+      return taxonomies[parentIndex].parent;
+    }
+    return '';
+  };
+
   const onChangeTaxonomyHandler = (
     event: React.ChangeEvent<HTMLInputElement>,
     index: number
@@ -29,14 +40,16 @@ const TaxonomiesRow = (): JSX.Element => {
 
     const newTaxonomy = {
       [name]: value.trimStart(),
+      grandparent: '',
       index,
     };
-
     if (newTaxonomy.hasOwnProperty('label')) {
       dispatch(updateTaxonomyLabel(newTaxonomy));
     }
     if (newTaxonomy.hasOwnProperty('parent')) {
       dispatch(updateTaxonomyParent(newTaxonomy));
+      const grandParent = findParent(newTaxonomy.parent);
+      dispatch(updateTaxonomyGrandParent({ grandParent, index }));
     }
   };
 
@@ -92,16 +105,12 @@ const TaxonomiesRow = (): JSX.Element => {
                 isRequired
                 displayValue="label"
                 optionsList={[
-                  {
-                    value: '',
-                    label: 'No Parent',
-                  },
-                  { value: 'parent1', label: 'Parent 1' },
-                  { value: 'Parent2', label: 'Parent 2' },
-                  { value: 'parent3', label: 'Parent 3' },
-                  { value: 'Parent4', label: 'Parent 4' },
+                  { value: 'music', label: 'Music' },
+                  { value: 'rock', label: 'rock' },
                 ]}
-                onChange={(event: any) => onChangeTaxonomyHandler(event, index)}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  onChangeTaxonomyHandler(event, index)
+                }
                 value={taxonomie.parent}
                 className={`${classes.genres_container}`}
                 placeholder={'No parent Selected'}

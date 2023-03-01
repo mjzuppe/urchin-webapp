@@ -13,9 +13,9 @@ let id = uuidv4();
 const initialState: TemplatesState = {
   templates: [
     {
+      id: id,
       inputs: [],
       taxonomies: [],
-      id: id,
     },
   ],
   templatesEditorActiveTab: 'Inputs',
@@ -43,6 +43,10 @@ const slice = createSlice({
       const { templateIndex, inputIndex } = payload;
       state.templates[templateIndex].inputs.splice(inputIndex, 1);
     },
+    addNewTemplateTaxonomy: (state, { payload }: PayloadAction<any>) => {
+      const { templateIndex, taxonomy } = payload;
+      state.templates[templateIndex].taxonomies = taxonomy;
+    },
   },
 });
 
@@ -52,6 +56,7 @@ export const {
   setTemplatesEditorActiveTab,
   addNewTemplateInput,
   deleteTemplateInput,
+  addNewTemplateTaxonomy,
 } = slice.actions;
 
 // Reducer

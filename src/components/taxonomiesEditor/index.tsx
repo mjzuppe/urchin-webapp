@@ -31,7 +31,7 @@ const TaxonomiesEditor = (): JSX.Element => {
   };
 
   const addRowHandler = () => {
-    dispatch(addNewTaxonomy({ label: null, parent: null }));
+    dispatch(addNewTaxonomy({ label: '', parent: '', grandParent: '' }));
     setTaxonomiesCount(taxonomiesCount + 1);
   };
 

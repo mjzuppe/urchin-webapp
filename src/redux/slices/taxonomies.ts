@@ -1,11 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Taxonomy } from '../../types/Taxonomies';
 
 interface TaxonomiesState {
-  taxonomies: Array<Taxonomies>;
-}
-interface Taxonomies {
-  label: string;
-  parent: string;
+  taxonomies: Array<Taxonomy>;
 }
 
 // Define the initial state using that type
@@ -14,6 +11,7 @@ const initialState: TaxonomiesState = {
     {
       label: '',
       parent: '',
+      grandParent: '',
     },
   ],
 };
@@ -29,13 +27,17 @@ const slice = createSlice({
       const { taxonomieIndex } = payload;
       state.taxonomies.splice(taxonomieIndex, 1);
     },
-    updateTaxonomyLabel: (state, { payload }) => {
+    updateTaxonomyLabel: (state, { payload }: PayloadAction<any>) => {
       const { label, index } = payload;
       state.taxonomies[index].label = label;
     },
-    updateTaxonomyParent: (state, { payload }) => {
+    updateTaxonomyParent: (state, { payload }: PayloadAction<any>) => {
       const { parent, index } = payload;
       state.taxonomies[index].parent = parent;
+    },
+    updateTaxonomyGrandParent: (state, { payload }: PayloadAction<any>) => {
+      const { grandParent, index } = payload;
+      state.taxonomies[index].grandParent = grandParent;
     },
   },
 });
@@ -45,6 +47,7 @@ export const {
   deleteTaxonomy,
   updateTaxonomyLabel,
   updateTaxonomyParent,
+  updateTaxonomyGrandParent,
 } = slice.actions;
 
 // Reducer

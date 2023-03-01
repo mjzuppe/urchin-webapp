@@ -126,6 +126,14 @@ main {
   }
 }
 
+.multi_select {
+  width: 500px;
+
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+  }
+}
+
 .number_input {
   width: 150px;
   appearance: textfield;

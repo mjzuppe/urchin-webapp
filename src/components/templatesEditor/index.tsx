@@ -17,6 +17,7 @@ import { setTemplatesEditorActiveTab } from '../../redux/slices/templates';
 import BackButton from '../shared/backButton';
 import OrangeButton from '../shared/orangeButton';
 import TemplatesInputsList from './templatesInputsList';
+import TemplatesTaxonomies from './templatesTaxonomies';
 
 const TemplatesEditor = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -78,7 +79,7 @@ const TemplatesEditor = (): JSX.Element => {
         </ul>
       </nav>
       {templatesEditorActiveTab === 'Inputs' && <TemplatesInputsList />}
-      {/* {templatesEditorActiveTab === 'Taxonomies' && <TaxonomiesRow />} */}
+      {templatesEditorActiveTab === 'Taxonomies' && <TemplatesTaxonomies />}
     </section>
   );
 };
