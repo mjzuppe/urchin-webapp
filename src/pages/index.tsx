@@ -21,6 +21,7 @@ import StaticHomePage from '../components/staticHomePage';
 import QuickUpload from '../components/quickUpload';
 import TaxonomiesEditor from '../components/taxonomiesEditor';
 import TemplatesEditor from '../components/templatesEditor';
+import EntriesEditor from '../components/entriesEditor';
 
 const Home: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -55,6 +56,7 @@ const Home: NextPage = (): JSX.Element => {
         <TaxonomiesEditor />
       )}
       {connected && currentProcess === 'templatesEditor' && <TemplatesEditor />}
+      {connected && currentProcess === 'entriesEditor' && <EntriesEditor />}
     </>
   );
 };
