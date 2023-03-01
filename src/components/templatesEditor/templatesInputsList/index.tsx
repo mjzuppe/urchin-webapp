@@ -4,10 +4,7 @@ import { useState } from 'react';
 import classes from './TemplatesInputsList.module.scss';
 
 // Utils
-import { useAppDispatch } from '../../../utils/useAppDispatch';
 import { useAppSelector } from '../../../utils/useAppSelector';
-
-// redux
 
 // Types
 import { TemplatesInputs } from '../../../types/Templates';
@@ -17,11 +14,8 @@ import OrangeButton from '../../shared/orangeButton';
 import TemplatesInputsRow from '../templatesInputsRow';
 
 const TemplatesInputsList = (): JSX.Element => {
-  // const dispatch = useAppDispatch();
-
   const templates = useAppSelector((state) => state.templates.templates);
   const currentTemplate = templates[templates.length - 1];
-  console.log('currentTemplate', currentTemplate);
   const [templateInputs, setTemplateInputs] = useState<TemplatesInputs>(
     currentTemplate.inputs.length > 0
       ? currentTemplate.inputs
@@ -58,7 +52,6 @@ const TemplatesInputsList = (): JSX.Element => {
         <TemplatesInputsRow
           templateInputs={templateInputs}
           setTemplateInputs={setTemplateInputs}
-          // currentTemplate={currentTemplate}
         />
       </div>
       <div className="create_btn_wrapper">

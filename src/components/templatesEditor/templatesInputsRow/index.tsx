@@ -22,14 +22,12 @@ import { CustomCheckBox } from '../../shared/customCheckBox';
 interface TemplatesInputsRowProps {
   templateInputs: TemplatesInputs;
   setTemplateInputs: React.Dispatch<React.SetStateAction<TemplatesInputs>>;
-  // currentTemplate: Templates;
 }
 
 const TemplatesInputsRow = ({
   templateInputs,
   setTemplateInputs,
-}: // currentTemplate,
-TemplatesInputsRowProps): JSX.Element => {
+}: TemplatesInputsRowProps): JSX.Element => {
   const dispatch = useAppDispatch();
   const templates = useAppSelector((state) => state.templates.templates);
 
@@ -42,8 +40,7 @@ TemplatesInputsRowProps): JSX.Element => {
       [name]: value,
       index,
     };
-    // change only the correct index
-    console.log('name', name);
+
     if (name === 'validateInputs') {
       setTemplateInputs((prevState) => {
         const newState = [...prevState];

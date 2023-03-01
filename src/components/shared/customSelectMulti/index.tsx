@@ -4,7 +4,7 @@ import Image from 'next/image';
 import classes from './CustomSelectMulti.module.scss';
 
 //hooks
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 
 // Types
 import { Taxonomies } from '../../../types/Taxonomies';
@@ -51,7 +51,7 @@ export const CustomSelectMulti = ({
   const [selectedState, setSelectedState] = useState([]);
   const selectRef = useRef(null);
 
-  const handleSelect = (selectedList: any, selectedItem: any) => {
+  const handleSelect = (selectedList: any) => {
     const event = {
       target: {
         name,
@@ -59,19 +59,8 @@ export const CustomSelectMulti = ({
       },
     };
     setSelectedState(selectedList);
-
     onChange(event);
   };
-
-  // const handleBlur = () => {
-  //   const event = {
-  //     target: {
-  //       name,
-  //       value: selectedState,
-  //     },
-  //   };
-  //   onBlur(event);
-  // };
 
   return (
     <div className={`${className} ${classes.wrapper}`}>
