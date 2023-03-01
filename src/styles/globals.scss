@@ -41,6 +41,14 @@ main {
   color: rgba($white, 0.6);
 }
 
+.empty_list {
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: rgba($white, 0.6);
+  margin-top: 5rem;
+}
+
 // Breadcrumbs
 .breadcrumbs_section {
   @include breakpoint-max(phoneMax) {

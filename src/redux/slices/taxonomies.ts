@@ -8,11 +8,14 @@ interface TaxonomiesState {
 // Define the initial state using that type
 const initialState: TaxonomiesState = {
   taxonomies: [
-    {
-      label: '',
-      parent: '',
-      grandParent: '',
-    },
+    // {
+    //   label: '',
+    //   parent: '',
+    //   grandParent: '',
+    //   updatedAt: 0,
+    //   solanaAddress: 'string',
+    //   arweaveAddress: 'string',
+    // },
   ],
 };
 

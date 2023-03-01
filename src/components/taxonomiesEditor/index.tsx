@@ -31,7 +31,16 @@ const TaxonomiesEditor = (): JSX.Element => {
   };
 
   const addRowHandler = () => {
-    dispatch(addNewTaxonomy({ label: '', parent: '', grandParent: '' }));
+    dispatch(
+      addNewTaxonomy({
+        label: '',
+        parent: '',
+        grandParent: '',
+        updatedAt: Date.now(),
+        solanaAddress: '3SJ...93A',
+        arweaveAddress: '5SX...5AB',
+      })
+    );
     setTaxonomiesCount(taxonomiesCount + 1);
   };
 

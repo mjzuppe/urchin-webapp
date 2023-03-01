@@ -11,6 +11,7 @@ import paginate from '../../utils/paginate';
 import { PAGE_SIZE as pageSize } from '../../utils/constants';
 import { useAppDispatch } from '../../utils/useAppDispatch';
 import { useAppSelector } from '../../utils/useAppSelector';
+
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
 import { addNewTemplate } from '../../redux/slices/templates';
@@ -112,7 +113,7 @@ const TemplatesList = () => {
             );
           })}
         {!paginatedData.length && (
-          <p className={classes.no_templates}>No templates yet</p>
+          <p className="empty_list">No templates yet</p>
         )}
       </div>
       <Pagination

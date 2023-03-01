@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 // Styles
 import classes from './TaxonomiesRow.module.scss';
 
@@ -7,6 +8,7 @@ import { useAppSelector } from '../../../utils/useAppSelector';
 
 // redux
 import {
+  addNewTaxonomy,
   deleteTaxonomy,
   updateTaxonomyGrandParent,
   updateTaxonomyLabel,
@@ -21,6 +23,21 @@ const TaxonomiesRow = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
+  console.log('taxonomies', taxonomies);
+
+  useEffect(() => {
+    taxonomies.length === 0 &&
+      dispatch(
+        addNewTaxonomy({
+          label: '',
+          parent: '',
+          grandParent: '',
+          updatedAt: Date.now(),
+          solanaAddress: '3SJ...93A',
+          arweaveAddress: '5SX...5AB',
+        })
+      );
+  });
 
   const findParent = (parent: any) => {
     const parentIndex = taxonomies.findIndex(

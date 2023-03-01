@@ -18,7 +18,7 @@ interface ListRowProps {
   updatedAt: number;
   solanaAddress: string;
   arweaveAddress?: string;
-  entriesNbr: number;
+  entriesNbr?: number;
 }
 
 const ListRow = ({
@@ -70,7 +70,7 @@ const ListRow = ({
         {activeTab === 'Templates' && (
           <div className={classes.entries_nbr}>
             <p>
-              {entriesNbr} {entriesNbr <= 1 ? 'Entry' : 'Entries'}
+              {entriesNbr} {entriesNbr && entriesNbr <= 1 ? 'Entry' : 'Entries'}
             </p>
           </div>
         )}
