@@ -2,7 +2,7 @@
 import classes from './TemplatesInputsRow.module.scss';
 
 // Types
-import { Templates, TemplatesInputs } from '../../../types/Templates';
+import { TemplatesInputs } from '../../../types/Templates';
 
 // Utils
 import { useAppDispatch } from '../../../utils/useAppDispatch';

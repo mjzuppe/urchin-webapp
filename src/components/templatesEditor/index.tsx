@@ -27,8 +27,6 @@ const TemplatesEditor = (): JSX.Element => {
   );
   const [active, setActive] = useState(templatesEditorActiveTab || tabs[0]);
   const templates = useAppSelector((state) => state.templates.templates);
-  console.log('templates', templates);
-
   // Handlers
   const handleBackClick = () => {
     dispatch(setCurrentProcess('default'));
