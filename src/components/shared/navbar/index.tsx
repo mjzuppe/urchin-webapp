@@ -53,10 +53,10 @@ const Navbar = (): JSX.Element => {
       <div className={classes.flex_left}>
         <Link href="/" className={classes.navbar_links}>
           <Image
-            src="/assets/supermassiv-logo-white.svg"
-            width={isMobile ? 100 : 200}
-            height={isMobile ? 25 : 50}
-            alt="Juice Box logo"
+            src="/assets/urchin-logo.svg"
+            width={isMobile ? 70 : 100}
+            height={isMobile ? 20 : 25}
+            alt="Urchin logo"
             className={classes.logo}
           />
         </Link>

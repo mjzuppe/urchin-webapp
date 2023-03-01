@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 // Styles
 import classes from './TaxonomiesRow.module.scss';
 
@@ -7,7 +8,9 @@ import { useAppSelector } from '../../../utils/useAppSelector';
 
 // redux
 import {
+  addNewTaxonomy,
   deleteTaxonomy,
+  updateTaxonomyGrandParent,
   updateTaxonomyLabel,
   updateTaxonomyParent,
 } from '../../../redux/slices/taxonomies';
@@ -20,6 +23,31 @@ const TaxonomiesRow = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
+  console.log('taxonomies', taxonomies);
+
+  useEffect(() => {
+    taxonomies.length === 0 &&
+      dispatch(
+        addNewTaxonomy({
+          label: '',
+          parent: '',
+          grandParent: '',
+          updatedAt: Date.now(),
+          solanaAddress: '3SJ...93A',
+          arweaveAddress: '5SX...5AB',
+        })
+      );
+  });
+
+  const findParent = (parent: any) => {
+    const parentIndex = taxonomies.findIndex(
+      (taxonomy) => taxonomy.label.toLowerCase() === parent
+    );
+    if (parentIndex !== -1) {
+      return taxonomies[parentIndex].parent;
+    }
+    return '';
+  };
 
   const onChangeTaxonomyHandler = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -29,14 +57,16 @@ const TaxonomiesRow = (): JSX.Element => {
 
     const newTaxonomy = {
       [name]: value.trimStart(),
+      grandparent: '',
       index,
     };
-
     if (newTaxonomy.hasOwnProperty('label')) {
       dispatch(updateTaxonomyLabel(newTaxonomy));
     }
     if (newTaxonomy.hasOwnProperty('parent')) {
       dispatch(updateTaxonomyParent(newTaxonomy));
+      const grandParent = findParent(newTaxonomy.parent);
+      dispatch(updateTaxonomyGrandParent({ grandParent, index }));
     }
   };
 
@@ -66,9 +96,9 @@ const TaxonomiesRow = (): JSX.Element => {
   return (
     <>
       {taxonomies?.map((taxonomie, index) => (
-        <div className={classes.row_container} key={index}>
-          <div className={classes.row_form}>
-            <div className={`${classes.single_input} input_wrapper`}>
+        <div className={classes.taxonomies_row_container} key={index}>
+          <div className="single_row_form">
+            <div className={`single_input input_wrapper`}>
               <label className="form_label" data-required={'required'}>
                 Label
               </label>
@@ -84,7 +114,7 @@ const TaxonomiesRow = (): JSX.Element => {
                 onBlur={(event) => onBlurTaxonomyHandler(event, index)}
               />
             </div>
-            <div className={`${classes.single_input} input_wrapper`}>
+            <div className={`single_input input_wrapper`}>
               <CustomSelectSingle
                 id="parent"
                 name="parent"
@@ -92,16 +122,12 @@ const TaxonomiesRow = (): JSX.Element => {
                 isRequired
                 displayValue="label"
                 optionsList={[
-                  {
-                    value: '',
-                    label: 'No Parent',
-                  },
-                  { value: 'parent1', label: 'Parent 1' },
-                  { value: 'Parent2', label: 'Parent 2' },
-                  { value: 'parent3', label: 'Parent 3' },
-                  { value: 'Parent4', label: 'Parent 4' },
+                  { value: 'music', label: 'Music' },
+                  { value: 'rock', label: 'rock' },
                 ]}
-                onChange={(event: any) => onChangeTaxonomyHandler(event, index)}
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                  onChangeTaxonomyHandler(event, index)
+                }
                 value={taxonomie.parent}
                 className={`${classes.genres_container}`}
                 placeholder={'No parent Selected'}

@@ -1,0 +1,92 @@
+@import 'src/styles/mediaQueries';
+@import 'src/styles/variables';
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+
+  .label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-left: 35px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    &[data-required='required']::after {
+      content: '*';
+      color: $white;
+      padding-left: 5px;
+    }
+
+    @include breakpoint-max(phoneMax) {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      padding-left: 2rem;
+    }
+  }
+
+  .input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 22px;
+    width: 22px;
+    background: $dark-grey;
+    border-radius: $radius-s;
+
+    @include breakpoint-max(phoneMax) {
+      top: 1px;
+      height: 20px;
+      width: 20px;
+    }
+  }
+
+  &:hover input ~ .checkmark {
+    background-color: rgba($orange, 0.4);
+  }
+
+  input:checked ~ .checkmark {
+    background-color: $orange;
+  }
+
+  .checkmark:after {
+    content: '';
+    position: absolute;
+    display: none;
+  }
+
+  input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  /* Style the checkmark/indicator */
+  .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+
+    @include breakpoint-max(phoneMax) {
+      left: 7px;
+      top: 4px;
+    }
+  }
+}

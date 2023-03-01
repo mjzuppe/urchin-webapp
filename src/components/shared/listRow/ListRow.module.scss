@@ -35,6 +35,9 @@
     font-weight: 700;
     color: $white;
     margin-bottom: 0.4rem;
+    &::first-letter {
+      text-transform: uppercase;
+    }
   }
 
   p {

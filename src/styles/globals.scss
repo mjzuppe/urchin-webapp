@@ -41,8 +41,23 @@ main {
   color: rgba($white, 0.6);
 }
 
-//  FORMS GLOBALS
+.empty_list {
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: rgba($white, 0.6);
+  margin-top: 5rem;
+}
 
+// Breadcrumbs
+.breadcrumbs_section {
+  @include breakpoint-max(phoneMax) {
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+//  FORMS GLOBALS
 .input_wrapper {
   margin-bottom: 2rem;
 }
@@ -98,4 +113,81 @@ main {
     color: rgba($white, 0.6);
     font-size: 0.9rem;
   }
+}
+
+.single_row_form {
+  width: 100%;
+  display: flex;
+  margin-top: 2rem;
+  align-items: center;
+  gap: 2rem;
+  @include breakpoint-max(tabletMax) {
+    display: revert;
+    margin-bottom: 1rem;
+  }
+}
+
+.single_input {
+  width: 300px;
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+  }
+}
+
+.multi_select {
+  width: 500px;
+
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+  }
+}
+
+.number_input {
+  width: 150px;
+  appearance: textfield;
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+  }
+}
+
+.number_input input::-webkit-outer-spin-button,
+.number_input input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  background: no-repeat center url('../../public/assets/chevron-up-down.svg');
+  width: 2em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 1;
+}
+
+.checkBox_input {
+  width: 170px;
+}
+
+// EDITORS GLOBALS
+.editors_action_btn_wrapper {
+  display: flex;
+  justify-content: flex-end;
+  @include breakpoint-max(phoneMax) {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    .save_btn {
+      width: 100%;
+    }
+  }
+}
+
+.create_btn_wrapper {
+  text-align: center;
+  @include breakpoint-max(phoneMax) {
+    padding-bottom: 1rem;
+  }
+}
+
+#create_btn {
+  width: 320px;
+  margin-top: 3rem;
 }

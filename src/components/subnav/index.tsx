@@ -28,7 +28,7 @@ const Subnav = (): JSX.Element => {
   };
 
   return (
-    <div className={classes.subnav}>
+    <nav className={classes.subnav}>
       <ul>
         {tabs.map((tab) => (
           <li
@@ -49,7 +49,7 @@ const Subnav = (): JSX.Element => {
           Quick Upload
         </button>
       </div>
-    </div>
+    </nav>
   );
 };
 
