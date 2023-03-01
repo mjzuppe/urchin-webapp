@@ -3,11 +3,29 @@ on:
   push:
     branches:
       - dev
+
+env:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
+      - name: slack - GitHub Actions Slack integration
+        uses: act10ns/slack@v2.0.0
+        with:
+          status: starting
+          channel: '#github-actions'
+          message: Starting dev build...
+        if: always()
       - run: echo "🎉 Start dev deployment"
       - run: mkdir ~/.ssh && echo "${{ secrets.SSH_DEV_PRIVATE_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
       - run: ssh -o StrictHostKeyChecking=no playa@54.163.51.26 ". ./dev.playa.co/.deploy/dev.sh"
       - run: echo "🍏 This dev deployment job's status is ${{ job.status }}."
+      - name: slack - GitHub Actions Slack integration
+        uses: act10ns/slack@v2.0.0
+        with:
+          status: ${{ job.status }}
+          channel: '#github-actions'
+          message: Dev build ended!
+        if: always()
