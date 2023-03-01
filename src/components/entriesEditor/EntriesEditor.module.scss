@@ -1,0 +1,20 @@
+@import 'src/styles/variables.scss';
+@import 'src/styles/mediaQueries.scss';
+
+.editor_section {
+  width: 900px;
+  border: 1px solid red;
+  h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+}
+
+.entry_editor_form {
+  margin-bottom: 2rem;
+}
+
+.entry_input_wrapper {
+  margin-bottom: 2rem;
+}

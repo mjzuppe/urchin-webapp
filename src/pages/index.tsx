@@ -57,6 +57,9 @@ const Home: NextPage = (): JSX.Element => {
       )}
       {connected && currentProcess === 'templatesEditor' && <TemplatesEditor />}
       {connected && currentProcess === 'entriesEditor' && <EntriesEditor />}
+      {/* {connected && currentProcess === 'templatesListSelectModal' && (
+        <TemplatesSelectModal />
+      )} */}
     </>
   );
 };

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Entries } from '../../types/Entries';
+import { Entry } from '../../types/Entries';
 
 interface EntriesState {
-  entries: Array<Entries>;
+  entries: Array<Entry>;
 }
 
 const initialState: EntriesState = {
@@ -16,10 +16,19 @@ const slice = createSlice({
     addNewEntry: (state, action: PayloadAction<any>) => {
       state.entries.push(action.payload);
     },
+    updateEntryTitle: (state, { payload }: PayloadAction<any>) => {
+      const { title, index } = payload;
+      state.entries[index].title = title;
+    },
+    updateEntryMetaDescription: (state, { payload }: PayloadAction<any>) => {
+      const { metaDescription, index } = payload;
+      state.entries[index].metaDescription = metaDescription;
+    },
   },
 });
 
-export const { addNewEntry } = slice.actions;
+export const { addNewEntry, updateEntryTitle, updateEntryMetaDescription } =
+  slice.actions;
 
 // Reducer
 export default slice.reducer;

@@ -39,7 +39,6 @@ const TemplatesTaxonomies = (): JSX.Element => {
             optionsList={taxonomies}
             onChange={(event: any) => onChangeTemplatesTaxonomyHandler(event)}
             value={currentTemplate.taxonomies}
-            className={`${classes.genres_container}`}
             placeholder={'Select one or more'}
             showCheckbox={true}
           />

@@ -23,7 +23,6 @@ const TaxonomiesRow = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
   const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
-  console.log('taxonomies', taxonomies);
 
   useEffect(() => {
     taxonomies.length === 0 &&

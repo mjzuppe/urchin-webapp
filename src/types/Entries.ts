@@ -1,13 +1,15 @@
-type Entries = {
+type Entry = {
   id: string;
   updatedAt: number;
   solanaAddress: string;
   arweaveAddress: string;
   title: string;
-  // meta description
+  // metaDescription: string;
   // hero image
   // altText
   // post (rich text)
 };
 
-export type { Entries };
+type Entries = Array<Entry>;
+
+export type { Entry, Entries };

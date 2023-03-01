@@ -6,8 +6,9 @@ import * as Dialog from '@radix-ui/react-dialog';
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden';
 
 const Hourglass = () => {
-  const onEscapeKeyDown = (event: React.KeyboardEvent) =>
+  const onEscapeKeyDown = (event: React.KeyboardEvent) => {
     event.preventDefault();
+  };
 
   return (
     <>
