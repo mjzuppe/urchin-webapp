@@ -13,9 +13,14 @@ type TemplatesTaxonomies = {
 };
 
 type Templates = {
+  id: string;
+  title: string;
+  updatedAt: number;
+  solanaAddress: string;
+  arweaveAddress: string;
+  entriesNbr: number;
   inputs: TemplatesInputs;
   taxonomies?: Array<TemplatesTaxonomies>;
-  id: string;
 };
 
 type TemplatesInputs = TemplateInput[];

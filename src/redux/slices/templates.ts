@@ -12,11 +12,16 @@ let id = uuidv4();
 // Define the initial state using that type
 const initialState: TemplatesState = {
   templates: [
-    {
-      id: id,
-      inputs: [],
-      taxonomies: [],
-    },
+    // {
+    //   id: id,
+    //   title: '',
+    //   updatedAt: '',
+    //   solanaAddress: '',
+    //   arweaveAddress: '',
+    //   entriesNbr: 0,
+    //   inputs: [],
+    //   taxonomies: [],
+    // },
   ],
   templatesEditorActiveTab: 'Inputs',
 };

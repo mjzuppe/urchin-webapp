@@ -8,16 +8,17 @@ import { useAppSelector } from '../../../utils/useAppSelector';
 
 // Utils
 import useWindowSize from '../../../utils/useWindowSize';
+import { getFullDate } from '../../../utils/time';
 
 // Components
 import Separator from '../separator';
 
 interface ListRowProps {
   title: string;
-  updatedAt: string;
+  updatedAt: number;
   solanaAddress: string;
   arweaveAddress?: string;
-  entriesNbr?: number;
+  entriesNbr: number;
 }
 
 const ListRow = ({
@@ -38,7 +39,7 @@ const ListRow = ({
         <div className={classes.mobile_flex}>
           <div className={classes.title}>
             <h3>{title}</h3>
-            <p>Updated {updatedAt}</p>
+            <p>Updated {getFullDate(updatedAt)}</p>
           </div>
           <div className={classes.tablet_flex}>
             <div className={classes.solana}>
@@ -66,10 +67,10 @@ const ListRow = ({
         {(isDesktop || activeTab === 'Entries') && (
           <span className="filler"></span>
         )}
-        {entriesNbr && activeTab === 'Templates' && (
+        {activeTab === 'Templates' && (
           <div className={classes.entries_nbr}>
             <p>
-              {entriesNbr} {entriesNbr <= 1 ? 'entry' : 'entries'}
+              {entriesNbr} {entriesNbr <= 1 ? 'Entry' : 'Entries'}
             </p>
           </div>
         )}
