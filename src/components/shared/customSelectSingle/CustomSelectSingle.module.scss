@@ -95,10 +95,11 @@
     // options list container
     :global(.optionListContainer) {
       margin-top: 0;
-      border-top: 1px solid $blue-white;
+      border: 1px solid $blue-white;
       border-top-left-radius: 0;
       border-top-right-radius: 0;
-
+      box-shadow: rgba($blue-white, 0.05) 0px 6px 24px 0px,
+        rgba($blue-white, 0.1) 0px 0px 0px 1px;
       max-height: 300px;
       overflow-y: auto;
       background: $dark-grey;
