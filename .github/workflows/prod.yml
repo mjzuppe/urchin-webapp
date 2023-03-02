@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+env:
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
