@@ -19,8 +19,8 @@ interface CustomSelectSingleProps {
   id: string;
   isRequired: boolean;
   optionsList: {
-    value: string | number;
-    label: string;
+    value: string | number | undefined;
+    label: string | undefined;
     icon?: string;
   }[];
   value?: string | number;
@@ -51,6 +51,7 @@ export const CustomSelectSingle = ({
       target: {
         name,
         value: selectedItem.value,
+        label: selectedItem.label,
       },
     };
     setSelectedState(selectedItem.value);

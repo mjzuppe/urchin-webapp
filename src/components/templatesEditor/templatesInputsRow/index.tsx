@@ -50,6 +50,16 @@ const TemplatesInputsRow = ({
       return;
     }
 
+    if (name === 'options') {
+      const newOptions = value.split(',').map((option) => option);
+      setTemplateInputs((prevState) => {
+        const newState = [...prevState];
+        newState[index] = { ...newState[index], [name]: newOptions };
+        return newState;
+      });
+      return;
+    }
+
     setTemplateInputs((prevState) => {
       const newState = [...prevState];
       newState[index] = { ...newState[index], ...newTemplateInput };
@@ -60,7 +70,7 @@ const TemplatesInputsRow = ({
       addNewTemplateInput({
         templateIndex: templates.length - 1,
         input: templateInputs,
-      })
+      } as any)
     );
   };
 
@@ -69,7 +79,7 @@ const TemplatesInputsRow = ({
       addNewTemplateInput({
         templateIndex: templates.length - 1,
         input: templateInputs,
-      })
+      } as any)
     );
   };
 

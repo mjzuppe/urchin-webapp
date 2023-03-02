@@ -4,7 +4,7 @@ import { useState } from 'react';
 import classes from './EntriesList.module.scss';
 
 // Libs
-// import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 
 // utils
@@ -14,14 +14,13 @@ import { useAppDispatch } from '../../utils/useAppDispatch';
 import { useAppSelector } from '../../utils/useAppSelector';
 
 // Redux
-// import { setCurrentProcess } from '../../redux/slices/process';
-// import { addNewEntry } from '../../redux/slices/entries';
+import { setCurrentProcess } from '../../redux/slices/process';
+import { addNewEntry } from '../../redux/slices/entries';
 
 // Components
 import OrangeButton from '../shared/orangeButton';
 import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
-// import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { CustomSelectSingle } from '../shared/customSelectSingle';
 
 // TODO: REPLACE WITH REAL DATA
@@ -53,6 +52,11 @@ const EntriesList = () => {
   const templates = useAppSelector((state) => state.templates.templates);
   console.log('templates', templates);
 
+  const [templateSelected, setTemplateSelected] = useState({
+    template: '',
+    templateTitle: '',
+  });
+
   const paginatedData = paginate(entries, currentPage, pageSize);
 
   const onPageChange = (page: number) => {
@@ -66,24 +70,29 @@ const EntriesList = () => {
     };
   });
 
-  // const entriesEditorHandler = () => {
-  //   // Open a modal with Templates list
-  //   dispatch(setCurrentProcess('templatesListSelectModal'));
-
-  //   // dispatch(setCurrentProcess('entriesEditor'));
-  //   // Create new entry
-  //   // const id = uuidv4();
-  //   // dispatch(
-  //   //   addNewEntry({
-  //   //     id,
-  //   //     title: '',
-  //   //     metaDescription: '',
-  //   //     updatedAt: Date.now(),
-  //   //     solanaAddress: '3SJ...93A',
-  //   //     arweaveAddress: '5SX...5AB',
-  //   //   })
-  //   // );
-  // };
+  const onChangeSelectTemplatesHandler = (event: any) => {
+    setTemplateSelected({
+      template: event.target.value,
+      templateTitle: event.target.label,
+    });
+  };
+  const templateSelectorSubmitHandler = () => {
+    dispatch(setCurrentProcess('entriesEditor'));
+    // Create new entry
+    const id = uuidv4();
+    dispatch(
+      addNewEntry({
+        id,
+        // template title
+        title: templateSelected.templateTitle,
+        // template id
+        template: templateSelected.template,
+        updatedAt: Date.now(),
+        solanaAddress: '',
+        arweaveAddress: '',
+      })
+    );
+  };
 
   return (
     <>
@@ -93,12 +102,10 @@ const EntriesList = () => {
           <AlertDialog.Trigger asChild>
             {templates && templates.length > 0 && (
               <div className={classes.actions_buttons}>
-                {/* <OrangeButton
-                  btnText={'Create New'}
-                  type={'button'}
-                  // callBack={entriesEditorHandler}
-                /> */}
-                Launch modal
+                {/* For some reason OrangeButton Component is not working here. To investigate later */}
+                <button className={classes.trigger_button}>
+                  Create New Entry
+                </button>
               </div>
             )}
           </AlertDialog.Trigger>
@@ -108,31 +115,31 @@ const EntriesList = () => {
               <AlertDialog.Title className={classes.AlertDialogTitle}>
                 Choose a template
               </AlertDialog.Title>
-              <AlertDialog.Content
-                className={classes.AlertDialogContent}
-                asChild
-              >
-                {/* Here render select  */}
+
+              <div className={classes.select_wrapper}>
                 <CustomSelectSingle
                   id="template_select"
                   name="template_select"
                   label="Eligible Templates"
                   displayValue="label"
                   optionsList={selectOptionList}
-                  // onChange={(event: any) =>
-                  //   onChangeTemplatesTaxonomyHandler(event)
-                  // }
-                  // value={}
+                  onChange={(event: any) =>
+                    onChangeSelectTemplatesHandler(event)
+                  }
+                  value={templateSelected.template}
                   placeholder={'Select one template'}
                   className={classes.select}
                 />
-              </AlertDialog.Content>
+              </div>
+
               <div className={classes.AlertDialogActions}>
                 <AlertDialog.Action asChild>
                   <div className={classes.submit_btn_container}>
                     <OrangeButton
                       btnText={'Submit'}
                       className={classes.submit_btn}
+                      type={'button'}
+                      callBack={templateSelectorSubmitHandler}
                     />
                   </div>
                 </AlertDialog.Action>
@@ -148,12 +155,12 @@ const EntriesList = () => {
 
         {/* Entries List */}
         <div className={classes.templates_list}>
-          {paginatedData.map((template: any) => {
-            const { title, updatedAt, solanaAddress, arweaveAddress } =
-              template;
+          {paginatedData.map((entry: any) => {
+            const { title, updatedAt, solanaAddress, arweaveAddress } = entry;
             return (
               <ListRow
                 key={updatedAt}
+                // TODO change that
                 title={title}
                 updatedAt={updatedAt}
                 solanaAddress={solanaAddress}
