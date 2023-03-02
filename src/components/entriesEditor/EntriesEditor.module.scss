@@ -3,7 +3,7 @@
 
 .editor_section {
   width: 900px;
-  border: 1px solid red;
+  padding-bottom: 2rem;
   h3 {
     font-size: 1.4rem;
     font-weight: 700;
@@ -17,4 +17,42 @@
 
 .entry_input_wrapper {
   margin-bottom: 2rem;
+}
+
+.upload_section_left {
+  width: fit-content;
+  @include breakpoint-max(tabletMax) {
+    width: 600px;
+  }
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+  }
+}
+
+.drop_area {
+  cursor: pointer;
+  position: relative;
+  background: $dark-grey;
+  width: 320px;
+  height: 200px;
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  row-gap: 15px;
+  border: 2px dashed rgba($white, 0.5);
+  overflow: hidden;
+
+  @include breakpoint-max(tabletMax) {
+    width: 350px;
+  }
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+  }
+}
+
+.wysiwig_editor {
+  width: 100%;
+  min-height: 400px;
 }

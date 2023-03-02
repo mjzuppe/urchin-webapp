@@ -8,6 +8,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 // Styles
 import '../styles/globals.scss';
+import 'react-quill/dist/quill.snow.css';
 
 // Fonts
 import { Inter } from '@next/font/google';
