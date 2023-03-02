@@ -8,7 +8,7 @@ type Entry = {
   title: string;
   taxonomies: Array<Taxonomies>;
   template: string;
-  inputs: Array<string>;
+  inputs: Array<any>;
 };
 
 type Entries = Array<Entry>;

@@ -16,18 +16,18 @@ const slice = createSlice({
     addNewEntry: (state, action: PayloadAction<any>) => {
       state.entries.push(action.payload);
     },
-    updateEntryTitle: (state, { payload }: PayloadAction<any>) => {
-      const { title, index } = payload;
-      state.entries[index].title = title;
+    updateEntryInputs: (state, { payload }: PayloadAction<any>) => {
+      const { entryIndex, inputs } = payload;
+      state.entries[entryIndex].inputs = inputs;
     },
-    updateEntryMetaDescription: (state, { payload }: PayloadAction<any>) => {
-      const { metaDescription, index } = payload;
-      state.entries[index].metaDescription = metaDescription;
+    addEntryTaxonomies: (state, { payload }: PayloadAction<any>) => {
+      const { entryIndex, taxonomies } = payload;
+      state.entries[entryIndex].taxonomies = taxonomies;
     },
   },
 });
 
-export const { addNewEntry, updateEntryTitle, updateEntryMetaDescription } =
+export const { addNewEntry, updateEntryInputs, addEntryTaxonomies } =
   slice.actions;
 
 // Reducer

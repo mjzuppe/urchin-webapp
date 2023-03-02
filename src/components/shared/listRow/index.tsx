@@ -16,6 +16,7 @@ import Separator from '../separator';
 import { setCurrentProcess } from '../../../redux/slices/process';
 
 interface ListRowProps {
+  id?: string;
   title: string;
   updatedAt: number;
   solanaAddress: string;
@@ -24,6 +25,7 @@ interface ListRowProps {
 }
 
 const ListRow = ({
+  id,
   title,
   updatedAt,
   solanaAddress,
@@ -38,12 +40,15 @@ const ListRow = ({
   const onClickEditHandler = () => {
     if (activeTab === 'Entries') {
       dispatch(setCurrentProcess('entriesEditor'));
-    }
-    if (activeTab === 'Taxonomies') {
-      dispatch(setCurrentProcess('taxonomiesEditor'));
+      // Render correct id in editor
+      // dispatch(setEntryId(id!));
     }
     if (activeTab === 'Templates') {
       dispatch(setCurrentProcess('templatesEditor'));
+      // Render correct id in editor
+    }
+    if (activeTab === 'Taxonomies') {
+      dispatch(setCurrentProcess('taxonomiesEditor'));
     }
   };
 

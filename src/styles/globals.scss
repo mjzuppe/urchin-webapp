@@ -197,42 +197,55 @@ main {
 
 //  WISIWYG EDITOR
 // ⚠️ we can't use module to style the editor because it's a third party library
-.ql-container {
-  min-height: 300px;
-}
+// .ql-container {
+//   min-height: 300px;
+//   background: $dark-grey;
+//   border: none !important;
+//   border-radius: $radius-s;
+//   border-top-left-radius: 0;
+//   border-top-right-radius: 0;
+// }
+// .ql-toolbar {
+//   background: $dark-grey;
+//   border: none !important;
+//   border-bottom: 1px solid $black !important;
+//   border-radius: $radius-s;
+//   border-bottom-left-radius: 0;
+//   border-bottom-right-radius: 0;
+// }
 
-.ql-toolbar .ql-stroke {
-  fill: none;
-  stroke: rgba($blue-white, 0.8) !important ;
-}
+// .ql-toolbar .ql-stroke {
+//   fill: none;
+//   stroke: rgba($blue-white, 0.8) !important ;
+// }
 
-.ql-toolbar .ql-fill {
-  fill: rgba($blue-white, 0.8) !important ;
-  stroke: none;
-}
+// .ql-toolbar .ql-fill {
+//   fill: rgba($blue-white, 0.8) !important ;
+//   stroke: none;
+// }
 
-.ql-toolbar .ql-picker {
-  color: rgba($blue-white, 0.8) !important ;
-}
+// .ql-toolbar .ql-picker {
+//   color: rgba($blue-white, 0.8) !important ;
+// }
 
-.ql-snow.ql-toolbar button:hover,
-.ql-snow .ql-toolbar button:hover,
-.ql-snow.ql-toolbar button:focus,
-.ql-snow .ql-toolbar button:focus,
-.ql-snow.ql-toolbar button.ql-active,
-.ql-snow .ql-toolbar button.ql-active,
-.ql-snow.ql-toolbar .ql-picker-label:hover,
-.ql-snow .ql-toolbar .ql-picker-label:hover,
-.ql-snow.ql-toolbar .ql-picker-label.ql-active,
-.ql-snow .ql-toolbar .ql-picker-label.ql-active,
-.ql-snow.ql-toolbar .ql-picker-item:hover,
-.ql-snow .ql-toolbar .ql-picker-item:hover,
-.ql-snow.ql-toolbar .ql-picker-item.ql-selected,
-.ql-snow .ql-toolbar .ql-picker-item.ql-selected {
-  color: $blue-white !important ;
-}
+// .ql-snow.ql-toolbar button:hover,
+// .ql-snow .ql-toolbar button:hover,
+// .ql-snow.ql-toolbar button:focus,
+// .ql-snow .ql-toolbar button:focus,
+// .ql-snow.ql-toolbar button.ql-active,
+// .ql-snow .ql-toolbar button.ql-active,
+// .ql-snow.ql-toolbar .ql-picker-label:hover,
+// .ql-snow .ql-toolbar .ql-picker-label:hover,
+// .ql-snow.ql-toolbar .ql-picker-label.ql-active,
+// .ql-snow .ql-toolbar .ql-picker-label.ql-active,
+// .ql-snow.ql-toolbar .ql-picker-item:hover,
+// .ql-snow .ql-toolbar .ql-picker-item:hover,
+// .ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+// .ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+//   color: $blue-white !important ;
+// }
 
-.ql-picker-options {
-  background-color: $dark-grey !important ;
-  border: 1px solid $blue-white !important ;
-}
+// .ql-picker-options {
+//   background-color: $dark-grey !important ;
+//   border: 1px solid $blue-white !important ;
+// }

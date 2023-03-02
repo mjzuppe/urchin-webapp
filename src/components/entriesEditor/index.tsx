@@ -1,23 +1,28 @@
 import Image from 'next/image';
 import dynamic from 'next/dynamic';
+import { useState } from 'react';
 
 // Styles
 import classes from './EntriesEditor.module.scss';
-
+import '@uiw/react-md-editor/markdown-editor.css';
+import '@uiw/react-markdown-preview/markdown.css';
 //  Utils
 import { useAppDispatch } from '../../utils/useAppDispatch';
 import { useAppSelector } from '../../utils/useAppSelector';
 
 // lib
 import { FileUploader } from 'react-drag-drop-files';
-const QuillNoSSRWrapper = dynamic(import('react-quill'), {
-  ssr: false,
-  loading: () => <p>Loading ...</p>,
-});
+const MDEditor = dynamic(
+  () => import('@uiw/react-md-editor').then((mod) => mod.default),
+  { ssr: false }
+);
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
-import {} from '../../redux/slices/entries';
+import {
+  addEntryTaxonomies,
+  updateEntryInputs,
+} from '../../redux/slices/entries';
 
 // Components
 import BackButton from '../shared/backButton';
@@ -27,22 +32,22 @@ import { CustomSelectSingle } from '../shared/customSelectSingle';
 
 const EntriesEditor = (): JSX.Element => {
   const dispatch = useAppDispatch();
-
   const entries = useAppSelector((state) => state.entries.entries);
+  console.log('entries', entries);
+  // TODO: fix that for Edit
   const currentEntry = entries[entries.length - 1];
   console.log('currentEntry', currentEntry);
-
-  // find template
   const templates = useAppSelector((state) => state.templates.templates);
+
   const entryTemplate = templates.find(
     (template) => template.id === currentEntry.template
   );
-  console.log('entryTemplate Inputs', entryTemplate?.inputs);
-  // console.log('entryTemplate Taxonomies', entryTemplate?.taxonomies);
+  // console.log('entryTemplate', entryTemplate);
 
-  // const currentEntryIndex = entries.findIndex(
-  //   (entry) => entry.id === currentEntry.id
-  // );
+  const [entryInputs, setEntryInputs] = useState<any>(
+    currentEntry.inputs.length !== 0 ? currentEntry.inputs : ''
+  );
+  console.log('entryInputs', entryInputs);
 
   // Handlers
   const handleBackClick = () => {
@@ -53,36 +58,66 @@ const EntriesEditor = (): JSX.Element => {
     console.log('handleSaveClick');
   };
 
-  const onChangeEntryHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    const newEntry = {
-      [name]: value,
-      // index: currentEntryIndex,
-    };
-    console.log('newEntry on change', newEntry);
+  const onChangeEntryTaxonomiesHandler = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const { value } = event.target;
 
-    // if (newEntry.hasOwnProperty('title')) {
-    //   dispatch(updateEntryTitle(newEntry));
-    // }
+    dispatch(
+      addEntryTaxonomies({
+        entryIndex: templates.length - 1,
+        taxonomies: value,
+      })
+    );
   };
 
-  // const onBlurEntryHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = event.target;
-  //   const newEntry = {
-  //     [name]: value,
-  //     // index: currentEntryIndex,
-  //   };
+  const onChangeEntryInputsHandler = (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const { name, value } = event.target;
+    console.log('name', name);
 
-  //   console.log('newEntry on blur', newEntry);
+    const newEntryInput = {
+      [name]: value,
+    };
 
-  //   if (newEntry.hasOwnProperty('title')) {
-  //     dispatch(updateEntryTitle(newEntry));
-  //   }
-  // };
+    // add new entry input into entryInputs array
+    setEntryInputs((prevState: any) => {
+      const newState = [...prevState];
+      newState[0] = { ...newState[0], ...newEntryInput };
+      return newState;
+    });
 
+    console.log('entryInputs on change', entryInputs);
+
+    dispatch(
+      updateEntryInputs({
+        entryIndex: 0,
+        inputs: entryInputs,
+      } as any)
+    );
+  };
+
+  const onBlurEntryHandler = () => {
+    dispatch(
+      updateEntryInputs({
+        entryIndex: 0,
+        inputs: entryInputs,
+      } as any)
+    );
+  };
+  const [file, setFile] = useState(null);
+  let imgSrc;
   const handleFileOnChange = (file: File) => {
+    setFile(file);
     console.log('file', file);
   };
+
+  const [markDownValue, setMarkdownValue] = useState('');
+  console.log('markDownValue', markDownValue);
 
   return (
     <section className={classes.entries_editor_section}>
@@ -111,11 +146,11 @@ const EntriesEditor = (): JSX.Element => {
             <div className={`input_wrapper`}>
               <CustomSelectMulti
                 id="entry_taxonomies"
-                name="entry_taxonomies"
+                name="taxonomies"
                 label="Choose taxonomies"
                 displayValue="label"
                 optionsList={entryTemplate?.taxonomies || []}
-                onChange={(event: any) => onChangeEntryHandler(event)}
+                onChange={(event: any) => onChangeEntryTaxonomiesHandler(event)}
                 value={currentEntry.taxonomies}
                 placeholder={'Select one or more'}
                 selectionLimit={3}
@@ -124,31 +159,56 @@ const EntriesEditor = (): JSX.Element => {
             <span className="filler"></span>
           </div>
           {/* Inputs */}
-          {entryTemplate?.inputs.map((input: any, index) => (
+          {entryTemplate?.inputs.map((input: any, templateEntryInputIndex) => (
             <div className={classes.entry_input_wrapper} key={input.label}>
               {input.type === 'text' && (
                 <div className={`input_wrapper`}>
                   <label className="form_label">{input.label}</label>
                   <input
                     type="text"
-                    name="label"
+                    name={`${input.label}`}
                     placeholder={`Enter your ${input.label}`}
                     className="form_input"
-                    value={currentEntry.inputs || ''}
+                    value={
+                      entryInputs.length !== 0
+                        ? entryInputs[0][input.label]
+                        : ''
+                    }
                     minLength={input.validateInputs ? input.minLength : 0}
                     maxLength={input.validateInputs ? input.maxLength : 1000}
-                    // onChange={(event) =>
-                    //   onChangeTemplateInputHandler(event, index)
-                    // }
-                    // onBlur={onBlurTaxonomyHandler}
+                    onChange={(event: any) => onChangeEntryInputsHandler(event)}
+                    onBlur={onBlurEntryHandler}
+                  />
+                </div>
+              )}
+              {input.type === 'numeric' && (
+                <div
+                  className={`number_input input_wrapper`}
+                  id={classes.nbr_input_large}
+                >
+                  <label className="form_label">{input.label}</label>
+                  <input
+                    type="number"
+                    name={`${input.label}`}
+                    placeholder={`Enter your ${input.label}`}
+                    className="form_input"
+                    value={
+                      entryInputs.length !== 0
+                        ? entryInputs[0][input.label]
+                        : ''
+                    }
+                    minLength={input.validateInputs ? input.minLength : 0}
+                    maxLength={input.validateInputs ? input.maxLength : 1000}
+                    onChange={(event: any) => onChangeEntryInputsHandler(event)}
+                    onBlur={onBlurEntryHandler}
                   />
                 </div>
               )}
               {input.type === 'select' && (
                 <div className={classes.select_wrapper}>
                   <CustomSelectSingle
-                    id={`input_select_${index}`}
-                    name={`input_select_${index}`}
+                    id={`input_select_${templateEntryInputIndex}`}
+                    name={`${input.label}`}
                     label={input.label}
                     displayValue="label"
                     optionsList={input.options.map((option: any) => {
@@ -157,11 +217,14 @@ const EntriesEditor = (): JSX.Element => {
                         value: option,
                       };
                     })}
-                    // onChange={(event: any) =>
-                    //   onChangeSelectTemplatesHandler(event)
-                    // }
-                    // value={templateSelected.template}
-                    placeholder={'Select one template'}
+                    onChange={(event: any) => onChangeEntryInputsHandler(event)}
+                    onBlur={onBlurEntryHandler}
+                    value={
+                      entryInputs.length !== 0
+                        ? entryInputs[0][input.label]
+                        : ''
+                    }
+                    placeholder={'Select one option'}
                     className={classes.select}
                   />
                 </div>
@@ -171,7 +234,7 @@ const EntriesEditor = (): JSX.Element => {
                   <label className="form_label">{input.label}</label>
                   <FileUploader
                     handleChange={handleFileOnChange}
-                    name="upload_file_form"
+                    name={`${input.label}`}
                     multiple={true}
                     // eslint-disable-next-line react/no-children-prop
                     children={
@@ -195,17 +258,25 @@ const EntriesEditor = (): JSX.Element => {
                   <label className="form_label">{input.label}</label>
                   {/* <textarea
                     name={input.label}
-                    placeholder={`Enter your ${input.label}`}
+                    placeholder={`Enter your text. Markdown syntax supported`}
                     className="form_input"
+                    data-provide="markdown"
                     value={currentEntry.inputs || ''}
                     minLength={input.validateInputs ? input.minLength : 0}
                     maxLength={input.validateInputs ? input.maxLength : 1000}
-                    // onChange={(event) =>
-                    //   onChangeTemplateInputHandler(event, index)
-                    // }
+                    onChange={(event: any) => onChangeEntryHandler(event)}
                     // onBlur={onBlurTaxonomyHandler}
                   /> */}
-                  <QuillNoSSRWrapper theme="snow" />
+                  <div data-color-mode="dark">
+                    <MDEditor
+                      textareaProps={{
+                        name: `${input.label}`,
+                      }}
+                      value={markDownValue}
+                      // onBlur={onBlurEntryHandler}
+                      onChange={setMarkdownValue}
+                    />
+                  </div>
                 </div>
               )}
             </div>

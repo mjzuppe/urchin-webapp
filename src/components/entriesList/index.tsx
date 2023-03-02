@@ -90,6 +90,8 @@ const EntriesList = () => {
         updatedAt: Date.now(),
         solanaAddress: '',
         arweaveAddress: '',
+        inputs: [],
+        taxonomies: [],
       })
     );
   };
@@ -165,6 +167,7 @@ const EntriesList = () => {
                 updatedAt={updatedAt}
                 solanaAddress={solanaAddress}
                 arweaveAddress={arweaveAddress}
+                id={entry.id}
               />
             );
           })}

@@ -27,3 +27,8 @@ module.exports = withSentryConfig(
   { silent: true },
   { hideSourcemaps: true },
 );
+
+const removeImports = require('next-remove-imports')({
+  options: {},
+});
+module.exports = removeImports();

@@ -74,7 +74,7 @@ const TemplatesInputsRow = ({
     );
   };
 
-  const onBlurTaxonomyHandler = () => {
+  const onBlurTemplateInputHandler = () => {
     dispatch(
       addNewTemplateInput({
         templateIndex: templates.length - 1,
@@ -117,7 +117,7 @@ const TemplatesInputsRow = ({
                 value={templateInput.label || ''}
                 maxLength={24}
                 onChange={(event) => onChangeTemplateInputHandler(event, index)}
-                onBlur={onBlurTaxonomyHandler}
+                onBlur={onBlurTemplateInputHandler}
               />
             </div>
             <div className={`single_input input_wrapper`}>
@@ -137,7 +137,7 @@ const TemplatesInputsRow = ({
                 onChange={(event: any) =>
                   onChangeTemplateInputHandler(event, index)
                 }
-                onBlur={onBlurTaxonomyHandler}
+                onBlur={onBlurTemplateInputHandler}
                 value={templateInput.type}
                 className={`${classes.genres_container}`}
                 placeholder={'No parent Selected'}
@@ -159,7 +159,7 @@ const TemplatesInputsRow = ({
                   onChange={(event) =>
                     onChangeTemplateInputHandler(event, index)
                   }
-                  onBlur={onBlurTaxonomyHandler}
+                  onBlur={onBlurTemplateInputHandler}
                 />
               </div>
             )}
@@ -177,7 +177,7 @@ const TemplatesInputsRow = ({
                     onChangeTemplateInputHandler(event, index)
                   }
                   checked={Boolean(templateInput.validateInputs)}
-                  onBlur={onBlurTaxonomyHandler}
+                  onBlur={onBlurTemplateInputHandler}
                 />
               </div>
             )}
@@ -196,7 +196,7 @@ const TemplatesInputsRow = ({
                       onChangeTemplateInputHandler(event, index)
                     }
                     min={0}
-                    onBlur={onBlurTaxonomyHandler}
+                    onBlur={onBlurTemplateInputHandler}
                   />
                 </div>
                 <div className={`number_input input_wrapper`}>
@@ -211,7 +211,7 @@ const TemplatesInputsRow = ({
                       onChangeTemplateInputHandler(event, index)
                     }
                     min={0}
-                    onBlur={onBlurTaxonomyHandler}
+                    onBlur={onBlurTemplateInputHandler}
                   />
                 </div>
               </>
