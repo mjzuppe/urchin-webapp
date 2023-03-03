@@ -6,6 +6,7 @@ import { useState } from 'react';
 import classes from './EntriesEditor.module.scss';
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
+
 //  Utils
 import { useAppDispatch } from '../../utils/useAppDispatch';
 import { useAppSelector } from '../../utils/useAppSelector';
@@ -36,7 +37,7 @@ const EntriesEditor = (): JSX.Element => {
   console.log('entries', entries);
   // TODO: fix that for Edit
   const currentEntry = entries[entries.length - 1];
-  console.log('currentEntry', currentEntry);
+  // console.log('currentEntry', currentEntry);
   const templates = useAppSelector((state) => state.templates.templates);
 
   const entryTemplate = templates.find(
@@ -47,7 +48,7 @@ const EntriesEditor = (): JSX.Element => {
   const [entryInputs, setEntryInputs] = useState<any>(
     currentEntry.inputs.length !== 0 ? currentEntry.inputs : ''
   );
-  console.log('entryInputs', entryInputs);
+  // console.log('entryInputs', entryInputs);
 
   // Handlers
   const handleBackClick = () => {
@@ -78,20 +79,16 @@ const EntriesEditor = (): JSX.Element => {
       | React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { name, value } = event.target;
-    console.log('name', name);
 
     const newEntryInput = {
       [name]: value,
     };
 
-    // add new entry input into entryInputs array
     setEntryInputs((prevState: any) => {
       const newState = [...prevState];
       newState[0] = { ...newState[0], ...newEntryInput };
       return newState;
     });
-
-    console.log('entryInputs on change', entryInputs);
 
     dispatch(
       updateEntryInputs({
@@ -109,15 +106,57 @@ const EntriesEditor = (): JSX.Element => {
       } as any)
     );
   };
-  const [file, setFile] = useState(null);
-  let imgSrc;
-  const handleFileOnChange = (file: File) => {
-    setFile(file);
-    console.log('file', file);
+
+  const [fileName, setFileName] = useState<string>('');
+  const [imgSrc, setImgSrc] = useState('');
+
+  const handleFileOnChange = () => {
+    // TODO: fix TS error
+    const inputElement: HTMLInputElement =
+      document.querySelector('input[type=file]')!;
+    if (!inputElement.files) return;
+    const file = inputElement.files[0];
+    // console.log('file', file);
+
+    setFileName(file.name);
+    const reader = new FileReader();
+
+    reader.addEventListener(
+      'load',
+      () => {
+        file.type === 'image/jpeg' && setImgSrc(reader.result as string);
+      },
+      false
+    );
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+
+    //TODO: Pass image file to current entry inputs
   };
 
-  const [markDownValue, setMarkdownValue] = useState('');
-  console.log('markDownValue', markDownValue);
+  const removeImageHandler = () => {
+    setImgSrc('');
+    setFileName('');
+  };
+
+  const onChangeMarkdownHandler = (
+    value: string | undefined,
+    label: string
+  ) => {
+    setEntryInputs((prevState: any) => {
+      const newState = [...prevState];
+      newState[0] = { ...newState[0], [label]: value };
+      return newState;
+    });
+    dispatch(
+      updateEntryInputs({
+        entryIndex: 0,
+        inputs: entryInputs,
+      } as any)
+    );
+  };
 
   return (
     <section className={classes.entries_editor_section}>
@@ -231,50 +270,69 @@ const EntriesEditor = (): JSX.Element => {
               )}
               {input.type === 'file' && (
                 <div className={classes.upload_section_left}>
-                  <label className="form_label">{input.label}</label>
-                  <FileUploader
-                    handleChange={handleFileOnChange}
-                    name={`${input.label}`}
-                    multiple={true}
-                    // eslint-disable-next-line react/no-children-prop
-                    children={
-                      <div className={classes.drop_area}>
-                        <Image
-                          src="/assets/camera-icon.svg"
-                          alt="camera icon - upload a file"
-                          height={40}
-                          width={35}
-                        />
-                        <span className="muted_text_small">
-                          Drop your file here
-                        </span>
-                      </div>
-                    }
-                  />
+                  <div className={classes.uploader}>
+                    <label className="form_label">{input.label}</label>
+                    <FileUploader
+                      handleChange={handleFileOnChange}
+                      name={`${input.label}`}
+                      multiple={true}
+                      // eslint-disable-next-line react/no-children-prop
+                      children={
+                        <div className={classes.drop_area}>
+                          <Image
+                            src="/assets/camera-icon.svg"
+                            alt="camera icon - upload a file"
+                            height={40}
+                            width={35}
+                          />
+                          <span className="muted_text_small">
+                            Drop your file here
+                          </span>
+                        </div>
+                      }
+                    />
+                    {imgSrc && (
+                      <>
+                        <div className={classes.preview_img_wrapper}>
+                          <Image
+                            src={imgSrc}
+                            id="image_preview"
+                            height={200}
+                            width={320}
+                            alt="Thumbnail of uploaded image"
+                          />
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  <div className="actions_right">
+                    <p className={classes.file_name}>{fileName}</p>
+                    <p
+                      className={`orange_link ${classes.remove_img}`}
+                      onClick={removeImageHandler}
+                    >
+                      Remove File
+                    </p>
+                  </div>
                 </div>
               )}
               {input.type === 'textarea' && (
                 <div className={`input_wrapper ${classes.wysiwig_editor}`}>
                   <label className="form_label">{input.label}</label>
-                  {/* <textarea
-                    name={input.label}
-                    placeholder={`Enter your text. Markdown syntax supported`}
-                    className="form_input"
-                    data-provide="markdown"
-                    value={currentEntry.inputs || ''}
-                    minLength={input.validateInputs ? input.minLength : 0}
-                    maxLength={input.validateInputs ? input.maxLength : 1000}
-                    onChange={(event: any) => onChangeEntryHandler(event)}
-                    // onBlur={onBlurTaxonomyHandler}
-                  /> */}
                   <div data-color-mode="dark">
                     <MDEditor
                       textareaProps={{
                         name: `${input.label}`,
                       }}
-                      value={markDownValue}
-                      // onBlur={onBlurEntryHandler}
-                      onChange={setMarkdownValue}
+                      value={
+                        entryInputs.length !== 0
+                          ? entryInputs[0][input.label]
+                          : ''
+                      }
+                      onChange={(value) =>
+                        onChangeMarkdownHandler(value, input.label)
+                      }
+                      onBlur={onBlurEntryHandler}
                     />
                   </div>
                 </div>

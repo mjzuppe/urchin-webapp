@@ -25,6 +25,10 @@
 
 .upload_section_left {
   width: fit-content;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
   @include breakpoint-max(tabletMax) {
     width: 600px;
   }
@@ -56,11 +60,25 @@
   }
 }
 
+.file_name {
+  font-weight: 500;
+  margin-bottom: 2rem;
+}
+
+.remove_img {
+  font-size: 0.8rem;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.preview_img_wrapper {
+  position: absolute;
+  top: 2rem;
+  img {
+    border-radius: $radius-s;
+  }
+}
+
 .wysiwig_editor {
   width: 100%;
-  min-height: 400px;
-
-  textarea {
-    min-height: 350px;
-  }
 }
