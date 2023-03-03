@@ -10,6 +10,7 @@ import '@uiw/react-markdown-preview/markdown.css';
 //  Utils
 import { useAppDispatch } from '../../utils/useAppDispatch';
 import { useAppSelector } from '../../utils/useAppSelector';
+import useWindowSize from '../../utils/useWindowSize';
 
 // lib
 import { FileUploader } from 'react-drag-drop-files';
@@ -32,6 +33,7 @@ import { CustomSelectMulti } from '../shared/customSelectMulti';
 import { CustomSelectSingle } from '../shared/customSelectSingle';
 
 const EntriesEditor = (): JSX.Element => {
+  const { width } = useWindowSize();
   const dispatch = useAppDispatch();
   const entries = useAppSelector((state) => state.entries.entries);
   console.log('entries', entries);
@@ -111,7 +113,6 @@ const EntriesEditor = (): JSX.Element => {
   const [imgSrc, setImgSrc] = useState('');
 
   const handleFileOnChange = () => {
-    // TODO: fix TS error
     const inputElement: HTMLInputElement =
       document.querySelector('input[type=file]')!;
     if (!inputElement.files) return;
@@ -297,8 +298,8 @@ const EntriesEditor = (): JSX.Element => {
                           <Image
                             src={imgSrc}
                             id="image_preview"
+                            width={width! < 950 ? 350 : 320}
                             height={200}
-                            width={320}
                             alt="Thumbnail of uploaded image"
                           />
                         </div>

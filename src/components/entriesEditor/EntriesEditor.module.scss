@@ -9,6 +9,9 @@
     font-weight: 700;
     margin-bottom: 1rem;
   }
+  @include breakpoint-max(tabletMax) {
+    width: 100%;
+  }
 }
 
 .entry_editor_form {
@@ -33,6 +36,7 @@
     width: 600px;
   }
   @include breakpoint-max(phoneMax) {
+    display: revert;
     width: 100%;
   }
 }
@@ -76,6 +80,7 @@
   top: 2rem;
   img {
     border-radius: $radius-s;
+    object-fit: cover;
   }
 }
 
