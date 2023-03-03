@@ -154,7 +154,6 @@ const Navbar = (): JSX.Element => {
                     className={`${classes.btn_wallet_connect} ${
                       connected ? classes.connected : classes.disconnected
                     }`}
-                    // onClick={handleConnectWalletClick}
                   >
                     {!connected ? 'Connect Wallet' : null}
                   </WalletMultiButtonDynamic>
