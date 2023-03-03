@@ -50,6 +50,8 @@ const TemplatesList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const templates = useAppSelector((state) => state.templates.templates);
 
+  console.log('templates', templates);
+
   const paginatedData = paginate(templates, currentPage, pageSize);
 
   const onPageChange = (page: number) => {
@@ -59,7 +61,7 @@ const TemplatesList = () => {
   const templatesEditorHandler = () => {
     dispatch(setCurrentProcess('templatesEditor'));
     // Create new template
-    let id = uuidv4();
+    const id = uuidv4();
     dispatch(
       addNewTemplate({
         title: `Template ${templates.length + 1}`,

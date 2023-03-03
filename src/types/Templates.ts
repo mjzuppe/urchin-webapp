@@ -1,3 +1,5 @@
+import { Taxonomy } from './Taxonomies';
+
 type TemplateInput = {
   label: string;
   type: 'text' | 'textarea' | 'select' | 'numeric' | 'file';
@@ -5,11 +7,6 @@ type TemplateInput = {
   validateInputs: boolean;
   minLength?: number;
   maxLength?: number;
-};
-
-type TemplatesTaxonomies = {
-  label: string;
-  parent: string | null;
 };
 
 type Templates = {
@@ -20,9 +17,9 @@ type Templates = {
   arweaveAddress: string;
   entriesNbr: number;
   inputs: TemplatesInputs;
-  taxonomies?: Array<TemplatesTaxonomies>;
+  taxonomies?: Array<Taxonomy>;
 };
 
 type TemplatesInputs = TemplateInput[];
 
-export type { Templates, TemplatesInputs, TemplateInput, TemplatesTaxonomies };
+export type { Templates, TemplatesInputs, TemplateInput };
