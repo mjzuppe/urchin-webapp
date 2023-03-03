@@ -134,7 +134,7 @@ const StaticHomePage = () => {
         </div>
       </div>
       {/* reinsurance items */}
-      <div className={classes.reinsurance_container}>
+      <div className={classes.reinsurance_container} id="reinsurance">
         <div className={classes.reinsurance_item}>
           <Image
             src={dataIcon}

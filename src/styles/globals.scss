@@ -3,6 +3,10 @@
 @import './variables';
 @import './mediaQueries';
 
+html {
+  scroll-behavior: smooth;
+}
+
 // for spacing and sizing consistency across the app we use rem (e.g. 1rem = 16px)
 body {
   background-color: $background;
