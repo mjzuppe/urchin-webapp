@@ -20,7 +20,8 @@ main {
 .orange_link {
   color: $orange;
   text-decoration: underline;
-  font-size: 1rem;
+
+  text-underline-offset: 0.2rem;
   @include breakpoint-max(phoneMax) {
     font-size: 0.8rem;
   }
@@ -70,6 +71,9 @@ main {
     content: '*';
     color: $white;
     padding-left: 5px;
+  }
+  &::first-letter {
+    text-transform: uppercase;
   }
 }
 
@@ -190,4 +194,38 @@ main {
 #create_btn {
   width: 320px;
   margin-top: 3rem;
+}
+
+//  markdown EDITOR
+// ⚠️ we can't use module to style the editor because it's a third party library
+.w-md-editor-content,
+.wmde-markdown,
+.w-md-editor-toolbar {
+  background: $dark-grey !important;
+  color: $white !important;
+  // box-shadow: inset 1px 0 0 0 rgba($white, 0.1) !important;
+}
+
+.w-md-editor {
+  min-height: 350px;
+  border: 1px solid $black !important;
+  border-radius: $radius-s !important;
+  box-shadow: none !important;
+}
+
+.w-md-editor-toolbar {
+  border-bottom: 1px solid $black !important;
+}
+
+.w-md-editor-preview {
+  box-shadow: inset 1px 0 0 0 rgba($white, 0.1) !important;
+}
+
+.wmde-markdown h1,
+.wmde-markdown h2,
+.wmde-markdown h3,
+.wmde-markdown h4,
+.wmde-markdown h5,
+.wmde-markdown h6 {
+  border-bottom: 1px solid rgba($white, 0.1) !important;
 }
