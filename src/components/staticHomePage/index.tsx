@@ -15,6 +15,7 @@ import dataIcon from '../../../public/assets/data-icon.svg';
 import fileIcon from '../../../public/assets/media-file-icon.svg';
 import taxonomyIcon from '../../../public/assets/taxonomy-icon.svg';
 import linkIcon from '../../../public/assets/link-icon-mini.svg';
+import imgStack from '../../../public/assets/img_stack.png';
 
 // Utils
 import useWindowSize from '../../utils/useWindowSize';
@@ -93,44 +94,16 @@ const StaticHomePage = () => {
           </WalletMultiButtonDynamic>
         </div>
         <div className={classes.flex_wrapper_right}>
-          <div className={classes.screenshot_wrapper}>
-            <Image
-              src={file}
-              id={classes.file_upload}
-              alt="file upload screenshot"
-              width={460}
-              height={240}
-              placeholder="blur"
-              style={{
-                maxWidth: '100%',
-                height: 'auto',
-              }}
-            />
-            <Image
-              src={entries}
-              id={classes.revision}
-              alt="Entries revision screenshot"
-              width={280}
-              height={185}
-              placeholder="blur"
-              style={{
-                maxWidth: '100%',
-                height: 'auto',
-              }}
-            />
-            <Image
-              src={importImg}
-              id={classes.import}
-              alt="Import entry screenshot"
-              width={450}
-              height={250}
-              placeholder="blur"
-              style={{
-                maxWidth: '100%',
-                height: 'auto',
-              }}
-            />
-          </div>
+          <Image
+            src={imgStack}
+            alt="App preview"
+            width={650}
+            height={535}
+            style={{
+              maxWidth: '100%',
+              height: 'auto',
+            }}
+          />
         </div>
       </div>
       {/* reinsurance items */}
