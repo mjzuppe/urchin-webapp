@@ -8,7 +8,7 @@ const persistConfig = {
   key: 'root',
   storage,
   // will not be persisted
-  whitelist: [],
+  // whitelist: [],
 };
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
