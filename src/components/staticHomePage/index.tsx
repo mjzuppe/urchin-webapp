@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import Script from 'next/script';
 
 // Styles
 import Image from 'next/image';
@@ -33,6 +34,7 @@ const WalletMultiButtonDynamic = dynamic(
 
 // Components
 import Separator from '../shared/separator';
+import SEO from '../shared/seo';
 
 const StaticHomePage = () => {
   const { connected } = useWallet();
@@ -41,6 +43,24 @@ const StaticHomePage = () => {
 
   return (
     <>
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=G-4K3HB47RXE`}
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-4K3HB47RXE');
+          `,
+        }}
+      />
+
+      <SEO />
       <div className={classes.background_wrapper}>
         <Image
           alt="Shapes"
