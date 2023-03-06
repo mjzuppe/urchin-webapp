@@ -58,11 +58,12 @@ const StaticHomePage = () => {
           <h1>Headless CMS</h1>
           <h2>for Web3</h2>
           <h3>Content and media management layer for dApp developers</h3>
-          <WalletMultiButtonDynamic
+          {/* TODO: Btn hidden for now */}
+          {/* <WalletMultiButtonDynamic
             className={`${classes.btn_wallet_connect} ${classes.btn_top}`}
           >
             {!connected ? 'Connect Wallet' : null}
-          </WalletMultiButtonDynamic>
+          </WalletMultiButtonDynamic> */}
         </div>
 
         <div className={classes.flex_container}>
@@ -118,9 +119,10 @@ const StaticHomePage = () => {
             <div className={classes.flex_wrapper_left}>
               <h3>Start Building With Urchin Content Studio</h3>
               <p>Start building with Urchin without any code.</p>
-              <WalletMultiButtonDynamic className={classes.btn_wallet_connect}>
+              {/* TODO: Btn hidden for now */}
+              {/* <WalletMultiButtonDynamic className={classes.btn_wallet_connect}>
                 {!connected ? 'Connect Wallet' : null}
-              </WalletMultiButtonDynamic>
+              </WalletMultiButtonDynamic> */}
             </div>
             <div className={classes.flex_wrapper_right}>
               <Image
