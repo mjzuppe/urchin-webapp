@@ -10,7 +10,7 @@ import { useAppSelector } from '../../../utils/useAppSelector';
 
 // redux
 import {
-  addNewTemplateInput,
+  addOrUpdateTemplateInput,
   deleteTemplateInput,
 } from '../../../redux/slices/templates';
 
@@ -30,6 +30,18 @@ const TemplatesInputsRow = ({
 }: TemplatesInputsRowProps): JSX.Element => {
   const dispatch = useAppDispatch();
   const templates = useAppSelector((state) => state.templates.templates);
+
+  const currentTemplateId = useAppSelector(
+    (state) => state.templates.currentTemplateId
+  );
+
+  const currentTemplate = templates.find(
+    (template) => template.id === currentTemplateId
+  );
+
+  const currentTemplateIndex = templates.findIndex(
+    (template) => template.id === currentTemplate?.id
+  );
 
   const onChangeTemplateInputHandler = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -67,17 +79,17 @@ const TemplatesInputsRow = ({
     });
 
     dispatch(
-      addNewTemplateInput({
-        templateIndex: templates.length - 1,
+      addOrUpdateTemplateInput({
+        templateIndex: currentTemplateIndex,
         input: templateInputs,
       } as any)
     );
   };
 
-  const onBlurTemplateInputHandler = () => {
+  const onBlurTemplateInputHandler = (event: any) => {
     dispatch(
-      addNewTemplateInput({
-        templateIndex: templates.length - 1,
+      addOrUpdateTemplateInput({
+        templateIndex: currentTemplateIndex,
         input: templateInputs,
       } as any)
     );
@@ -85,17 +97,21 @@ const TemplatesInputsRow = ({
 
   const removeRowHandler = (index: number) => {
     if (templateInputs.length <= 1) return;
-    setTemplateInputs((prevState) => {
-      const newState = [...prevState];
-      newState.splice(index, 1);
-      return newState;
-    });
+
+    const nextInputs = templateInputs.filter((input, i) => i !== index);
+    setTemplateInputs(nextInputs);
 
     dispatch(
       deleteTemplateInput({
-        templateIndex: templates.length - 1,
+        templateIndex: currentTemplateIndex,
         inputIndex: index,
       })
+    );
+    dispatch(
+      addOrUpdateTemplateInput({
+        templateIndex: currentTemplateIndex,
+        input: nextInputs,
+      } as any)
     );
   };
 
@@ -163,7 +179,6 @@ const TemplatesInputsRow = ({
                 />
               </div>
             )}
-            {/* validate Inputs */}
             {(templateInput.type === 'text' ||
               templateInput.type === 'textarea') && (
               <div

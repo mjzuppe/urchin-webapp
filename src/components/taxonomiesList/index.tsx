@@ -71,6 +71,9 @@ const TaxonomiesList = () => {
                 title={taxonomy?.label}
                 updatedAt={updatedAt}
                 solanaAddress={solanaAddress}
+                onClickEditHandler={() => {
+                  dispatch(setCurrentProcess('taxonomiesEditor'));
+                }}
               />
             );
           })}

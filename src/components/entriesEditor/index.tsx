@@ -36,21 +36,26 @@ const EntriesEditor = (): JSX.Element => {
   const { width } = useWindowSize();
   const dispatch = useAppDispatch();
   const entries = useAppSelector((state) => state.entries.entries);
-  console.log('entries', entries);
-  // TODO: fix that for Edit
-  const currentEntry = entries[entries.length - 1];
-  // console.log('currentEntry', currentEntry);
+
+  const currentEntryId = useAppSelector(
+    (state) => state.entries.currentEntryId
+  );
+
+  const currentEntry = entries.find((entry) => entry.id === currentEntryId);
+
+  const currentEntryIndex = entries.findIndex(
+    (entry) => entry.id === currentEntry?.id
+  );
+
   const templates = useAppSelector((state) => state.templates.templates);
 
   const entryTemplate = templates.find(
-    (template) => template.id === currentEntry.template
+    (template) => template.id === currentEntry?.template
   );
-  // console.log('entryTemplate', entryTemplate);
 
   const [entryInputs, setEntryInputs] = useState<any>(
-    currentEntry.inputs.length !== 0 ? currentEntry.inputs : ''
+    currentEntry?.inputs.length !== 0 ? currentEntry?.inputs : ''
   );
-  // console.log('entryInputs', entryInputs);
 
   // Handlers
   const handleBackClick = () => {
@@ -68,7 +73,7 @@ const EntriesEditor = (): JSX.Element => {
 
     dispatch(
       addEntryTaxonomies({
-        entryIndex: templates.length - 1,
+        entryIndex: currentEntryIndex,
         taxonomies: value,
       })
     );
@@ -94,16 +99,16 @@ const EntriesEditor = (): JSX.Element => {
 
     dispatch(
       updateEntryInputs({
-        entryIndex: 0,
+        entryIndex: currentEntryIndex,
         inputs: entryInputs,
       } as any)
     );
   };
 
-  const onBlurEntryHandler = () => {
+  const onBlurEntryHandler = (event: any) => {
     dispatch(
       updateEntryInputs({
-        entryIndex: 0,
+        entryIndex: currentEntryIndex,
         inputs: entryInputs,
       } as any)
     );
@@ -117,7 +122,6 @@ const EntriesEditor = (): JSX.Element => {
       document.querySelector('input[type=file]')!;
     if (!inputElement.files) return;
     const file = inputElement.files[0];
-    // console.log('file', file);
 
     setFileName(file.name);
     const reader = new FileReader();
@@ -191,7 +195,7 @@ const EntriesEditor = (): JSX.Element => {
                 displayValue="label"
                 optionsList={entryTemplate?.taxonomies || []}
                 onChange={(event: any) => onChangeEntryTaxonomiesHandler(event)}
-                value={currentEntry.taxonomies}
+                value={currentEntry?.taxonomies}
                 placeholder={'Select one or more'}
                 selectionLimit={3}
               />

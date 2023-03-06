@@ -1,15 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Templates } from '../../types/Templates';
-import { v4 as uuidv4 } from 'uuid';
 
 interface TemplatesState {
   templates: Array<Templates>;
   templatesEditorActiveTab: string;
+  currentTemplateId?: string;
 }
 
-let id = uuidv4();
-
-// Define the initial state using that type
 const initialState: TemplatesState = {
   templates: [],
   templatesEditorActiveTab: 'Inputs',
@@ -22,6 +19,11 @@ const slice = createSlice({
     setTemplatesEditorActiveTab(state, { payload }: PayloadAction<any>) {
       state.templatesEditorActiveTab = payload;
     },
+    setCurrentTemplateId: (state, { payload }: PayloadAction<any>) => {
+      const currentTemplateId = payload;
+      state.currentTemplateId = currentTemplateId;
+    },
+
     addNewTemplate: (state, action: PayloadAction<any>) => {
       state.templates.push(action.payload);
     },
@@ -29,7 +31,7 @@ const slice = createSlice({
       const { templateIndex } = payload;
       state.templates.splice(templateIndex, 1);
     },
-    addNewTemplateInput: (state, { payload }: PayloadAction<any>) => {
+    addOrUpdateTemplateInput: (state, { payload }: PayloadAction<any>) => {
       const { templateIndex, input } = payload;
       state.templates[templateIndex].inputs = input;
     },
@@ -47,8 +49,9 @@ const slice = createSlice({
 export const {
   addNewTemplate,
   deleteTemplate,
+  setCurrentTemplateId,
   setTemplatesEditorActiveTab,
-  addNewTemplateInput,
+  addOrUpdateTemplateInput,
   deleteTemplateInput,
   addNewTemplateTaxonomy,
 } = slice.actions;

@@ -14,7 +14,19 @@ const TemplatesTaxonomies = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
   const templates = useAppSelector((state) => state.templates.templates);
-  const currentTemplate = templates[templates.length - 1];
+
+  const currentTemplateId = useAppSelector(
+    (state) => state.templates.currentTemplateId
+  );
+
+  const currentTemplate = templates.find(
+    (template) => template.id === currentTemplateId
+  );
+
+  const currentTemplateIndex = templates.findIndex(
+    (template) => template.id === currentTemplate?.id
+  );
+
   const onChangeTemplatesTaxonomyHandler = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -22,7 +34,7 @@ const TemplatesTaxonomies = (): JSX.Element => {
 
     dispatch(
       addNewTemplateTaxonomy({
-        templateIndex: templates.length - 1,
+        templateIndex: currentTemplateIndex,
         taxonomy: value,
       })
     );
@@ -38,7 +50,7 @@ const TemplatesTaxonomies = (): JSX.Element => {
             displayValue="label"
             optionsList={taxonomies}
             onChange={(event: any) => onChangeTemplatesTaxonomyHandler(event)}
-            value={currentTemplate.taxonomies}
+            value={currentTemplate?.taxonomies || []}
             placeholder={'Select one or more'}
             showCheckbox={true}
           />
