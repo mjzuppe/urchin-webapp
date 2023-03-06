@@ -3,6 +3,10 @@
 @import './variables';
 @import './mediaQueries';
 
+html {
+  scroll-behavior: smooth;
+}
+
 // for spacing and sizing consistency across the app we use rem (e.g. 1rem = 16px)
 body {
   background-color: $background;
@@ -20,7 +24,8 @@ main {
 .orange_link {
   color: $orange;
   text-decoration: underline;
-  font-size: 1rem;
+
+  text-underline-offset: 0.2rem;
   @include breakpoint-max(phoneMax) {
     font-size: 0.8rem;
   }
@@ -41,11 +46,55 @@ main {
   color: rgba($white, 0.6);
 }
 
+.empty_list {
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: rgba($white, 0.6);
+  margin-top: 5rem;
+}
+
+// Breadcrumbs
+.breadcrumbs_section {
+  @include breakpoint-max(phoneMax) {
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+// Wallet btn
+.btn_wallet_connect {
+  font-family: 'Inter';
+  font-weight: 600;
+  // fixed width to override the default width of the wallet adapter button
+  width: 270px;
+  height: 57px;
+  margin-top: 10px;
+  text-align: center;
+  justify-content: center;
+  font-size: 18px;
+  border-radius: 6px;
+  padding: 10px 20px;
+
+  &:not([disabled]):hover {
+    background-color: $orange;
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    background: $white;
+    cursor: not-allowed;
+    // used here to overwrite default GenericOrange Btn behavior
+    pointer-events: revert;
+  }
+
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+    padding: 1rem 2rem;
+  }
+}
+
 //  FORMS GLOBALS
-// .form {
-
-// }
-
 .input_wrapper {
   margin-bottom: 2rem;
 }
@@ -54,6 +103,14 @@ main {
   display: block;
   font-weight: 700;
   margin-bottom: 0.5rem;
+  &[data-required='required']::after {
+    content: '*';
+    color: $white;
+    padding-left: 5px;
+  }
+  &::first-letter {
+    text-transform: uppercase;
+  }
 }
 
 .form_input {
@@ -71,6 +128,12 @@ main {
   &::placeholder {
     color: rgba($white, 0.6);
     font-size: 0.9rem;
+  }
+  @include breakpoint-max(phoneMax) {
+    font-size: 0.8rem;
+    &::placeholder {
+      font-size: 0.8rem;
+    }
   }
 }
 .form_textarea {
@@ -90,4 +153,115 @@ main {
     color: rgba($white, 0.6);
     font-size: 0.9rem;
   }
+}
+
+.single_row_form {
+  width: 100%;
+  display: flex;
+  margin-top: 2rem;
+  align-items: center;
+  gap: 2rem;
+  @include breakpoint-max(tabletMax) {
+    display: revert;
+    margin-bottom: 1rem;
+  }
+}
+
+.single_input {
+  width: 300px;
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+  }
+}
+
+.multi_select {
+  width: 500px;
+
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+  }
+}
+
+.number_input {
+  width: 150px;
+  appearance: textfield;
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+  }
+}
+
+.number_input input::-webkit-outer-spin-button,
+.number_input input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  background: no-repeat center url('../../public/assets/chevron-up-down.svg');
+  width: 2em;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 1;
+}
+
+.checkBox_input {
+  width: 170px;
+}
+
+// EDITORS GLOBALS
+.editors_action_btn_wrapper {
+  display: flex;
+  justify-content: flex-end;
+  @include breakpoint-max(phoneMax) {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    .save_btn {
+      width: 100%;
+    }
+  }
+}
+
+.create_btn_wrapper {
+  text-align: center;
+  @include breakpoint-max(phoneMax) {
+    padding-bottom: 1rem;
+  }
+}
+
+#create_btn {
+  width: 320px;
+  margin-top: 3rem;
+}
+
+//  markdown EDITOR
+// ⚠️ we can't use module to style the editor because it's a third party library
+.w-md-editor-content,
+.wmde-markdown,
+.w-md-editor-toolbar {
+  background: $dark-grey !important;
+  color: $white !important;
+  // box-shadow: inset 1px 0 0 0 rgba($white, 0.1) !important;
+}
+
+.w-md-editor {
+  min-height: 350px;
+  border: 1px solid $black !important;
+  border-radius: $radius-s !important;
+  box-shadow: none !important;
+}
+
+.w-md-editor-toolbar {
+  border-bottom: 1px solid $black !important;
+}
+
+.w-md-editor-preview {
+  box-shadow: inset 1px 0 0 0 rgba($white, 0.1) !important;
+}
+
+.wmde-markdown h1,
+.wmde-markdown h2,
+.wmde-markdown h3,
+.wmde-markdown h4,
+.wmde-markdown h5,
+.wmde-markdown h6 {
+  border-bottom: 1px solid rgba($white, 0.1) !important;
 }

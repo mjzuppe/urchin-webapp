@@ -5,22 +5,27 @@ import classes from './ListRow.module.scss';
 
 // redux
 import { useAppSelector } from '../../../utils/useAppSelector';
+import { useAppDispatch } from '../../../utils/useAppDispatch';
 
 // Utils
 import useWindowSize from '../../../utils/useWindowSize';
+import { getFullDate } from '../../../utils/time';
 
 // Components
 import Separator from '../separator';
+import { setCurrentProcess } from '../../../redux/slices/process';
 
 interface ListRowProps {
+  id?: string;
   title: string;
-  updatedAt: string;
+  updatedAt: number;
   solanaAddress: string;
   arweaveAddress?: string;
   entriesNbr?: number;
 }
 
 const ListRow = ({
+  id,
   title,
   updatedAt,
   solanaAddress,
@@ -29,8 +34,23 @@ const ListRow = ({
 }: ListRowProps) => {
   const { width } = useWindowSize();
   const isDesktop = width! > 1024;
-
+  const dispatch = useAppDispatch();
   const activeTab = useAppSelector((state: any) => state.subNav.activeTab);
+
+  const onClickEditHandler = () => {
+    if (activeTab === 'Entries') {
+      dispatch(setCurrentProcess('entriesEditor'));
+      // Render correct id in editor
+      // dispatch(setEntryId(id!));
+    }
+    if (activeTab === 'Templates') {
+      dispatch(setCurrentProcess('templatesEditor'));
+      // Render correct id in editor
+    }
+    if (activeTab === 'Taxonomies') {
+      dispatch(setCurrentProcess('taxonomiesEditor'));
+    }
+  };
 
   return (
     <div className={classes.list_row}>
@@ -38,7 +58,7 @@ const ListRow = ({
         <div className={classes.mobile_flex}>
           <div className={classes.title}>
             <h3>{title}</h3>
-            <p>Updated {updatedAt}</p>
+            <p>Updated {getFullDate(updatedAt)}</p>
           </div>
           <div className={classes.tablet_flex}>
             <div className={classes.solana}>
@@ -66,17 +86,19 @@ const ListRow = ({
         {(isDesktop || activeTab === 'Entries') && (
           <span className="filler"></span>
         )}
-        {entriesNbr && activeTab === 'Templates' && (
+        {activeTab === 'Templates' && (
           <div className={classes.entries_nbr}>
             <p>
-              {entriesNbr} {entriesNbr <= 1 ? 'entry' : 'entries'}
+              {entriesNbr} {entriesNbr && entriesNbr <= 1 ? 'Entry' : 'Entries'}
             </p>
           </div>
         )}
 
         <div className={classes.edit}>
           {/* Hook up handler */}
-          <button type="button">Edit</button>
+          <button type="button" onClick={onClickEditHandler}>
+            Edit
+          </button>
         </div>
       </div>
       <Separator />

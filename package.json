@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@next/font": "^13.1.6",
+    "@radix-ui/react-alert-dialog": "^1.0.2",
     "@radix-ui/react-dialog": "^1.0.2",
     "@radix-ui/react-visually-hidden": "^1.0.1",
     "@reduxjs/toolkit": "^1.9.3",
@@ -22,19 +23,25 @@
     "@types/node": "18.14.0",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "@uiw/react-md-editor": "^3.20.5",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
     "minimongo": "^6.14.0",
+    "multiselect-react-dropdown": "^2.0.25",
     "next": "13.1.6",
+    "next-remove-imports": "^1.0.10",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-drag-drop-files": "^2.3.8",
     "react-redux": "^8.0.5",
     "redux-persist": "^6.0.0",
-    "typescript": "4.9.5"
+    "sharp": "^0.31.3",
+    "typescript": "4.9.5",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "^13.1.6",
+    "@types/uuid": "^9.0.1",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-import": "^2.27.5",
     "sass": "^1.58.3"

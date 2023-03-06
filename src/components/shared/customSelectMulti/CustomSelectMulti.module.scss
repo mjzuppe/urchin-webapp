@@ -1,0 +1,231 @@
+@import 'src/styles/mediaQueries';
+@import 'src/styles/variables';
+
+.wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  // scrollbar styling
+  /* width */
+  ::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
+  /* Track */
+  ::-webkit-scrollbar-track {
+    // background: $silver;
+    border-radius: 20px;
+    margin: 0 10px;
+  }
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: $white;
+    border-radius: 20px;
+  }
+
+  .multiSelect {
+    text-transform: capitalize;
+    // search input container
+    :global(.searchWrapper) {
+      cursor: pointer;
+      border: none;
+      padding: 5px;
+      padding-bottom: 0;
+      height: 45px;
+      background: $dark-grey;
+      :global(.icon_down_dir) {
+        width: auto;
+        background: $dark-grey;
+        border-radius: $radius-s;
+        display: flex;
+        align-items: center;
+        margin-top: 0;
+        padding-right: 9px;
+
+        &::before {
+          content: none;
+        }
+      }
+
+      :global(.searchBox) {
+        padding: 0.5rem 1rem;
+        position: absolute;
+        top: 5px;
+        bottom: 5px;
+        right: 5px;
+        left: 5px;
+        z-index: -1;
+        color: #fff;
+        margin-top: -5px;
+        background: $dark-grey;
+        border-radius: $radius-s;
+        // height: 40px;
+        // width: 100%;
+      }
+
+      //multi Select overries
+      :global(.chip) {
+        font-size: 0.9rem;
+        background-color: $blue-white;
+        color: $black;
+        border-radius: $radius-s;
+        column-gap: 0.5rem;
+        align-items: center;
+        margin: 5px;
+      }
+
+      // single Select overrides
+      &:global(.singleSelect) {
+        padding: 0;
+
+        :global(.singleChip) {
+          text-transform: capitalize;
+          color: $white;
+          margin: 0;
+          padding: 10px;
+          background: $dark-grey;
+          width: 100%;
+          height: 100%;
+          border-radius: $radius-s;
+        }
+
+        & :global(.searchBox) {
+          // padding: 10px;
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    // options list container
+    :global(.optionListContainer) {
+      margin-top: 0;
+      border: 1px solid rgba($blue-white, 0.4);
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      box-shadow: rgba($blue-white, 0.05) 0px 6px 24px 0px,
+        rgba($blue-white, 0.1) 0px 0px 0px 1px;
+      max-height: 300px;
+      overflow-y: auto;
+      background: $dark-grey;
+      color: $white;
+
+      :global(.optionContainer) {
+        margin-top: 5px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        border: none;
+        border-radius: 0;
+        max-height: unset;
+      }
+
+      :global(.option) {
+        position: relative;
+        margin-top: -2px;
+        display: flex;
+        font-size: 0.9rem;
+        border-radius: $radius-s;
+
+        &:hover {
+          background-color: rgba($grey, 0.3);
+        }
+
+        // divider line
+        &:not(:last-child) {
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: 1px;
+            left: 10px;
+            right: 10px;
+            height: 0.5px;
+            background-color: $dark-grey;
+            opacity: 0.75;
+          }
+        }
+      }
+
+      :global(.option .checkbox) {
+        display: none;
+      }
+
+      :global(.option.selected) {
+        color: $orange;
+      }
+    }
+  }
+}
+
+.MultiOption {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  gap: 5px;
+
+  .checkbox_input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+
+  .text_wrapper {
+    margin-left: 30px;
+
+    padding-top: 3px;
+  }
+
+  /* Create a custom checkbox */
+  .checkmark {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    height: 22px;
+    width: 22px;
+    background: #474747;
+    border-radius: $radius-s;
+
+    @include breakpoint-max(phoneMax) {
+      top: 1px;
+      height: 20px;
+      width: 20px;
+    }
+  }
+
+  &:hover input ~ .checkmark {
+    background-color: rgba($orange, 0.4);
+  }
+
+  input:checked ~ .checkmark {
+    background-color: $orange;
+  }
+
+  .checkmark:after {
+    content: '';
+    position: absolute;
+    display: none;
+  }
+
+  input:checked ~ .checkmark:after {
+    display: block;
+  }
+
+  /* Style the checkmark/indicator */
+  .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 5px;
+    height: 10px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+
+    @include breakpoint-max(phoneMax) {
+      left: 7px;
+      top: 4px;
+    }
+  }
+}
