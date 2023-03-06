@@ -5,6 +5,10 @@ import classes from './TemplatesInputsList.module.scss';
 
 // Utils
 import { useAppSelector } from '../../../utils/useAppSelector';
+import { useAppDispatch } from '../../../utils/useAppDispatch';
+
+// redux
+import { addOrUpdateTemplateInput } from '../../../redux/slices/templates';
 
 // Types
 import { TemplatesInputs } from '../../../types/Templates';
@@ -14,10 +18,23 @@ import OrangeButton from '../../shared/orangeButton';
 import TemplatesInputsRow from '../templatesInputsRow';
 
 const TemplatesInputsList = (): JSX.Element => {
+  const dispatch = useAppDispatch();
   const templates = useAppSelector((state) => state.templates.templates);
-  const currentTemplate = templates[templates.length - 1];
+
+  const currentTemplateId = useAppSelector(
+    (state) => state.templates.currentTemplateId
+  );
+
+  const currentTemplate = templates.find(
+    (template) => template.id === currentTemplateId
+  );
+
+  const currentTemplateIndex = templates.findIndex(
+    (template) => template.id === currentTemplate?.id
+  );
+
   const [templateInputs, setTemplateInputs] = useState<TemplatesInputs>(
-    currentTemplate.inputs.length > 0
+    currentTemplate && currentTemplate.inputs.length > 0
       ? currentTemplate.inputs
       : [
           {
@@ -44,6 +61,12 @@ const TemplatesInputsList = (): JSX.Element => {
       return newState;
     });
     setTemplateInputsCount(templateInputsCount + 1);
+    dispatch(
+      addOrUpdateTemplateInput({
+        templateIndex: currentTemplateIndex,
+        input: templateInputs,
+      } as any)
+    );
   };
 
   return (

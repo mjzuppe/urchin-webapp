@@ -5,7 +5,6 @@ import classes from './ListRow.module.scss';
 
 // redux
 import { useAppSelector } from '../../../utils/useAppSelector';
-import { useAppDispatch } from '../../../utils/useAppDispatch';
 
 // Utils
 import useWindowSize from '../../../utils/useWindowSize';
@@ -13,44 +12,27 @@ import { getFullDate } from '../../../utils/time';
 
 // Components
 import Separator from '../separator';
-import { setCurrentProcess } from '../../../redux/slices/process';
 
 interface ListRowProps {
-  id?: string;
   title: string;
   updatedAt: number;
   solanaAddress: string;
   arweaveAddress?: string;
   entriesNbr?: number;
+  onClickEditHandler: () => void;
 }
 
 const ListRow = ({
-  id,
   title,
   updatedAt,
   solanaAddress,
   arweaveAddress,
   entriesNbr,
+  onClickEditHandler,
 }: ListRowProps) => {
   const { width } = useWindowSize();
   const isDesktop = width! > 1024;
-  const dispatch = useAppDispatch();
   const activeTab = useAppSelector((state: any) => state.subNav.activeTab);
-
-  const onClickEditHandler = () => {
-    if (activeTab === 'Entries') {
-      dispatch(setCurrentProcess('entriesEditor'));
-      // Render correct id in editor
-      // dispatch(setEntryId(id!));
-    }
-    if (activeTab === 'Templates') {
-      dispatch(setCurrentProcess('templatesEditor'));
-      // Render correct id in editor
-    }
-    if (activeTab === 'Taxonomies') {
-      dispatch(setCurrentProcess('taxonomiesEditor'));
-    }
-  };
 
   return (
     <div className={classes.list_row}>
@@ -95,7 +77,6 @@ const ListRow = ({
         )}
 
         <div className={classes.edit}>
-          {/* Hook up handler */}
           <button type="button" onClick={onClickEditHandler}>
             Edit
           </button>

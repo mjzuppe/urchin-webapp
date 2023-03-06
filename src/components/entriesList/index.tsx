@@ -15,7 +15,7 @@ import { useAppSelector } from '../../utils/useAppSelector';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
-import { addNewEntry } from '../../redux/slices/entries';
+import { addNewEntry, setCurrentEntryId } from '../../redux/slices/entries';
 
 // Components
 import OrangeButton from '../shared/orangeButton';
@@ -23,34 +23,11 @@ import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
 import { CustomSelectSingle } from '../shared/customSelectSingle';
 
-// TODO: REPLACE WITH REAL DATA
-const mockdata = [
-  {
-    title: 'My first Post',
-    updatedAt: 'June 2nd 2023',
-    solanaAddress: '3SJ...93A',
-    arweaveAddress: '5SX...5AB',
-  },
-  {
-    title: 'Another post title',
-    updatedAt: 'May 27th 2022',
-    solanaAddress: '3SJ...93A',
-    arweaveAddress: '5SX...5AB',
-  },
-  {
-    title: 'My third post',
-    updatedAt: 'January 12th 2022',
-    solanaAddress: '3SJ...93A',
-    arweaveAddress: '5SX...5AB',
-  },
-];
-
 const EntriesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const entries = useAppSelector((state) => state.entries.entries);
   const templates = useAppSelector((state) => state.templates.templates);
-  console.log('templates', templates);
 
   const [templateSelected, setTemplateSelected] = useState({
     template: '',
@@ -94,6 +71,12 @@ const EntriesList = () => {
         taxonomies: [],
       })
     );
+    dispatch(setCurrentEntryId(id));
+  };
+
+  const entriesEditorEditHandler = (id: string) => {
+    dispatch(setCurrentProcess('entriesEditor'));
+    dispatch(setCurrentEntryId(id));
   };
 
   return (
@@ -162,12 +145,11 @@ const EntriesList = () => {
             return (
               <ListRow
                 key={updatedAt}
-                // TODO change that
                 title={title}
                 updatedAt={updatedAt}
                 solanaAddress={solanaAddress}
                 arweaveAddress={arweaveAddress}
-                id={entry.id}
+                onClickEditHandler={() => entriesEditorEditHandler(entry.id)}
               />
             );
           })}
@@ -180,7 +162,7 @@ const EntriesList = () => {
           )}
         </div>
         <Pagination
-          items={mockdata.length}
+          items={entries.length}
           pageSize={pageSize}
           currentPage={currentPage}
           onPageChange={onPageChange}

@@ -3,6 +3,7 @@ import { Entry } from '../../types/Entries';
 
 interface EntriesState {
   entries: Array<Entry>;
+  currentEntryId?: string;
 }
 
 const initialState: EntriesState = {
@@ -16,6 +17,10 @@ const slice = createSlice({
     addNewEntry: (state, action: PayloadAction<any>) => {
       state.entries.push(action.payload);
     },
+    setCurrentEntryId: (state, { payload }: PayloadAction<any>) => {
+      const currentEntryId = payload;
+      state.currentEntryId = currentEntryId;
+    },
     updateEntryInputs: (state, { payload }: PayloadAction<any>) => {
       const { entryIndex, inputs } = payload;
       state.entries[entryIndex].inputs = inputs;
@@ -27,8 +32,12 @@ const slice = createSlice({
   },
 });
 
-export const { addNewEntry, updateEntryInputs, addEntryTaxonomies } =
-  slice.actions;
+export const {
+  addNewEntry,
+  updateEntryInputs,
+  addEntryTaxonomies,
+  setCurrentEntryId,
+} = slice.actions;
 
 // Reducer
 export default slice.reducer;

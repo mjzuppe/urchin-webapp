@@ -33,7 +33,6 @@
       padding: 5px;
       padding-bottom: 0;
       height: 45px;
-      background: $dark-grey;
       :global(.icon_down_dir) {
         width: auto;
         background: $dark-grey;
@@ -52,9 +51,9 @@
         padding: 0.5rem 1rem;
         position: absolute;
         top: 5px;
-        bottom: 5px;
-        right: 5px;
-        left: 5px;
+        bottom: 0;
+        right: 0;
+        left: 0;
         z-index: -1;
         color: #fff;
         margin-top: -5px;

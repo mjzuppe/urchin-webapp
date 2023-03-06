@@ -14,43 +14,20 @@ import { useAppSelector } from '../../utils/useAppSelector';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
-import { addNewTemplate } from '../../redux/slices/templates';
+import {
+  addNewTemplate,
+  setCurrentTemplateId,
+} from '../../redux/slices/templates';
 
 // Components
 import OrangeButton from '../shared/orangeButton';
 import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
 
-// const mockdata = [
-//   {
-//     title: 'Template 1',
-//     updatedAt: 'June 2nd 2023',
-//     solanaAddress: '3SJ...93A',
-//     arweaveAddress: '5SX...5AB',
-//     entriesNbr: 4,
-//   },
-//   {
-//     title: 'Template 2',
-//     updatedAt: 'May 27th 2022',
-//     solanaAddress: '3SJ...93A',
-//     arweaveAddress: '5SX...5AB',
-//     entriesNbr: 1,
-//   },
-//   {
-//     title: 'Template 3',
-//     updatedAt: 'January 12th 2022',
-//     solanaAddress: '3SJ...93A',
-//     arweaveAddress: '5SX...5AB',
-//     entriesNbr: 3,
-//   },
-// ];
-
 const TemplatesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const templates = useAppSelector((state) => state.templates.templates);
-
-  console.log('templates', templates);
 
   const paginatedData = paginate(templates, currentPage, pageSize);
 
@@ -74,6 +51,12 @@ const TemplatesList = () => {
         taxonomies: [],
       })
     );
+    dispatch(setCurrentTemplateId(id));
+  };
+
+  const templatesEditorEditHandler = (id: string) => {
+    dispatch(setCurrentProcess('templatesEditor'));
+    dispatch(setCurrentTemplateId(id));
   };
 
   return (
@@ -111,6 +94,9 @@ const TemplatesList = () => {
                 solanaAddress={solanaAddress}
                 arweaveAddress={arweaveAddress}
                 entriesNbr={entriesNbr}
+                onClickEditHandler={() =>
+                  templatesEditorEditHandler(template.id)
+                }
               />
             );
           })}
