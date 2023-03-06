@@ -17,24 +17,6 @@ import OrangeButton from '../shared/orangeButton';
 import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
 
-// const mockdata = [
-//   {
-//     title: 'Music',
-//     updatedAt: 'June 2nd 2023',
-//     solanaAddress: '3SJ...93A',
-//   },
-//   {
-//     title: 'Lifestyle',
-//     updatedAt: 'May 27th 2022',
-//     solanaAddress: '3SJ...93A',
-//   },
-//   {
-//     title: 'Fashion',
-//     updatedAt: 'January 12th 2022',
-//     solanaAddress: '3SJ...93A',
-//   },
-// ];
-
 const TaxonomiesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);

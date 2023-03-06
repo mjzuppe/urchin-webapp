@@ -173,7 +173,6 @@ const EntriesEditor = (): JSX.Element => {
       <div className="editors_action_btn_wrapper">
         {/* if Edit add Revision nbr + last updated date */}
         <OrangeButton
-          // change text if Edit
           btnText={'Save'}
           type="submit"
           // TODO: change callback when available (add template in templates array from redux)
