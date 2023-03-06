@@ -33,6 +33,7 @@ const WalletMultiButtonDynamic = dynamic(
 
 // Components
 import Separator from '../shared/separator';
+import SEO from '../shared/seo';
 
 const StaticHomePage = () => {
   const { connected } = useWallet();
@@ -41,6 +42,7 @@ const StaticHomePage = () => {
 
   return (
     <>
+      <SEO />
       <div className={classes.background_wrapper}>
         <Image
           alt="Shapes"
