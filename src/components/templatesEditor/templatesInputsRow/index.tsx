@@ -169,7 +169,7 @@ const TemplatesInputsRow = ({
                   required
                   type="text"
                   name="options"
-                  placeholder="Enter the select options"
+                  placeholder="Enter options (comma separated)"
                   className="form_input"
                   value={templateInput.options || ''}
                   onChange={(event) =>

@@ -22,6 +22,7 @@ const TemplatesTaxonomies = (): JSX.Element => {
   const currentTemplate = templates.find(
     (template) => template.id === currentTemplateId
   );
+  console.log('currentTemplate', currentTemplate);
 
   const currentTemplateIndex = templates.findIndex(
     (template) => template.id === currentTemplate?.id
@@ -48,9 +49,9 @@ const TemplatesTaxonomies = (): JSX.Element => {
             name="template_taxonomies"
             label="Eligible taxonomies"
             displayValue="label"
-            optionsList={taxonomies}
+            optionsList={taxonomies || []}
             onChange={(event: any) => onChangeTemplatesTaxonomyHandler(event)}
-            value={currentTemplate?.taxonomies || []}
+            value={currentTemplate?.taxonomies}
             placeholder={'Select one or more'}
             showCheckbox={true}
           />
