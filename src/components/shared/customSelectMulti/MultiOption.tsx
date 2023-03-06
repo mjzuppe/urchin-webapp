@@ -1,4 +1,4 @@
-import Spacer from '../spacer/Spacer';
+import Spacer from '../spacer';
 import classes from './CustomSelectMulti.module.scss';
 
 interface MultiOptionProps {

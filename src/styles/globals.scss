@@ -3,6 +3,10 @@
 @import './variables';
 @import './mediaQueries';
 
+html {
+  scroll-behavior: smooth;
+}
+
 // for spacing and sizing consistency across the app we use rem (e.g. 1rem = 16px)
 body {
   background-color: $background;
@@ -55,6 +59,38 @@ main {
   @include breakpoint-max(phoneMax) {
     margin-bottom: 1rem;
     font-size: 0.8rem;
+  }
+}
+
+// Wallet btn
+.btn_wallet_connect {
+  font-family: 'Inter';
+  font-weight: 600;
+  // fixed width to override the default width of the wallet adapter button
+  width: 270px;
+  height: 57px;
+  margin-top: 10px;
+  text-align: center;
+  justify-content: center;
+  font-size: 18px;
+  border-radius: 6px;
+  padding: 10px 20px;
+
+  &:not([disabled]):hover {
+    background-color: $orange;
+    opacity: 0.9;
+  }
+
+  &:disabled {
+    background: $white;
+    cursor: not-allowed;
+    // used here to overwrite default GenericOrange Btn behavior
+    pointer-events: revert;
+  }
+
+  @include breakpoint-max(phoneMax) {
+    width: 100%;
+    padding: 1rem 2rem;
   }
 }
 
