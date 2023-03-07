@@ -1,0 +1,78 @@
+@import 'src/styles/variables';
+@import 'src/styles/mediaQueries';
+
+.banner_container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  min-height: 100px;
+  width: 100%;
+  background: $violet;
+  color: $white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 3.125rem;
+
+  @include breakpoint-max(tabletMax) {
+    padding: 1.5rem;
+  }
+  @include breakpoint-max(phoneMax) {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+}
+
+.banner_text {
+  font-size: 1.2rem;
+  font-weight: 500;
+  @include breakpoint-max(phoneMax) {
+    font-size: 0.9rem;
+  }
+}
+
+.changes {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.changelog {
+  margin-top: 1.5rem;
+  @include breakpoint-max(phoneMax) {
+    font-size: 0.9rem;
+  }
+}
+
+.category {
+  font-weight: 700;
+}
+
+.flex_right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  @include breakpoint-max(phoneMax) {
+    justify-content: space-between;
+  }
+}
+
+.cancel_button {
+  font-size: 0.8rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.publish_button {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: $violet;
+  background: $white;
+  border: 1px solid $white;
+  border-radius: $radius-s;
+  padding: 8px 16px;
+  width: 12.5rem;
+}
