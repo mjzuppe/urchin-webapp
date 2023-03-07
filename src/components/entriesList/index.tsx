@@ -95,9 +95,9 @@ const EntriesList = () => {
             )}
           </AlertDialog.Trigger>
           <AlertDialog.Portal>
-            <AlertDialog.Overlay className={classes.DialogOverlay} />
-            <AlertDialog.Content className={classes.DialogContent}>
-              <AlertDialog.Title className={classes.AlertDialogTitle}>
+            <AlertDialog.Overlay className="DialogOverlay" />
+            <AlertDialog.Content className="DialogContent">
+              <AlertDialog.Title className="AlertDialogTitle">
                 Choose a template
               </AlertDialog.Title>
 
@@ -117,9 +117,9 @@ const EntriesList = () => {
                 />
               </div>
 
-              <div className={classes.AlertDialogActions}>
+              <div className="AlertDialogActions">
                 <AlertDialog.Action asChild>
-                  <div className={classes.submit_btn_container}>
+                  <div className="submit_btn_container">
                     <OrangeButton
                       btnText={'Submit'}
                       className={classes.submit_btn}
@@ -129,7 +129,7 @@ const EntriesList = () => {
                   </div>
                 </AlertDialog.Action>
                 <AlertDialog.Cancel asChild>
-                  <button type="button" className={classes.cancel_btn}>
+                  <button type="button" className="cancel_btn">
                     Cancel
                   </button>
                 </AlertDialog.Cancel>

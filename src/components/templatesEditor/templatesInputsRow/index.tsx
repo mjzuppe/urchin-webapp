@@ -234,12 +234,14 @@ const TemplatesInputsRow = ({
 
             <span className="filler"></span>
             <div className={classes.action_btn_wrapper}>
-              <button
-                className={`${classes.btn_text} blue_white_link`}
-                onClick={() => removeRowHandler(index)}
-              >
-                Remove
-              </button>
+              {index >= 1 && (
+                <button
+                  className={`${classes.btn_text} blue_white_link`}
+                  onClick={() => removeRowHandler(index)}
+                >
+                  Remove
+                </button>
+              )}
             </div>
           </div>
           <Separator />

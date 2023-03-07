@@ -31,6 +31,7 @@ import BackButton from '../shared/backButton';
 import OrangeButton from '../shared/orangeButton';
 import { CustomSelectMulti } from '../shared/customSelectMulti';
 import { CustomSelectSingle } from '../shared/customSelectSingle';
+import Breadcrumbs from '../shared/breadcrumbs';
 
 const EntriesEditor = (): JSX.Element => {
   const { width } = useWindowSize();
@@ -166,10 +167,8 @@ const EntriesEditor = (): JSX.Element => {
   return (
     <section className={classes.entries_editor_section}>
       <BackButton onClickHandler={handleBackClick} />
-      {/* Breadcrumbs section */}
-      <div className="breadcrumbs_section">
-        <p>Entries &gt; New Blog Post</p>
-      </div>
+      <Breadcrumbs section="Entries" title={currentEntry?.title || ''} />
+
       <div className="editors_action_btn_wrapper">
         {/* if Edit add Revision nbr + last updated date */}
         <OrangeButton

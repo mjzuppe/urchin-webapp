@@ -14,6 +14,7 @@ import { addNewTaxonomy } from '../../redux/slices/taxonomies';
 import BackButton from '../shared/backButton';
 import OrangeButton from '../shared/orangeButton';
 import TaxonomiesRow from './taxonomiesRow';
+import Breadcrumbs from '../shared/breadcrumbs';
 
 const TaxonomiesEditor = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -47,10 +48,9 @@ const TaxonomiesEditor = (): JSX.Element => {
   return (
     <section className={classes.taxonomies_editor_section}>
       <BackButton onClickHandler={handleBackClick} />
-      {/* Breadcrumbs section */}
-      <div className="breadcrumbs_section">
-        <p>Taxonomies &gt; Categories</p>
-      </div>
+      {/* TODO: change that */}
+      <Breadcrumbs section="Taxonomies" title={'?????'} />
+
       <div className="editors_action_btn_wrapper">
         {/* if Edit add Revision nbr + last updated date */}
         <OrangeButton

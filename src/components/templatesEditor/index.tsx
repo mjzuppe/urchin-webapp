@@ -18,6 +18,7 @@ import BackButton from '../shared/backButton';
 import OrangeButton from '../shared/orangeButton';
 import TemplatesInputsList from './templatesInputsList';
 import TemplatesTaxonomies from './templatesTaxonomies';
+import Breadcrumbs from '../shared/breadcrumbs';
 
 const TemplatesEditor = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -45,13 +46,21 @@ const TemplatesEditor = (): JSX.Element => {
     // save template
   };
 
+  const templates = useAppSelector((state) => state.templates.templates);
+
+  const currentTemplateId = useAppSelector(
+    (state) => state.templates.currentTemplateId
+  );
+
+  const currentTemplate = templates.find(
+    (template) => template.id === currentTemplateId
+  );
+
   return (
     <section className={classes.templates_editor_section}>
       <BackButton onClickHandler={handleBackClick} />
-      {/* Breadcrumbs section */}
-      <div className="breadcrumbs_section">
-        <p>Templates &gt; Blog Post</p>
-      </div>
+      <Breadcrumbs section="Templates" title={currentTemplate?.title || ''} />
+
       <div className="editors_action_btn_wrapper">
         {/* if Edit add Revision nbr + last updated date */}
         <OrangeButton
