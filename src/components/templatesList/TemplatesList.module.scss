@@ -1,3 +1,6 @@
+@import 'src/styles/variables';
+@import 'src/styles/mediaQueries';
+
 .templates_list_section {
   padding-bottom: 2rem;
 }
@@ -7,4 +10,25 @@
   gap: 2rem;
   align-items: center;
   margin-bottom: 2rem;
+}
+
+.import_button {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: $orange;
+  background: $background;
+  border: 1px solid $orange;
+  border-radius: $radius-s;
+  padding: 8px 16px;
+  width: 10rem;
+
+  @include breakpoint-max(phoneMax) {
+    font-size: 0.75rem;
+  }
+}
+
+// Modal
+#token_address_input {
+  background: #474747;
 }

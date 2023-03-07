@@ -265,3 +265,75 @@ main {
 .wmde-markdown h6 {
   border-bottom: 1px solid rgba($white, 0.1) !important;
 }
+
+// Modal
+.DialogOverlay {
+  background-color: rgba($background, 0.8);
+  position: fixed;
+  inset: 0;
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.DialogContent {
+  position: fixed;
+  background-color: $dark-grey;
+  border-radius: $radius-l;
+  box-shadow: 0 0 35px 0 rgba(50, 74, 136, 0.15);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 520px;
+  height: 250px;
+  padding: 25px 35px;
+  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  color: $white;
+  font-size: 0.9rem;
+}
+
+.AlertDialogTitle {
+  color: $white;
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.AlertDialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.cancel_btn {
+  color: rgba($white, 0.6);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.submit_btn_container {
+  margin-right: 5rem;
+}
+
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
