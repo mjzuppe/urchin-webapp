@@ -22,6 +22,7 @@ import TemplatesInputsRow from '../templatesInputsRow';
 
 const TemplatesInputsList = (): JSX.Element => {
   const dispatch = useAppDispatch();
+  const [templateTitleError, setTemplateTitleError] = useState<boolean>(false);
   const templates = useAppSelector((state) => state.templates.templates);
 
   const currentTemplateId = useAppSelector(
@@ -75,6 +76,7 @@ const TemplatesInputsList = (): JSX.Element => {
   const onChangeTemplateTitleHandler = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    event.target.value !== '' && setTemplateTitleError(false);
     dispatch(
       addOrUpdateTemplateTitle({
         templateIndex: currentTemplateIndex,
@@ -86,6 +88,8 @@ const TemplatesInputsList = (): JSX.Element => {
   const onBlurTemplateTitleHandler = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
+    // if value empty render an error
+    event.target.value === '' && setTemplateTitleError(true);
     dispatch(
       addOrUpdateTemplateTitle({
         templateIndex: currentTemplateIndex,
@@ -112,6 +116,9 @@ const TemplatesInputsList = (): JSX.Element => {
             onChange={(event) => onChangeTemplateTitleHandler(event)}
             onBlur={onBlurTemplateTitleHandler}
           />
+          {templateTitleError && (
+            <span className="error_message">Template title is required</span>
+          )}
         </div>
       </div>
       <div className={classes.templates_inputs_form}>

@@ -134,8 +134,8 @@ const TemplatesList = () => {
             } = template;
             return (
               <ListRow
-                key={title}
-                title={title}
+                key={template.id}
+                title={title || 'Untitled'}
                 updatedAt={updatedAt}
                 solanaAddress={solanaAddress}
                 arweaveAddress={arweaveAddress}

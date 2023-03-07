@@ -59,7 +59,10 @@ const TemplatesEditor = (): JSX.Element => {
   return (
     <section className={classes.templates_editor_section}>
       <BackButton onClickHandler={handleBackClick} />
-      <Breadcrumbs section="Templates" title={currentTemplate?.title || ''} />
+      <Breadcrumbs
+        section="Templates"
+        title={currentTemplate?.title || 'Untitled'}
+      />
 
       <div className="editors_action_btn_wrapper">
         {/* if Edit add Revision nbr + last updated date */}

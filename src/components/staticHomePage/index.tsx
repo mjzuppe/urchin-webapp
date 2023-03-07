@@ -113,9 +113,9 @@ const StaticHomePage = () => {
               <h3>Start Building With Urchin Content Studio</h3>
               <p>Start building with Urchin without any code.</p>
               {/* TODO: Btn hidden for now */}
-              {/* <WalletMultiButtonDynamic className={classes.btn_wallet_connect}>
+              <WalletMultiButtonDynamic className={classes.btn_wallet_connect}>
                 {!connected ? 'Connect Wallet' : null}
-              </WalletMultiButtonDynamic> */}
+              </WalletMultiButtonDynamic>
             </div>
             <div className={classes.flex_wrapper_right}>
               <Image

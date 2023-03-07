@@ -329,3 +329,9 @@ main {
     transform: translate(-50%, -50%) scale(1);
   }
 }
+
+.error_message {
+  color: $red;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
