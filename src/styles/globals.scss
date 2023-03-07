@@ -54,14 +54,6 @@ main {
   margin-top: 5rem;
 }
 
-// Breadcrumbs
-.breadcrumbs_section {
-  @include breakpoint-max(phoneMax) {
-    margin-bottom: 1rem;
-    font-size: 0.8rem;
-  }
-}
-
 // Wallet btn
 .btn_wallet_connect {
   font-family: 'Inter';
