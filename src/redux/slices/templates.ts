@@ -35,6 +35,10 @@ const slice = createSlice({
       const { templateIndex, input } = payload;
       state.templates[templateIndex].inputs = input;
     },
+    addOrUpdateTemplateTitle: (state, { payload }: PayloadAction<any>) => {
+      const { templateIndex, title } = payload;
+      state.templates[templateIndex].title = title;
+    },
     deleteTemplateInput: (state, { payload }: PayloadAction<any>) => {
       const { templateIndex, inputIndex } = payload;
       state.templates[templateIndex].inputs.splice(inputIndex, 1);
@@ -52,6 +56,7 @@ export const {
   setCurrentTemplateId,
   setTemplatesEditorActiveTab,
   addOrUpdateTemplateInput,
+  addOrUpdateTemplateTitle,
   deleteTemplateInput,
   addNewTemplateTaxonomy,
 } = slice.actions;

@@ -8,7 +8,10 @@ import { useAppSelector } from '../../../utils/useAppSelector';
 import { useAppDispatch } from '../../../utils/useAppDispatch';
 
 // redux
-import { addOrUpdateTemplateInput } from '../../../redux/slices/templates';
+import {
+  addOrUpdateTemplateInput,
+  addOrUpdateTemplateTitle,
+} from '../../../redux/slices/templates';
 
 // Types
 import { TemplatesInputs } from '../../../types/Templates';
@@ -69,8 +72,48 @@ const TemplatesInputsList = (): JSX.Element => {
     );
   };
 
+  const onChangeTemplateTitleHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    dispatch(
+      addOrUpdateTemplateTitle({
+        templateIndex: currentTemplateIndex,
+        title: event.target.value,
+      } as any)
+    );
+  };
+
+  const onBlurTemplateTitleHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    dispatch(
+      addOrUpdateTemplateTitle({
+        templateIndex: currentTemplateIndex,
+        title: event.target.value,
+      } as any)
+    );
+  };
+
   return (
     <section className={classes.templates_inputs_list}>
+      <div className="single_row_form">
+        <div className={`single_input input_wrapper`}>
+          <label className="form_label" data-required={'required'}>
+            Template Title
+          </label>
+          <input
+            required
+            type="text"
+            name="label"
+            placeholder="Enter template Name"
+            className="form_input"
+            value={currentTemplate?.title || ''}
+            maxLength={200}
+            onChange={(event) => onChangeTemplateTitleHandler(event)}
+            onBlur={onBlurTemplateTitleHandler}
+          />
+        </div>
+      </div>
       <div className={classes.templates_inputs_form}>
         <TemplatesInputsRow
           templateInputs={templateInputs}

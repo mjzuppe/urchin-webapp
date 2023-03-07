@@ -42,7 +42,7 @@ const TemplatesList = () => {
     const id = uuidv4();
     dispatch(
       addNewTemplate({
-        title: `Template ${templates.length + 1}`,
+        title: '',
         updatedAt: Date.now(),
         solanaAddress: '3SJ...93A',
         arweaveAddress: '5SX...5AB',
