@@ -40,9 +40,7 @@ const Home: NextPage = (): JSX.Element => {
       <Head>
         <title>Playa - WebApp</title>
       </Head>
-
       {!connected && <StaticHomePage />}
-
       {connected && currentProcess === 'default' && (
         <>
           <Subnav />
@@ -57,9 +55,6 @@ const Home: NextPage = (): JSX.Element => {
       )}
       {connected && currentProcess === 'templatesEditor' && <TemplatesEditor />}
       {connected && currentProcess === 'entriesEditor' && <EntriesEditor />}
-      {/* {connected && currentProcess === 'templatesListSelectModal' && (
-        <TemplatesSelectModal />
-      )} */}
     </>
   );
 };
