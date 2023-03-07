@@ -31,7 +31,6 @@ const EntriesList = () => {
 
   const [templateSelected, setTemplateSelected] = useState({
     template: '',
-    templateTitle: '',
   });
 
   const paginatedData = paginate(entries, currentPage, pageSize);
@@ -50,9 +49,17 @@ const EntriesList = () => {
   const onChangeSelectTemplatesHandler = (event: any) => {
     setTemplateSelected({
       template: event.target.value,
-      templateTitle: event.target.label,
     });
   };
+
+  const templateSelectedInputs = templates.find(
+    (template) => template.id === templateSelected.template
+  )?.inputs;
+
+  const entryTitle = templateSelectedInputs?.find(
+    (input) => input.type === 'text'
+  )?.label;
+
   const templateSelectorSubmitHandler = () => {
     dispatch(setCurrentProcess('entriesEditor'));
     // Create new entry
@@ -60,8 +67,8 @@ const EntriesList = () => {
     dispatch(
       addNewEntry({
         id,
-        // template title
-        title: templateSelected.templateTitle,
+        // label of first text input
+        title: entryTitle || 'Untitled',
         // template id
         template: templateSelected.template,
         updatedAt: Date.now(),
