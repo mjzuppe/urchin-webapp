@@ -9,11 +9,9 @@ interface BreadcrumbsProps {
 const Breadcrumbs = ({ section, title }: BreadcrumbsProps): JSX.Element => {
   return (
     <div className={classes.breadcrumbs_section}>
-      <p>
-        <span className={classes.section_text}>{section}</span> {''}
-        <span>&gt;</span> {''}
-        <span className={classes.title_text}>{title}</span>
-      </p>
+      <p className={classes.section_text}>{section}</p> {''}
+      <p>&gt;</p> {''}
+      <p className={classes.title_text}>{title}</p>
     </div>
   );
 };

@@ -2,6 +2,9 @@
 @import 'src/styles/mediaQueries';
 
 .breadcrumbs_section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   p {
     font-size: 0.9rem;
     font-weight: 400;
@@ -13,6 +16,9 @@
   }
   .title_text {
     color: rgba($white, 0.6);
+    &::first-letter {
+      text-transform: uppercase;
+    }
   }
 
   @include breakpoint-max(phoneMax) {
