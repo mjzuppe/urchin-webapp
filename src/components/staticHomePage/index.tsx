@@ -89,36 +89,9 @@ const StaticHomePage = () => {
         <div className={classes.flex_container}>
           <p>Built On:</p>
           <div className={classes.img_wrapper}>
-            <Image
-              src={arweave}
-              alt="Arweave logo"
-              width={200}
-              height={45}
-              style={{
-                height: 'auto',
-                width: 'auto',
-              }}
-            />
-            <Image
-              src={solana}
-              alt="Solana logo"
-              width={196}
-              height={30}
-              style={{
-                height: 'auto',
-                width: 'auto',
-              }}
-            />
-            <Image
-              src={bundlr}
-              alt="Bundlr logo"
-              width={140}
-              height={52}
-              style={{
-                height: 'auto',
-                width: 'auto',
-              }}
-            />
+            <Image src={arweave} alt="Arweave logo" width={200} height={45} />
+            <Image src={solana} alt="Solana logo" width={196} height={30} />
+            <Image src={bundlr} alt="Bundlr logo" width={140} height={52} />
           </div>
         </div>
 
@@ -165,10 +138,6 @@ const StaticHomePage = () => {
                 alt="Data gouvernance icon"
                 width={32}
                 height={32}
-                style={{
-                  height: 'auto',
-                  width: 'auto',
-                }}
               />
               <h4>Data Gouvernance</h4>
               <p>
@@ -182,11 +151,6 @@ const StaticHomePage = () => {
                 alt="Media & Data icon"
                 width={32}
                 height={32}
-                style={{
-                  maxWidth: '100%',
-                  height: 'auto',
-                  width: 'auto',
-                }}
               />
               <h4>Media & Data</h4>
               <p>
@@ -200,10 +164,6 @@ const StaticHomePage = () => {
                 alt="Taxonomy icon"
                 width={32}
                 height={32}
-                style={{
-                  height: 'auto',
-                  width: 'auto',
-                }}
               />
               <h4>Taxonomy</h4>
               <p>

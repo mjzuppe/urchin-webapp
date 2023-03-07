@@ -39,6 +39,7 @@ const Hourglass = () => {
                 <div className={classes.triangle_up}></div>
                 <div className={classes.triangle_down}></div>
               </div>
+
               <p className={classes.text}>
                 Publishing your data to the blockchain
               </p>
