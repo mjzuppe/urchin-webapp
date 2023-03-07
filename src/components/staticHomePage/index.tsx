@@ -95,28 +95,28 @@ const StaticHomePage = () => {
               width={200}
               height={45}
               style={{
-                maxWidth: '100%',
                 height: 'auto',
+                width: 'auto',
               }}
             />
             <Image
               src={solana}
               alt="Solana logo"
-              width={195}
+              width={196}
               height={30}
               style={{
-                maxWidth: '100%',
                 height: 'auto',
+                width: 'auto',
               }}
             />
             <Image
               src={bundlr}
               alt="Bundlr logo"
               width={140}
-              height={50}
+              height={52}
               style={{
-                maxWidth: '100%',
                 height: 'auto',
+                width: 'auto',
               }}
             />
           </div>
@@ -151,8 +151,8 @@ const StaticHomePage = () => {
                 width={650}
                 height={535}
                 style={{
-                  maxWidth: '100%',
                   height: 'auto',
+                  width: 'auto',
                 }}
               />
             </div>
@@ -166,8 +166,8 @@ const StaticHomePage = () => {
                 width={32}
                 height={32}
                 style={{
-                  maxWidth: '100%',
                   height: 'auto',
+                  width: 'auto',
                 }}
               />
               <h4>Data Gouvernance</h4>
@@ -185,6 +185,7 @@ const StaticHomePage = () => {
                 style={{
                   maxWidth: '100%',
                   height: 'auto',
+                  width: 'auto',
                 }}
               />
               <h4>Media & Data</h4>
@@ -200,8 +201,8 @@ const StaticHomePage = () => {
                 width={32}
                 height={32}
                 style={{
-                  maxWidth: '100%',
                   height: 'auto',
+                  width: 'auto',
                 }}
               />
               <h4>Taxonomy</h4>
