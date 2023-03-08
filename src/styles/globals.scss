@@ -161,6 +161,7 @@ main {
 
 .single_input {
   width: 300px;
+  min-height: 100px;
   @include breakpoint-max(phoneMax) {
     width: 100%;
   }
