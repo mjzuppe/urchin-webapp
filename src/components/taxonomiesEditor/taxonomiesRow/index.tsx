@@ -26,6 +26,8 @@ const TaxonomiesRow = (): JSX.Element => {
 
   const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
 
+  //
+
   useEffect(() => {
     taxonomies.length === 0 &&
       dispatch(
@@ -57,7 +59,6 @@ const TaxonomiesRow = (): JSX.Element => {
     const { name, value } = event.target;
     if (name === 'label' && value !== '') {
       setTaxonomyLabelError(false);
-      // setErrorIndex(-1);
     }
     const newTaxonomy = {
       [name]: value.trimStart(),

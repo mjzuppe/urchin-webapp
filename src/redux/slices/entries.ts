@@ -4,10 +4,12 @@ import { Entry } from '../../types/Entries';
 interface EntriesState {
   entries: Array<Entry>;
   currentEntryId?: string;
+  isPublishable: boolean;
 }
 
 const initialState: EntriesState = {
   entries: [],
+  isPublishable: false,
 };
 
 const slice = createSlice({
@@ -29,6 +31,9 @@ const slice = createSlice({
       const { entryIndex, taxonomies } = payload;
       state.entries[entryIndex].taxonomies = taxonomies;
     },
+    setIsPublishable: (state, { payload }: PayloadAction<any>) => {
+      state.isPublishable = payload;
+    },
   },
 });
 
@@ -37,6 +42,7 @@ export const {
   updateEntryInputs,
   addEntryTaxonomies,
   setCurrentEntryId,
+  setIsPublishable,
 } = slice.actions;
 
 // Reducer

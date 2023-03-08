@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Styles
 import classes from './EntriesList.module.scss';
@@ -15,7 +15,11 @@ import { useAppSelector } from '../../utils/useAppSelector';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
-import { addNewEntry, setCurrentEntryId } from '../../redux/slices/entries';
+import {
+  addNewEntry,
+  setCurrentEntryId,
+  setIsPublishable,
+} from '../../redux/slices/entries';
 
 // Components
 import OrangeButton from '../shared/orangeButton';
@@ -85,6 +89,20 @@ const EntriesList = () => {
     dispatch(setCurrentProcess('entriesEditor'));
     dispatch(setCurrentEntryId(id));
   };
+
+  // if taxonomies array has no empty value setIsPublishable to true
+  useEffect(() => {
+    if (entries.length) {
+      const isPublishable = entries.every((entry) => {
+        return (
+          entry.inputs.length > 0 &&
+          entry.taxonomies.length > 0 &&
+          entry.title !== ''
+        );
+      });
+      isPublishable && dispatch(setIsPublishable(true));
+    }
+  }, [entries, dispatch]);
 
   return (
     <>

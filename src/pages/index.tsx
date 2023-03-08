@@ -31,11 +31,9 @@ const Home: NextPage = (): JSX.Element => {
     (state: any) => state.process.currentProcess
   );
 
-  const templates = useAppSelector((state: any) => state.templates.templates);
-  const entries = useAppSelector((state: any) => state.entries.entries);
-  const taxonomies = useAppSelector(
-    (state: any) => state.taxonomies.taxonomies
-  );
+  const templates = useAppSelector((state: any) => state.templates);
+  const entries = useAppSelector((state: any) => state.entries);
+  const taxonomies = useAppSelector((state: any) => state.taxonomies);
 
   useEffect(() => {
     dispatch(setCurrentProcess(currentProcess));
@@ -59,9 +57,9 @@ const Home: NextPage = (): JSX.Element => {
       {connected && currentProcess === 'templatesEditor' && <TemplatesEditor />}
       {connected && currentProcess === 'entriesEditor' && <EntriesEditor />}
 
-      {(templates.length > 0 ||
-        entries.length > 0 ||
-        taxonomies.length > 0) && <PublishBanner />}
+      {(templates.isPublishable ||
+        entries.isPublishable ||
+        taxonomies.isPublishable) && <PublishBanner />}
     </>
   );
 };

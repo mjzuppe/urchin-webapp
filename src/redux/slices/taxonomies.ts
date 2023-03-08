@@ -3,6 +3,7 @@ import { Taxonomy } from '../../types/Taxonomies';
 
 interface TaxonomiesState {
   taxonomies: Array<Taxonomy>;
+  isPublishable: boolean;
 }
 
 // Define the initial state using that type
@@ -17,6 +18,7 @@ const initialState: TaxonomiesState = {
     //   arweaveAddress: 'string',
     // },
   ],
+  isPublishable: false,
 };
 
 const slice = createSlice({
@@ -42,6 +44,9 @@ const slice = createSlice({
       const { grandParent, index } = payload;
       state.taxonomies[index].grandParent = grandParent;
     },
+    setIsPublishable: (state, { payload }: PayloadAction<any>) => {
+      state.isPublishable = payload;
+    },
   },
 });
 
@@ -51,6 +56,7 @@ export const {
   updateTaxonomyLabel,
   updateTaxonomyParent,
   updateTaxonomyGrandParent,
+  setIsPublishable,
 } = slice.actions;
 
 // Reducer
