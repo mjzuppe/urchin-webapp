@@ -7,9 +7,9 @@ import classes from './PublishBanner.module.scss';
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 
 //  SDK
-import { Keypair } from '@solana/web3.js';
-import urchin from 'urchin';
-import bs58 from 'bs58';
+// import { Keypair } from '@solana/web3.js';
+// import urchin from 'urchin';
+// import bs58 from 'bs58';
 
 const PublishBanner = (): JSX.Element => {
   const [openChangeLog, setOpenChangeLog] = useState(false);

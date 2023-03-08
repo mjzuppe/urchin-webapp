@@ -15,7 +15,6 @@ import { setTemplatesEditorActiveTab } from '../../redux/slices/templates';
 
 // Components
 import BackButton from '../shared/backButton';
-import OrangeButton from '../shared/orangeButton';
 import TemplatesInputsList from './templatesInputsList';
 import TemplatesTaxonomies from './templatesTaxonomies';
 import Breadcrumbs from '../shared/breadcrumbs';
@@ -31,6 +30,8 @@ const TemplatesEditor = (): JSX.Element => {
 
   // Handlers
   const handleBackClick = () => {
+    // prevent Handle back if errors
+
     dispatch(setCurrentProcess('default'));
   };
 
