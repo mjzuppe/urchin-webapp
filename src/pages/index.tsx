@@ -24,7 +24,7 @@ import TemplatesEditor from '../components/templatesEditor';
 import EntriesEditor from '../components/entriesEditor';
 import SEO from '../components/shared/seo';
 
-const Home: NextPage = (): JSX.Element => {
+const Home: NextPage = ({ metas }: any): JSX.Element => {
   const dispatch = useAppDispatch();
   const { publicKey, connected } = useWallet();
   const activeTab = useAppSelector((state: any) => state.subNav.activeTab);
@@ -38,7 +38,13 @@ const Home: NextPage = (): JSX.Element => {
 
   return (
     <>
-      <SEO />
+      <SEO
+        url={metas.url}
+        title={metas.title}
+        description={metas.description}
+        imgUrl={metas.imgUrl}
+        keywords={metas.keywords}
+      />
       <Script
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=G-4K3HB47RXE`}
@@ -77,3 +83,17 @@ const Home: NextPage = (): JSX.Element => {
 
 // Use SSG here to get the data at build time
 export default Home;
+
+export async function getStaticProps() {
+  const metas = {
+    url: 'https://www.urchin.so',
+    title: 'Urchin | Headless CMS for web3',
+    description:
+      'The first content management system designed for blockchain dApps, Urchin is an open-source SDK and protocol which is scaleable and flexible. Manage content and media with a structured taxonomy system to instantly start building your content layer for decentralized applications.',
+    imgUrl: 'https://www.urchin.so/assets/bg.png',
+    keywords: 'headless cms, blockchain, Solana, bundlr, arweave, open-source',
+  };
+  return {
+    props: metas,
+  };
+}
