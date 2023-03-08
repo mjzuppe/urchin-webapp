@@ -54,7 +54,7 @@ const ListRow = ({
                 <p>{solanaAddress}</p>
               </div>
             )}
-            {activeTab !== 'Taxonomies' && arweaveAddress !== ' ' && (
+            {activeTab !== 'Taxonomies' && arweaveAddress !== '' && (
               <div className={classes.arweave}>
                 <Image
                   src="/assets/arweave-logo.svg"

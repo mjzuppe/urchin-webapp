@@ -41,11 +41,6 @@ const TemplatesEditor = (): JSX.Element => {
     };
   };
 
-  const handleSaveClick = () => {
-    console.log('handleSaveClick');
-    // save template
-  };
-
   const templates = useAppSelector((state) => state.templates.templates);
 
   const currentTemplateId = useAppSelector(
@@ -64,16 +59,6 @@ const TemplatesEditor = (): JSX.Element => {
         title={currentTemplate?.title || 'Untitled'}
       />
 
-      <div className="editors_action_btn_wrapper">
-        {/* if Edit add Revision nbr + last updated date */}
-        <OrangeButton
-          btnText={'Save'}
-          type="submit"
-          // TODO: change callback when available (add template in templates array from redux)
-          callBack={handleSaveClick}
-          className="save_btn"
-        />
-      </div>
       {/*  Templates Editor Nav */}
       <nav className={classes.templates_editor_nav}>
         <ul>
