@@ -22,7 +22,6 @@ const SEO: React.FC<SEOProps> = ({
       {/* <!-- Primary Meta Tags --> */}
       <meta name="title" content={title} />
       <meta name="description" content={description} />
-
       <meta name="keywords" content={keywords} />
       {/* <meta
         name="facebook-domain-verification"
@@ -47,7 +46,7 @@ const SEO: React.FC<SEOProps> = ({
 };
 
 SEO.defaultProps = {
-  url: 'https://www.urchin.so/',
+  url: 'https://www.urchin.so',
   title: 'Urchin | Headless CMS for web3',
   description:
     'The first content management system designed for blockchain dApps, Urchin is an open-source SDK and protocol which is scaleable and flexible. Manage content and media with a structured taxonomy system to instantly start building your content layer for decentralized applications.',

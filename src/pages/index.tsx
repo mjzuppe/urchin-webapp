@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
-import Head from 'next/head';
 import { useEffect } from 'react';
+import Script from 'next/script';
 
 // Libs
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -22,6 +22,7 @@ import QuickUpload from '../components/quickUpload';
 import TaxonomiesEditor from '../components/taxonomiesEditor';
 import TemplatesEditor from '../components/templatesEditor';
 import EntriesEditor from '../components/entriesEditor';
+import SEO from '../components/shared/seo';
 
 const Home: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -37,9 +38,24 @@ const Home: NextPage = (): JSX.Element => {
 
   return (
     <>
-      <Head>
-        <title>Playa - WebApp</title>
-      </Head>
+      <SEO />
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=G-4K3HB47RXE`}
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-4K3HB47RXE');
+          `,
+        }}
+      />
+
       {!connected && <StaticHomePage />}
       {connected && currentProcess === 'default' && (
         <>
