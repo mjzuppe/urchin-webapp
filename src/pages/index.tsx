@@ -24,6 +24,10 @@ import TemplatesEditor from '../components/templatesEditor';
 import EntriesEditor from '../components/entriesEditor';
 import SEO from '../components/shared/seo';
 
+// SDK
+import { Keypair, Signer } from '@solana/web3.js';
+import Urchin from 'urchin';
+
 const Home: NextPage = ({ metas }: any): JSX.Element => {
   const dispatch = useAppDispatch();
   const { publicKey, connected } = useWallet();
@@ -35,6 +39,10 @@ const Home: NextPage = ({ metas }: any): JSX.Element => {
   useEffect(() => {
     dispatch(setCurrentProcess(currentProcess));
   });
+
+  // const connection = Urchin({
+  //   payer:Keypair: ,
+  // });
 
   return (
     <>
