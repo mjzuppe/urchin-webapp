@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 // Styles
 import classes from './TaxonomiesRow.module.scss';
 
@@ -21,7 +21,7 @@ import { CustomSelectSingle } from '../../shared/customSelectSingle';
 
 const TaxonomiesRow = (): JSX.Element => {
   const dispatch = useAppDispatch();
-
+  const [taxonomyLabelError, setTaxonomyLabelError] = useState<boolean>(false);
   const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
 
   useEffect(() => {
@@ -32,8 +32,8 @@ const TaxonomiesRow = (): JSX.Element => {
           parent: '',
           grandParent: '',
           updatedAt: Date.now(),
-          solanaAddress: '3SJ...93A',
-          arweaveAddress: '5SX...5AB',
+          solanaAddress: '',
+          arweaveAddress: '',
         })
       );
   });
@@ -53,6 +53,7 @@ const TaxonomiesRow = (): JSX.Element => {
     index: number
   ) => {
     const { name, value } = event.target;
+    name === 'label' && value !== '' && setTaxonomyLabelError(false);
 
     const newTaxonomy = {
       [name]: value.trimStart(),
@@ -74,6 +75,8 @@ const TaxonomiesRow = (): JSX.Element => {
     index: number
   ) => {
     const { name, value } = event.target;
+    // if value empty render an error
+    name === 'label' && value === '' && setTaxonomyLabelError(true);
     const newTaxonomy = {
       [name]: value.trimEnd(),
       index,
@@ -112,6 +115,9 @@ const TaxonomiesRow = (): JSX.Element => {
                 onChange={(event) => onChangeTaxonomyHandler(event, index)}
                 onBlur={(event) => onBlurTaxonomyHandler(event, index)}
               />
+              {taxonomyLabelError && (
+                <span className="error_message">Label is required</span>
+              )}
             </div>
             <div className={`single_input input_wrapper`}>
               <CustomSelectSingle

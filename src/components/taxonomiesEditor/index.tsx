@@ -38,8 +38,8 @@ const TaxonomiesEditor = (): JSX.Element => {
         parent: '',
         grandParent: '',
         updatedAt: Date.now(),
-        solanaAddress: '3SJ...93A',
-        arweaveAddress: '5SX...5AB',
+        solanaAddress: '',
+        arweaveAddress: '',
       })
     );
     setTaxonomiesCount(taxonomiesCount + 1);
@@ -48,20 +48,11 @@ const TaxonomiesEditor = (): JSX.Element => {
   return (
     <section className={classes.taxonomies_editor_section}>
       <BackButton onClickHandler={handleBackClick} />
-      {/* TODO: change that */}
-      <Breadcrumbs section="Taxonomies" title={'?????'} />
+      <Breadcrumbs section="Taxonomies" title={'Taxonomy List'} />
 
-      <div className="editors_action_btn_wrapper">
-        {/* if Edit add Revision nbr + last updated date */}
-        <OrangeButton
-          // change text if Edit
-          btnText={'Save'}
-          type="submit"
-          // TODO: change callback when available
-          callBack={() => console.log('save')}
-          className="save_btn"
-        />
-      </div>
+      {/* add Revision nbr + last updated date */}
+      {/* <div className="editors_action_btn_wrapper">
+      </div> */}
       {/* Taxonomies form */}
       <div className={classes.taxonomies_form}>
         <TaxonomiesRow />

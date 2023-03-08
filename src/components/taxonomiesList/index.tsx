@@ -50,7 +50,7 @@ const TaxonomiesList = () => {
             return (
               <ListRow
                 key={taxonomy?.label}
-                title={taxonomy?.label}
+                title={taxonomy?.label || 'Untitled'}
                 updatedAt={updatedAt}
                 solanaAddress={solanaAddress}
                 onClickEditHandler={() => {
