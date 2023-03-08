@@ -1,6 +1,6 @@
 import { NextPage } from 'next';
 import { useEffect } from 'react';
-import Script from 'next/script';
+// import Script from 'next/script';
 
 // Libs
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -22,13 +22,13 @@ import QuickUpload from '../components/quickUpload';
 import TaxonomiesEditor from '../components/taxonomiesEditor';
 import TemplatesEditor from '../components/templatesEditor';
 import EntriesEditor from '../components/entriesEditor';
-import SEO from '../components/shared/seo';
+// import SEO from '../components/shared/seo';
 
 // SDK
 import { Keypair, Signer } from '@solana/web3.js';
 import Urchin from 'urchin';
 
-const Home: NextPage = ({ metas }: any): JSX.Element => {
+const Home: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const { publicKey, connected } = useWallet();
   const activeTab = useAppSelector((state: any) => state.subNav.activeTab);
@@ -46,13 +46,8 @@ const Home: NextPage = ({ metas }: any): JSX.Element => {
 
   return (
     <>
-      <SEO
-        url={metas?.url}
-        title={metas?.title}
-        description={metas?.description}
-        imgUrl={metas?.imgUrl}
-        keywords={metas?.keywords}
-      />
+      {/*⚠️ Not working here because no SSG */}
+      {/* <SEO />
       <Script
         strategy="afterInteractive"
         src={`https://www.googletagmanager.com/gtag/js?id=G-4K3HB47RXE`}
@@ -68,7 +63,7 @@ const Home: NextPage = ({ metas }: any): JSX.Element => {
             gtag('config', 'G-4K3HB47RXE');
           `,
         }}
-      />
+      /> */}
 
       {!connected && <StaticHomePage />}
       {connected && currentProcess === 'default' && (
@@ -91,17 +86,3 @@ const Home: NextPage = ({ metas }: any): JSX.Element => {
 
 // Use SSG here to get the data at build time
 export default Home;
-
-export async function getStaticProps() {
-  const metas = {
-    url: 'https://www.urchin.so',
-    title: 'Urchin | Headless CMS for web3',
-    description:
-      'The first content management system designed for blockchain dApps, Urchin is an open-source SDK and protocol which is scaleable and flexible. Manage content and media with a structured taxonomy system to instantly start building your content layer for decentralized applications.',
-    imgUrl: 'https://www.urchin.so/assets/bg.png',
-    keywords: 'headless cms, blockchain, Solana, bundlr, arweave, open-source',
-  };
-  return {
-    props: metas,
-  };
-}

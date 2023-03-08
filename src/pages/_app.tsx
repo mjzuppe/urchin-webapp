@@ -1,6 +1,6 @@
 import type { AppProps } from 'next/app';
 import { useMemo } from 'react';
-
+import Script from 'next/script';
 // Redux
 import { store, persistor } from '../redux/store';
 import { Provider } from 'react-redux';
@@ -19,6 +19,7 @@ const inter = Inter({
 
 // Components
 import Layout from '../components/layout';
+import SEO from '../components/shared/seo';
 
 // Wallet Provider
 import {
@@ -107,6 +108,23 @@ export default function App({ Component, pageProps }: AppProps) {
   );
   return (
     <div className={inter.className}>
+      <SEO />
+      <Script
+        strategy="afterInteractive"
+        src={`https://www.googletagmanager.com/gtag/js?id=G-4K3HB47RXE`}
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-4K3HB47RXE');
+          `,
+        }}
+      />
       <Provider store={store}>
         {/* TODO: add loading component below */}
         <PersistGate loading={null} persistor={persistor}>
