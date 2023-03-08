@@ -25,6 +25,7 @@ import EntriesEditor from '../components/entriesEditor';
 import SEO from '../components/shared/seo';
 
 const Home: NextPage = ({ metas }: any): JSX.Element => {
+  console.log('metas', metas);
   const dispatch = useAppDispatch();
   const { publicKey, connected } = useWallet();
   const activeTab = useAppSelector((state: any) => state.subNav.activeTab);
@@ -39,11 +40,11 @@ const Home: NextPage = ({ metas }: any): JSX.Element => {
   return (
     <>
       <SEO
-        url={metas.url}
-        title={metas.title}
-        description={metas.description}
-        imgUrl={metas.imgUrl}
-        keywords={metas.keywords}
+        url={metas?.url}
+        title={metas?.title}
+        description={metas?.description}
+        imgUrl={metas?.imgUrl}
+        keywords={metas?.keywords}
       />
       <Script
         strategy="afterInteractive"
