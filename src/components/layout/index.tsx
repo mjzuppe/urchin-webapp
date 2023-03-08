@@ -9,7 +9,9 @@ export default function Layout({ children }: any) {
   return (
     <>
       <Navbar />
-      <main style={{ paddingTop: '90px' }}>{children}</main>
+      <main style={{ paddingTop: '90px', paddingBottom: '120px' }}>
+        {children}
+      </main>
     </>
   );
 }
