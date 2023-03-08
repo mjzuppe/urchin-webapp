@@ -1,6 +1,5 @@
 import { NextPage } from 'next';
 import { useEffect } from 'react';
-// import Script from 'next/script';
 
 // Libs
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -22,11 +21,10 @@ import QuickUpload from '../components/quickUpload';
 import TaxonomiesEditor from '../components/taxonomiesEditor';
 import TemplatesEditor from '../components/templatesEditor';
 import EntriesEditor from '../components/entriesEditor';
-// import SEO from '../components/shared/seo';
 
 const Home: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const { publicKey, connected } = useWallet();
+  const { connected } = useWallet();
   const activeTab = useAppSelector((state: any) => state.subNav.activeTab);
   const currentProcess = useAppSelector(
     (state: any) => state.process.currentProcess
@@ -38,25 +36,6 @@ const Home: NextPage = (): JSX.Element => {
 
   return (
     <>
-      {/*⚠️ Not working here because no SSG */}
-      {/* <SEO />
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=G-4K3HB47RXE`}
-      />
-      <Script
-        id="google-analytics"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-4K3HB47RXE');
-          `,
-        }}
-      /> */}
-
       {!connected && <StaticHomePage />}
       {connected && currentProcess === 'default' && (
         <>

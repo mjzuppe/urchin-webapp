@@ -44,8 +44,8 @@ const TemplatesList = () => {
       addNewTemplate({
         title: '',
         updatedAt: Date.now(),
-        solanaAddress: '3SJ...93A',
-        arweaveAddress: '5SX...5AB',
+        solanaAddress: '',
+        arweaveAddress: '',
         entriesNbr: 0,
         id: id,
         inputs: [],

@@ -42,7 +42,7 @@ const EntriesList = () => {
   const selectOptionList = templates.map((template) => {
     return {
       value: template.id,
-      label: template.title,
+      label: template.title || 'Untitled',
     };
   });
 

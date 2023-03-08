@@ -111,7 +111,7 @@ main {
   border-radius: $radius-s;
   border: none;
   padding: 0.5rem 1rem;
-  height: 2.5rem;
+  height: 45px;
   width: 100%;
   color: $white;
   &:focus {
@@ -161,6 +161,7 @@ main {
 
 .single_input {
   width: 300px;
+  min-height: 100px;
   @include breakpoint-max(phoneMax) {
     width: 100%;
   }

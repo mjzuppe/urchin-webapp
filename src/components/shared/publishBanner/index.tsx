@@ -6,6 +6,11 @@ import classes from './PublishBanner.module.scss';
 // Lib
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
 
+//  SDK
+// import { Keypair } from '@solana/web3.js';
+// import urchin from 'urchin';
+// import bs58 from 'bs58';
+
 const PublishBanner = (): JSX.Element => {
   const [openChangeLog, setOpenChangeLog] = useState(false);
 
@@ -32,6 +37,24 @@ const PublishBanner = (): JSX.Element => {
       changeName: 'Lorem',
     },
   ];
+
+  // const payer = Keypair.fromSecretKey(
+  //   bs58.decode(
+  //     '4X6qkYZcGwu5KtLMLUXhf3F17born5or7sQwd3pfcFzuUkds5MPu3tUZXziboUzFVPqFJyqJXRsBzCEBY5exeQb5'
+  //   )
+  // );
+
+  // const connection = urchin({
+  //   payer,
+  //   cluster: 'devnet',
+  // });
+  // console.log('connection', connection);
+
+  // const test = connection.taxonomy.create({
+  //   label: 'testing',
+  //   owner: payer,
+  // });
+  // console.log('test', test);
 
   return (
     <div className={classes.banner_container}>
