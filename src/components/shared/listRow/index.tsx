@@ -43,16 +43,18 @@ const ListRow = ({
             <p>Updated {getFullDate(updatedAt)}</p>
           </div>
           <div className={classes.tablet_flex}>
-            <div className={classes.solana}>
-              <Image
-                src="/assets/solana-logo.svg"
-                width={isDesktop ? 20 : 10}
-                height={isDesktop ? 20 : 10}
-                alt="Solana logo - token address"
-              />
-              <p>{solanaAddress}</p>
-            </div>
-            {activeTab !== 'Taxonomies' && (
+            {solanaAddress !== '' && (
+              <div className={classes.solana}>
+                <Image
+                  src="/assets/solana-logo.svg"
+                  width={isDesktop ? 20 : 10}
+                  height={isDesktop ? 20 : 10}
+                  alt="Solana logo - token address"
+                />
+                <p>{solanaAddress}</p>
+              </div>
+            )}
+            {activeTab !== 'Taxonomies' && arweaveAddress !== ' ' && (
               <div className={classes.arweave}>
                 <Image
                   src="/assets/arweave-logo.svg"
