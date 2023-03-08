@@ -5,6 +5,13 @@ import classes from './TemplatesInputsList.module.scss';
 
 // Utils
 import { useAppSelector } from '../../../utils/useAppSelector';
+import { useAppDispatch } from '../../../utils/useAppDispatch';
+
+// redux
+import {
+  addOrUpdateTemplateInput,
+  addOrUpdateTemplateTitle,
+} from '../../../redux/slices/templates';
 
 // Types
 import { TemplatesInputs } from '../../../types/Templates';
@@ -14,10 +21,24 @@ import OrangeButton from '../../shared/orangeButton';
 import TemplatesInputsRow from '../templatesInputsRow';
 
 const TemplatesInputsList = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const [templateTitleError, setTemplateTitleError] = useState<boolean>(false);
   const templates = useAppSelector((state) => state.templates.templates);
-  const currentTemplate = templates[templates.length - 1];
+
+  const currentTemplateId = useAppSelector(
+    (state) => state.templates.currentTemplateId
+  );
+
+  const currentTemplate = templates.find(
+    (template) => template.id === currentTemplateId
+  );
+
+  const currentTemplateIndex = templates.findIndex(
+    (template) => template.id === currentTemplate?.id
+  );
+
   const [templateInputs, setTemplateInputs] = useState<TemplatesInputs>(
-    currentTemplate.inputs.length > 0
+    currentTemplate && currentTemplate.inputs.length > 0
       ? currentTemplate.inputs
       : [
           {
@@ -44,10 +65,62 @@ const TemplatesInputsList = (): JSX.Element => {
       return newState;
     });
     setTemplateInputsCount(templateInputsCount + 1);
+    dispatch(
+      addOrUpdateTemplateInput({
+        templateIndex: currentTemplateIndex,
+        input: templateInputs,
+      } as any)
+    );
+  };
+
+  const onChangeTemplateTitleHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    event.target.value !== '' && setTemplateTitleError(false);
+    dispatch(
+      addOrUpdateTemplateTitle({
+        templateIndex: currentTemplateIndex,
+        title: event.target.value,
+      } as any)
+    );
+  };
+
+  const onBlurTemplateTitleHandler = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    // if value empty render an error
+    event.target.value === '' && setTemplateTitleError(true);
+    dispatch(
+      addOrUpdateTemplateTitle({
+        templateIndex: currentTemplateIndex,
+        title: event.target.value,
+      } as any)
+    );
   };
 
   return (
     <section className={classes.templates_inputs_list}>
+      <div className="single_row_form">
+        <div className={`single_input input_wrapper`}>
+          <label className="form_label" data-required={'required'}>
+            Template Title
+          </label>
+          <input
+            required
+            type="text"
+            name="label"
+            placeholder="Enter template Name"
+            className="form_input"
+            value={currentTemplate?.title || ''}
+            maxLength={200}
+            onChange={(event) => onChangeTemplateTitleHandler(event)}
+            onBlur={onBlurTemplateTitleHandler}
+          />
+          {templateTitleError && (
+            <span className="error_message">Template title is required</span>
+          )}
+        </div>
+      </div>
       <div className={classes.templates_inputs_form}>
         <TemplatesInputsRow
           templateInputs={templateInputs}

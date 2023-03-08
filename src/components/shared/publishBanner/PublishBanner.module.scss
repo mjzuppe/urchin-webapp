@@ -1,0 +1,163 @@
+@import 'src/styles/variables';
+@import 'src/styles/mediaQueries';
+
+.banner_container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  min-height: 100px;
+  width: 100%;
+  background: $violet;
+  color: $white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem 3.125rem;
+
+  @include breakpoint-max(tabletMax) {
+    padding: 1.5rem;
+  }
+  @include breakpoint-max(phoneMax) {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+}
+
+.banner_text {
+  font-size: 1.2rem;
+  font-weight: 500;
+  @include breakpoint-max(phoneMax) {
+    font-size: 0.9rem;
+  }
+}
+
+.changes {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+
+.changelog {
+  margin-top: 1.5rem;
+  @include breakpoint-max(phoneMax) {
+    font-size: 0.9rem;
+  }
+}
+
+.category {
+  font-weight: 700;
+}
+
+.flex_right {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  @include breakpoint-max(phoneMax) {
+    justify-content: space-between;
+  }
+}
+
+.cancel_button {
+  font-size: 0.8rem;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.publish_button {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: $violet;
+  background: $white;
+  border: 1px solid $white;
+  border-radius: $radius-s;
+  padding: 8px 16px;
+  width: 12.5rem;
+}
+
+// Modal
+.DialogContent {
+  position: fixed;
+  background-color: $orange;
+  border-radius: $radius-l;
+  box-shadow: 0 0 35px 0 rgba(50, 74, 136, 0.15);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  max-width: 520px;
+  height: 220px;
+  padding: 25px 35px;
+  animation: contentShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  color: $white;
+  font-size: 0.9rem;
+}
+
+.AlertDialogTitle {
+  color: $white;
+  font-size: 1.375rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.AlertDialogDescription {
+  color: $white;
+  font-size: 0.9rem;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.cancel_btn {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: $white;
+  background: $orange;
+  border: 1px solid $white;
+  border-radius: $radius-s;
+  padding: 8px 16px;
+  width: 13rem;
+
+  @include breakpoint-max(phoneMax) {
+    font-size: 0.75rem;
+  }
+}
+.confirm_btn {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: $orange;
+  background: $white;
+  border: 1px solid $white;
+  border-radius: $radius-s;
+  padding: 8px 16px;
+  width: 13rem;
+
+  @include breakpoint-max(phoneMax) {
+    font-size: 0.75rem;
+  }
+}
+
+@keyframes overlayShow {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes contentShow {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -48%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}

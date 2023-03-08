@@ -15,7 +15,7 @@ import { useAppSelector } from '../../utils/useAppSelector';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
-import { addNewEntry } from '../../redux/slices/entries';
+import { addNewEntry, setCurrentEntryId } from '../../redux/slices/entries';
 
 // Components
 import OrangeButton from '../shared/orangeButton';
@@ -23,38 +23,14 @@ import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
 import { CustomSelectSingle } from '../shared/customSelectSingle';
 
-// TODO: REPLACE WITH REAL DATA
-const mockdata = [
-  {
-    title: 'My first Post',
-    updatedAt: 'June 2nd 2023',
-    solanaAddress: '3SJ...93A',
-    arweaveAddress: '5SX...5AB',
-  },
-  {
-    title: 'Another post title',
-    updatedAt: 'May 27th 2022',
-    solanaAddress: '3SJ...93A',
-    arweaveAddress: '5SX...5AB',
-  },
-  {
-    title: 'My third post',
-    updatedAt: 'January 12th 2022',
-    solanaAddress: '3SJ...93A',
-    arweaveAddress: '5SX...5AB',
-  },
-];
-
 const EntriesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const entries = useAppSelector((state) => state.entries.entries);
   const templates = useAppSelector((state) => state.templates.templates);
-  console.log('templates', templates);
 
   const [templateSelected, setTemplateSelected] = useState({
     template: '',
-    templateTitle: '',
   });
 
   const paginatedData = paginate(entries, currentPage, pageSize);
@@ -73,9 +49,17 @@ const EntriesList = () => {
   const onChangeSelectTemplatesHandler = (event: any) => {
     setTemplateSelected({
       template: event.target.value,
-      templateTitle: event.target.label,
     });
   };
+
+  const templateSelectedInputs = templates.find(
+    (template) => template.id === templateSelected.template
+  )?.inputs;
+
+  const entryTitle = templateSelectedInputs?.find(
+    (input) => input.type === 'text'
+  )?.label;
+
   const templateSelectorSubmitHandler = () => {
     dispatch(setCurrentProcess('entriesEditor'));
     // Create new entry
@@ -83,8 +67,8 @@ const EntriesList = () => {
     dispatch(
       addNewEntry({
         id,
-        // template title
-        title: templateSelected.templateTitle,
+        // label of first text input
+        title: entryTitle || 'Untitled',
         // template id
         template: templateSelected.template,
         updatedAt: Date.now(),
@@ -94,6 +78,12 @@ const EntriesList = () => {
         taxonomies: [],
       })
     );
+    dispatch(setCurrentEntryId(id));
+  };
+
+  const entriesEditorEditHandler = (id: string) => {
+    dispatch(setCurrentProcess('entriesEditor'));
+    dispatch(setCurrentEntryId(id));
   };
 
   return (
@@ -112,9 +102,9 @@ const EntriesList = () => {
             )}
           </AlertDialog.Trigger>
           <AlertDialog.Portal>
-            <AlertDialog.Overlay className={classes.DialogOverlay} />
-            <AlertDialog.Content className={classes.DialogContent}>
-              <AlertDialog.Title className={classes.AlertDialogTitle}>
+            <AlertDialog.Overlay className="DialogOverlay" />
+            <AlertDialog.Content className="DialogContent">
+              <AlertDialog.Title className="AlertDialogTitle">
                 Choose a template
               </AlertDialog.Title>
 
@@ -134,9 +124,9 @@ const EntriesList = () => {
                 />
               </div>
 
-              <div className={classes.AlertDialogActions}>
+              <div className="AlertDialogActions">
                 <AlertDialog.Action asChild>
-                  <div className={classes.submit_btn_container}>
+                  <div className="submit_btn_container">
                     <OrangeButton
                       btnText={'Submit'}
                       className={classes.submit_btn}
@@ -146,7 +136,7 @@ const EntriesList = () => {
                   </div>
                 </AlertDialog.Action>
                 <AlertDialog.Cancel asChild>
-                  <button type="button" className={classes.cancel_btn}>
+                  <button type="button" className="cancel_btn">
                     Cancel
                   </button>
                 </AlertDialog.Cancel>
@@ -162,12 +152,11 @@ const EntriesList = () => {
             return (
               <ListRow
                 key={updatedAt}
-                // TODO change that
                 title={title}
                 updatedAt={updatedAt}
                 solanaAddress={solanaAddress}
                 arweaveAddress={arweaveAddress}
-                id={entry.id}
+                onClickEditHandler={() => entriesEditorEditHandler(entry.id)}
               />
             );
           })}
@@ -180,7 +169,7 @@ const EntriesList = () => {
           )}
         </div>
         <Pagination
-          items={mockdata.length}
+          items={entries.length}
           pageSize={pageSize}
           currentPage={currentPage}
           onPageChange={onPageChange}

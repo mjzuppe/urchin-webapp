@@ -17,7 +17,7 @@ const Hourglass = () => {
           <button>Launch Dialog</button>
         </Dialog.Trigger>
         <Dialog.Portal>
-          <Dialog.Overlay className={classes.DialogOverlay} />
+          <Dialog.Overlay className="DialogOverlay" />
           <VisuallyHidden.Root asChild>
             <Dialog.Title>Uploading data</Dialog.Title>
           </VisuallyHidden.Root>
@@ -39,6 +39,7 @@ const Hourglass = () => {
                 <div className={classes.triangle_up}></div>
                 <div className={classes.triangle_down}></div>
               </div>
+
               <p className={classes.text}>
                 Publishing your data to the blockchain
               </p>

@@ -1,5 +1,4 @@
 import dynamic from 'next/dynamic';
-import Script from 'next/script';
 
 // Styles
 import Image from 'next/image';
@@ -34,7 +33,6 @@ const WalletMultiButtonDynamic = dynamic(
 
 // Components
 import Separator from '../shared/separator';
-import SEO from '../shared/seo';
 
 const StaticHomePage = () => {
   const { connected } = useWallet();
@@ -43,24 +41,6 @@ const StaticHomePage = () => {
 
   return (
     <>
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=G-4K3HB47RXE`}
-      />
-      <Script
-        id="google-analytics"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-4K3HB47RXE');
-          `,
-        }}
-      />
-
-      <SEO />
       <div className={classes.background_wrapper}>
         <Image
           alt="Shapes"
@@ -89,36 +69,9 @@ const StaticHomePage = () => {
         <div className={classes.flex_container}>
           <p>Built On:</p>
           <div className={classes.img_wrapper}>
-            <Image
-              src={arweave}
-              alt="Arweave logo"
-              width={200}
-              height={45}
-              style={{
-                maxWidth: '100%',
-                height: 'auto',
-              }}
-            />
-            <Image
-              src={solana}
-              alt="Solana logo"
-              width={195}
-              height={30}
-              style={{
-                maxWidth: '100%',
-                height: 'auto',
-              }}
-            />
-            <Image
-              src={bundlr}
-              alt="Bundlr logo"
-              width={140}
-              height={50}
-              style={{
-                maxWidth: '100%',
-                height: 'auto',
-              }}
-            />
+            <Image src={arweave} alt="Arweave logo" width={200} height={45} />
+            <Image src={solana} alt="Solana logo" width={196} height={30} />
+            <Image src={bundlr} alt="Bundlr logo" width={140} height={52} />
           </div>
         </div>
 
@@ -140,9 +93,9 @@ const StaticHomePage = () => {
               <h3>Start Building With Urchin Content Studio</h3>
               <p>Start building with Urchin without any code.</p>
               {/* TODO: Btn hidden for now */}
-              {/* <WalletMultiButtonDynamic className={classes.btn_wallet_connect}>
+              <WalletMultiButtonDynamic className={classes.btn_wallet_connect}>
                 {!connected ? 'Connect Wallet' : null}
-              </WalletMultiButtonDynamic> */}
+              </WalletMultiButtonDynamic>
             </div>
             <div className={classes.flex_wrapper_right}>
               <Image
@@ -151,8 +104,8 @@ const StaticHomePage = () => {
                 width={650}
                 height={535}
                 style={{
-                  maxWidth: '100%',
                   height: 'auto',
+                  width: 'auto',
                 }}
               />
             </div>
@@ -165,10 +118,6 @@ const StaticHomePage = () => {
                 alt="Data gouvernance icon"
                 width={32}
                 height={32}
-                style={{
-                  maxWidth: '100%',
-                  height: 'auto',
-                }}
               />
               <h4>Data Gouvernance</h4>
               <p>
@@ -182,10 +131,6 @@ const StaticHomePage = () => {
                 alt="Media & Data icon"
                 width={32}
                 height={32}
-                style={{
-                  maxWidth: '100%',
-                  height: 'auto',
-                }}
               />
               <h4>Media & Data</h4>
               <p>
@@ -199,10 +144,6 @@ const StaticHomePage = () => {
                 alt="Taxonomy icon"
                 width={32}
                 height={32}
-                style={{
-                  maxWidth: '100%',
-                  height: 'auto',
-                }}
               />
               <h4>Taxonomy</h4>
               <p>

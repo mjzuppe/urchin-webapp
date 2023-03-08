@@ -131,7 +131,7 @@
   align-items: center;
   gap: 7.5rem;
   width: fit-content;
-  margin: 14rem auto 0;
+  margin: 12rem auto 0;
   @include breakpoint-max(tabletMax) {
     margin: 6rem auto 0;
     flex-direction: column;

@@ -5,6 +5,7 @@ import classes from './TemplatesList.module.scss';
 
 // Libs
 import { v4 as uuidv4 } from 'uuid';
+import * as AlertDialog from '@radix-ui/react-alert-dialog';
 
 // utils
 import paginate from '../../utils/paginate';
@@ -14,43 +15,20 @@ import { useAppSelector } from '../../utils/useAppSelector';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
-import { addNewTemplate } from '../../redux/slices/templates';
+import {
+  addNewTemplate,
+  setCurrentTemplateId,
+} from '../../redux/slices/templates';
 
 // Components
 import OrangeButton from '../shared/orangeButton';
 import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
 
-// const mockdata = [
-//   {
-//     title: 'Template 1',
-//     updatedAt: 'June 2nd 2023',
-//     solanaAddress: '3SJ...93A',
-//     arweaveAddress: '5SX...5AB',
-//     entriesNbr: 4,
-//   },
-//   {
-//     title: 'Template 2',
-//     updatedAt: 'May 27th 2022',
-//     solanaAddress: '3SJ...93A',
-//     arweaveAddress: '5SX...5AB',
-//     entriesNbr: 1,
-//   },
-//   {
-//     title: 'Template 3',
-//     updatedAt: 'January 12th 2022',
-//     solanaAddress: '3SJ...93A',
-//     arweaveAddress: '5SX...5AB',
-//     entriesNbr: 3,
-//   },
-// ];
-
 const TemplatesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const templates = useAppSelector((state) => state.templates.templates);
-
-  console.log('templates', templates);
 
   const paginatedData = paginate(templates, currentPage, pageSize);
 
@@ -64,7 +42,7 @@ const TemplatesList = () => {
     const id = uuidv4();
     dispatch(
       addNewTemplate({
-        title: `Template ${templates.length + 1}`,
+        title: '',
         updatedAt: Date.now(),
         solanaAddress: '3SJ...93A',
         arweaveAddress: '5SX...5AB',
@@ -74,6 +52,12 @@ const TemplatesList = () => {
         taxonomies: [],
       })
     );
+    dispatch(setCurrentTemplateId(id));
+  };
+
+  const templatesEditorEditHandler = (id: string) => {
+    dispatch(setCurrentProcess('templatesEditor'));
+    dispatch(setCurrentTemplateId(id));
   };
 
   return (
@@ -85,12 +69,57 @@ const TemplatesList = () => {
           type={'button'}
           callBack={templatesEditorHandler}
         />
-        <OrangeButton
-          btnText={'Import'}
-          callBack={() => console.log('Import')}
-          type={'button'}
-          invert
-        />
+        {/* Modal */}
+        <AlertDialog.Root>
+          <AlertDialog.Trigger asChild>
+            {/* For some reason OrangeButton Component is not working here. To investigate later */}
+            <button className={classes.import_button} type="button">
+              Import
+            </button>
+          </AlertDialog.Trigger>
+          <AlertDialog.Portal>
+            <AlertDialog.Overlay className="DialogOverlay" />
+            <AlertDialog.Content className="DialogContent">
+              <AlertDialog.Title className="AlertDialogTitle">
+                Import a Template
+              </AlertDialog.Title>
+
+              <div className={`input_wrapper`}>
+                <label className="form_label">String Address</label>
+                <input
+                  type="text"
+                  name="token_address"
+                  placeholder="Enter token address"
+                  className="form_input "
+                  id={classes.token_address_input}
+                  value={''}
+                  onChange={() => {
+                    console.log('onChange');
+                  }}
+                  // onBlur={onBlurTemplateInputHandler}
+                />
+              </div>
+
+              <div className="AlertDialogActions">
+                <AlertDialog.Action asChild>
+                  <div className="submit_btn_container">
+                    <OrangeButton
+                      btnText={'Import'}
+                      className={classes.submit_btn}
+                      type={'button'}
+                      callBack={() => console.log('Import')}
+                    />
+                  </div>
+                </AlertDialog.Action>
+                <AlertDialog.Cancel asChild>
+                  <button type="button" className="cancel_btn">
+                    Cancel
+                  </button>
+                </AlertDialog.Cancel>
+              </div>
+            </AlertDialog.Content>
+          </AlertDialog.Portal>
+        </AlertDialog.Root>
       </div>
       {/* Templates List */}
       <div className={classes.templates_list}>
@@ -105,12 +134,15 @@ const TemplatesList = () => {
             } = template;
             return (
               <ListRow
-                key={title}
-                title={title}
+                key={template.id}
+                title={title || 'Untitled'}
                 updatedAt={updatedAt}
                 solanaAddress={solanaAddress}
                 arweaveAddress={arweaveAddress}
                 entriesNbr={entriesNbr}
+                onClickEditHandler={() =>
+                  templatesEditorEditHandler(template.id)
+                }
               />
             );
           })}

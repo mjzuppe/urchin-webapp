@@ -1,12 +1,5 @@
 @import 'src/styles/variables.scss';
 
-.DialogOverlay {
-  background-color: rgba($background, 0.8);
-  position: fixed;
-  inset: 0;
-  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
 .DialogContent {
   position: fixed;
   background-color: $orange;
@@ -34,7 +27,7 @@
   margin: auto;
   width: fit-content;
   margin-bottom: 1rem;
-  // animation: rotate 15s linear infinite;
+  animation: 15s rotate ease infinite;
 }
 
 .triangle_up {
@@ -52,64 +45,44 @@
   animation: colorFill 15s ease infinite;
 }
 .triangle_down {
-  background: rgba($white, 0.8);
   width: 130px;
   height: 70px;
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
   background: linear-gradient(to top, rgba($white, 0.8) 50%, $background 50%);
   background-size: 200% 200%;
   background-position: bottom;
-  animation: colorFill 15s ease infinite;
+  animation: colorFillInvert 15s ease infinite;
 }
 
 @keyframes colorFill {
   0% {
     background-position: bottom;
   }
-  50% {
-    background-position: top;
-  }
+
   100% {
-    background-position: bottom;
+    background-position: top;
   }
 }
 @keyframes colorFillInvert {
   0% {
     background-position: top;
   }
-  50% {
+
+  100% {
     background-position: bottom;
   }
+}
+
+@keyframes rotate {
+  0% {
+    transform: none;
+  }
+
+  90% {
+    transform: none;
+  }
+
   100% {
-    background-position: top;
-  }
-}
-
-// @keyframes rotate {
-//   from {
-//     transform: rotate(0deg);
-//   }
-//   to {
-//     transform: rotate(1000deg);
-//   }
-// }
-
-@keyframes overlayShow {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes contentShow {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -48%) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: rotate(180deg);
   }
 }

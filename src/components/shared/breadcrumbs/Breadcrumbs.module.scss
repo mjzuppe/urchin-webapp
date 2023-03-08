@@ -1,0 +1,28 @@
+@import 'src/styles/variables';
+@import 'src/styles/mediaQueries';
+
+.breadcrumbs_section {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  p {
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+  }
+
+  .section_text {
+    color: rgba($orange, 0.6);
+  }
+  .title_text {
+    color: rgba($white, 0.6);
+    &::first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  @include breakpoint-max(phoneMax) {
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+  }
+}

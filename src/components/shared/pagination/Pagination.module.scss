@@ -7,8 +7,9 @@
   left: 50%;
   transform: translateX(-50%);
   width: fit-content;
-  margin: 2rem auto;
+  margin: 2rem auto 1rem auto;
   text-align: center;
+
   @include breakpoint-max(phoneMax) {
     position: revert;
     transform: none;

@@ -65,7 +65,7 @@ export const CustomSelectSingle = ({
         value: selectedState,
       },
     };
-    onBlur(event);
+    onBlur && onBlur(event);
   };
 
   return (
