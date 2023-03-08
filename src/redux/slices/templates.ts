@@ -5,11 +5,13 @@ interface TemplatesState {
   templates: Array<Templates>;
   templatesEditorActiveTab: string;
   currentTemplateId?: string;
+  isPublishable: boolean;
 }
 
 const initialState: TemplatesState = {
   templates: [],
   templatesEditorActiveTab: 'Inputs',
+  isPublishable: false,
 };
 
 const slice = createSlice({
@@ -47,6 +49,9 @@ const slice = createSlice({
       const { templateIndex, taxonomy } = payload;
       state.templates[templateIndex].taxonomies = taxonomy;
     },
+    setIsPublishable: (state, { payload }: PayloadAction<any>) => {
+      state.isPublishable = payload;
+    },
   },
 });
 
@@ -59,6 +64,7 @@ export const {
   addOrUpdateTemplateTitle,
   deleteTemplateInput,
   addNewTemplateTaxonomy,
+  setIsPublishable,
 } = slice.actions;
 
 // Reducer

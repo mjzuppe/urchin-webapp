@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Styles
 import classes from './TaxonomiesList.module.scss';
@@ -11,6 +11,7 @@ import { useAppSelector } from '../../utils/useAppSelector';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
+import { setIsPublishable } from '../../redux/slices/taxonomies';
 
 // Components
 import OrangeButton from '../shared/orangeButton';
@@ -31,6 +32,16 @@ const TaxonomiesList = () => {
   const taxonomiesEditorHandler = () => {
     dispatch(setCurrentProcess('taxonomiesEditor'));
   };
+
+  // if taxonomies array has no empty value setIsPublishable to true
+  useEffect(() => {
+    if (taxonomies.length) {
+      const isPublishable = taxonomies.every((taxonomy) => {
+        return taxonomy.label !== '';
+      });
+      isPublishable && dispatch(setIsPublishable(true));
+    }
+  }, [taxonomies, dispatch]);
 
   return (
     <section className={classes.taxonomies_list_section}>

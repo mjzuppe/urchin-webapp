@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // Styles
 import classes from './TaxonomiesEditor.module.scss';
 

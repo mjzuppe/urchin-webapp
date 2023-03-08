@@ -21,6 +21,7 @@ import QuickUpload from '../components/quickUpload';
 import TaxonomiesEditor from '../components/taxonomiesEditor';
 import TemplatesEditor from '../components/templatesEditor';
 import EntriesEditor from '../components/entriesEditor';
+import PublishBanner from '../components/shared/publishBanner';
 
 const Home: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -29,6 +30,10 @@ const Home: NextPage = (): JSX.Element => {
   const currentProcess = useAppSelector(
     (state: any) => state.process.currentProcess
   );
+
+  const templates = useAppSelector((state: any) => state.templates);
+  const entries = useAppSelector((state: any) => state.entries);
+  const taxonomies = useAppSelector((state: any) => state.taxonomies);
 
   useEffect(() => {
     dispatch(setCurrentProcess(currentProcess));
@@ -51,6 +56,10 @@ const Home: NextPage = (): JSX.Element => {
       )}
       {connected && currentProcess === 'templatesEditor' && <TemplatesEditor />}
       {connected && currentProcess === 'entriesEditor' && <EntriesEditor />}
+
+      {(templates.isPublishable ||
+        entries.isPublishable ||
+        taxonomies.isPublishable) && <PublishBanner />}
     </>
   );
 };
