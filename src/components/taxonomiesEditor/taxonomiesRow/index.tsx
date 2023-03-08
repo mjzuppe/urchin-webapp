@@ -22,6 +22,8 @@ import { CustomSelectSingle } from '../../shared/customSelectSingle';
 const TaxonomiesRow = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const [taxonomyLabelError, setTaxonomyLabelError] = useState<boolean>(false);
+  const [errorIndex, setErrorIndex] = useState<number>(-1);
+
   const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
 
   useEffect(() => {
@@ -53,8 +55,10 @@ const TaxonomiesRow = (): JSX.Element => {
     index: number
   ) => {
     const { name, value } = event.target;
-    name === 'label' && value !== '' && setTaxonomyLabelError(false);
-
+    if (name === 'label' && value !== '') {
+      setTaxonomyLabelError(false);
+      // setErrorIndex(-1);
+    }
     const newTaxonomy = {
       [name]: value.trimStart(),
       grandparent: '',
@@ -75,8 +79,11 @@ const TaxonomiesRow = (): JSX.Element => {
     index: number
   ) => {
     const { name, value } = event.target;
-    // if value empty render an error
-    name === 'label' && value === '' && setTaxonomyLabelError(true);
+    if (name === 'label' && value === '') {
+      setTaxonomyLabelError(true);
+      setErrorIndex(index);
+    }
+
     const newTaxonomy = {
       [name]: value.trimEnd(),
       index,
@@ -97,7 +104,7 @@ const TaxonomiesRow = (): JSX.Element => {
 
   return (
     <>
-      {taxonomies?.map((taxonomie, index) => (
+      {taxonomies?.map((taxonomy, index) => (
         <div className={classes.taxonomies_row_container} key={index}>
           <div className="single_row_form">
             <div className={`single_input input_wrapper`}>
@@ -110,12 +117,14 @@ const TaxonomiesRow = (): JSX.Element => {
                 name="label"
                 placeholder="Enter a label"
                 className="form_input"
-                value={taxonomie.label || ''}
+                value={taxonomy.label || ''}
                 maxLength={24}
                 onChange={(event) => onChangeTaxonomyHandler(event, index)}
                 onBlur={(event) => onBlurTaxonomyHandler(event, index)}
               />
-              {taxonomyLabelError && (
+              {/* Input error for correct index */}
+
+              {taxonomyLabelError && errorIndex === index && (
                 <span className="error_message">Label is required</span>
               )}
             </div>
@@ -133,7 +142,7 @@ const TaxonomiesRow = (): JSX.Element => {
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                   onChangeTaxonomyHandler(event, index)
                 }
-                value={taxonomie.parent}
+                value={taxonomy.parent}
                 className={`${classes.genres_container}`}
                 placeholder={'No parent Selected'}
               />
