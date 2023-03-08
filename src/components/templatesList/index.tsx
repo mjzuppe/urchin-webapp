@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Styles
 import classes from './TemplatesList.module.scss';
@@ -18,6 +18,7 @@ import { setCurrentProcess } from '../../redux/slices/process';
 import {
   addNewTemplate,
   setCurrentTemplateId,
+  setIsPublishable,
 } from '../../redux/slices/templates';
 
 // Components
@@ -59,6 +60,16 @@ const TemplatesList = () => {
     dispatch(setCurrentProcess('templatesEditor'));
     dispatch(setCurrentTemplateId(id));
   };
+
+  // if taxonomies array has no empty value setIsPublishable to true
+  useEffect(() => {
+    if (templates.length) {
+      const isPublishable = templates.every((templates) => {
+        return templates.title !== '';
+      });
+      isPublishable && dispatch(setIsPublishable(true));
+    }
+  }, [templates, dispatch]);
 
   return (
     <section className={classes.templates_list_section}>

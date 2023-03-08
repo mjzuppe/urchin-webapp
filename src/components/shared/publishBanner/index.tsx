@@ -15,14 +15,16 @@ const PublishBanner = (): JSX.Element => {
   const [openChangeLog, setOpenChangeLog] = useState(false);
 
   const changelogHandler = () => {
-    console.log('changelogHandler');
     setOpenChangeLog(!openChangeLog);
   };
+
   const publishHandler = () => {
     console.log('publishHandler');
+    // TODO: Run publish process
   };
 
   const cancelHandler = () => {
+    // TODO: Purge Preflight + reset redux????
     console.log('cancelHandler');
   };
 
@@ -37,6 +39,10 @@ const PublishBanner = (): JSX.Element => {
       changeName: 'Lorem',
     },
   ];
+
+  const preflightHandler = () => {
+    console.log('preflightHandler');
+  };
 
   // const payer = Keypair.fromSecretKey(
   //   bs58.decode(
@@ -94,7 +100,11 @@ const PublishBanner = (): JSX.Element => {
         {/* Publish Modal */}
         <AlertDialog.Root>
           <AlertDialog.Trigger asChild>
-            <button type="button" className={classes.publish_button}>
+            <button
+              type="button"
+              className={classes.publish_button}
+              onClick={preflightHandler}
+            >
               Publish
             </button>
           </AlertDialog.Trigger>
