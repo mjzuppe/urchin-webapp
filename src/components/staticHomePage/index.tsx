@@ -119,7 +119,7 @@ const StaticHomePage = () => {
                 width={32}
                 height={32}
               />
-              <h4>Data Gouvernance</h4>
+              <h4>Data Governance</h4>
               <p>
                 Use templates to format and validate your content and media
                 entries.
