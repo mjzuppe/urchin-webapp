@@ -40,7 +40,18 @@ const Home: NextPage = (): JSX.Element => {
   });
 
   return (
-    <>
+    <div
+      className="container"
+      style={{
+        paddingBottom:
+          connected &&
+          (templates.isPublishable ||
+            entries.isPublishable ||
+            taxonomies.isPublishable)
+            ? '90px'
+            : '0',
+      }}
+    >
       {!connected && <StaticHomePage />}
       {connected && currentProcess === 'default' && (
         <>
@@ -57,10 +68,11 @@ const Home: NextPage = (): JSX.Element => {
       {connected && currentProcess === 'templatesEditor' && <TemplatesEditor />}
       {connected && currentProcess === 'entriesEditor' && <EntriesEditor />}
 
-      {(templates.isPublishable ||
-        entries.isPublishable ||
-        taxonomies.isPublishable) && <PublishBanner />}
-    </>
+      {connected &&
+        (templates.isPublishable ||
+          entries.isPublishable ||
+          taxonomies.isPublishable) && <PublishBanner />}
+    </div>
   );
 };
 

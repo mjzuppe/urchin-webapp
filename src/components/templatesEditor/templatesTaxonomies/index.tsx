@@ -22,7 +22,6 @@ const TemplatesTaxonomies = (): JSX.Element => {
   const currentTemplate = templates.find(
     (template) => template.id === currentTemplateId
   );
-  console.log('currentTemplate', currentTemplate);
 
   const currentTemplateIndex = templates.findIndex(
     (template) => template.id === currentTemplate?.id

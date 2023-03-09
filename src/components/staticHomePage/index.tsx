@@ -48,6 +48,7 @@ const StaticHomePage = () => {
           placeholder="blur"
           quality={100}
           fill
+          sizes="100vw, 100vh"
           style={{
             objectFit: 'cover',
           }}
