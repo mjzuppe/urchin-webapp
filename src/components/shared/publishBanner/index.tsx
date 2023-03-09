@@ -63,7 +63,7 @@ const PublishBanner = (): JSX.Element => {
       // parent, => should be a publickKey new PublicKey(string)
     };
   });
-  console.log('taxonomiesToPublish', taxonomiesToPublish);
+  // console.log('taxonomiesToPublish', taxonomiesToPublish);
 
   // !! Templates
   const templates = useAppSelector((state: any) => state.templates.templates);
@@ -79,15 +79,16 @@ const PublishBanner = (): JSX.Element => {
     const inputs = template.inputs.map((input: TemplateInputs) => {
       const { label, type, options, validateInputs, minLength, maxLength } =
         input;
+
       return {
         label,
         type,
         ...(type === 'select' && { options }),
         ...(validateInputs && {
-          // validation: Joi.string().min(minLength).max(maxLength),
           validation: {
-            minLength,
-            maxLength,
+            type,
+            min: minLength,
+            max: maxLength,
           },
         }),
       };
@@ -122,8 +123,8 @@ const PublishBanner = (): JSX.Element => {
     // console.log('createTaxonomy', createTaxonomy);
 
     // Create template
-    // const createTemplate = connection.template.create(templatesToPublish);
-    // console.log('createTemplate', createTemplate);
+    const createTemplate = connection.template.create(templatesToPublish);
+    console.log('createTemplate', createTemplate);
 
     // Preflight NOK yet
     // const preflight = await connection.preflight();
