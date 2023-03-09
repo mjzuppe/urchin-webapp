@@ -95,7 +95,8 @@
   }
 
   &:disabled {
-    background: $white;
+    background: $orange;
+    color: $white;
     cursor: not-allowed;
     // used here to overwrite default GenericOrange Btn behavior
     pointer-events: revert;

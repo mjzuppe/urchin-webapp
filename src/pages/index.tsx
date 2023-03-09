@@ -44,9 +44,10 @@ const Home: NextPage = (): JSX.Element => {
       className="container"
       style={{
         paddingBottom:
-          templates.isPublishable ||
-          entries.isPublishable ||
-          taxonomies.isPublishable
+          connected &&
+          (templates.isPublishable ||
+            entries.isPublishable ||
+            taxonomies.isPublishable)
             ? '90px'
             : '0',
       }}
@@ -67,9 +68,10 @@ const Home: NextPage = (): JSX.Element => {
       {connected && currentProcess === 'templatesEditor' && <TemplatesEditor />}
       {connected && currentProcess === 'entriesEditor' && <EntriesEditor />}
 
-      {(templates.isPublishable ||
-        entries.isPublishable ||
-        taxonomies.isPublishable) && <PublishBanner />}
+      {connected &&
+        (templates.isPublishable ||
+          entries.isPublishable ||
+          taxonomies.isPublishable) && <PublishBanner />}
     </div>
   );
 };
