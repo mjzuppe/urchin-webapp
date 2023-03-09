@@ -40,7 +40,17 @@ const Home: NextPage = (): JSX.Element => {
   });
 
   return (
-    <>
+    <div
+      className="container"
+      style={{
+        paddingBottom:
+          templates.isPublishable ||
+          entries.isPublishable ||
+          taxonomies.isPublishable
+            ? '90px'
+            : '0',
+      }}
+    >
       {!connected && <StaticHomePage />}
       {connected && currentProcess === 'default' && (
         <>
@@ -60,7 +70,7 @@ const Home: NextPage = (): JSX.Element => {
       {(templates.isPublishable ||
         entries.isPublishable ||
         taxonomies.isPublishable) && <PublishBanner />}
-    </>
+    </div>
   );
 };
 
