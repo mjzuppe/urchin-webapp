@@ -119,16 +119,16 @@ const PublishBanner = (): JSX.Element => {
     // console.log('connection', connection);
 
     // Create taxonomy
-    // const createTaxonomy = connection.taxonomy.create(taxonomiesToPublish);
-    // console.log('createTaxonomy', createTaxonomy);
+    const createTaxonomy = connection.taxonomy.create(taxonomiesToPublish);
+    console.log('createTaxonomy', createTaxonomy);
 
     // Create template
     const createTemplate = connection.template.create(templatesToPublish);
     console.log('createTemplate', createTemplate);
 
     // Preflight NOK yet
-    // const preflight = await connection.preflight();
-    // console.log('PREFLIGHT::', preflight);
+    const preflight = await connection.preflight();
+    console.log('PREFLIGHT::', preflight);
   };
 
   // TODO:  the same for entries
