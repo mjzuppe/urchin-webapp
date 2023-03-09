@@ -10,7 +10,8 @@ import { useAppSelector } from '../../../utils/useAppSelector';
 
 //  SDK
 import { Keypair } from '@solana/web3.js';
-import urchin from 'urchin';
+// TODO: comment out when pushing to dev. Until pkg on npm
+// import urchin from 'urchin';
 import bs58 from 'bs58';
 
 interface Taxonomy {
