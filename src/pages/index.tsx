@@ -5,11 +5,13 @@ import { useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 // redux
+import { setDisplayBanner } from '../redux/slices/banner';
 import { setCurrentProcess } from '../redux/slices/process';
 
 // Utils
 import { useAppSelector } from '../utils/useAppSelector';
 import { useAppDispatch } from '../utils/useAppDispatch';
+import useWindowSize from '../utils/useWindowSize';
 
 // Components
 import Subnav from '../components/subnav';
@@ -25,6 +27,8 @@ import PublishBanner from '../components/shared/publishBanner';
 
 const Home: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
+  const { width } = useWindowSize();
+  const isMobile = width! < 1024;
   const { connected } = useWallet();
   const activeTab = useAppSelector((state: any) => state.subNav.activeTab);
   const currentProcess = useAppSelector(
@@ -39,16 +43,34 @@ const Home: NextPage = (): JSX.Element => {
     dispatch(setCurrentProcess(currentProcess));
   });
 
+  const displayBanner = useAppSelector(
+    (state: any) => state.banner.displayBanner
+  );
+
+  useEffect(() => {
+    if (connected) {
+      if (
+        templates.isPublishable ||
+        entries.isPublishable ||
+        taxonomies.isPublishable
+      ) {
+        dispatch(setDisplayBanner(true));
+      } else {
+        dispatch(setDisplayBanner(false));
+      }
+    }
+  }, [displayBanner, connected, templates, entries, taxonomies, dispatch]);
+
   return (
     <div
       className="container"
       style={{
         paddingBottom:
-          connected &&
-          (templates.isPublishable ||
-            entries.isPublishable ||
-            taxonomies.isPublishable)
-            ? '90px'
+          // connected && displayBanner ? '90px' : isMobile ? '135px' : '0',
+          connected && displayBanner && !isMobile
+            ? '110px'
+            : isMobile && connected
+            ? '135px'
             : '0',
       }}
     >
@@ -68,13 +90,9 @@ const Home: NextPage = (): JSX.Element => {
       {connected && currentProcess === 'templatesEditor' && <TemplatesEditor />}
       {connected && currentProcess === 'entriesEditor' && <EntriesEditor />}
 
-      {connected &&
-        (templates.isPublishable ||
-          entries.isPublishable ||
-          taxonomies.isPublishable) && <PublishBanner />}
+      {displayBanner && <PublishBanner />}
     </div>
   );
 };
 
-// Use SSG here to get the data at build time
 export default Home;
