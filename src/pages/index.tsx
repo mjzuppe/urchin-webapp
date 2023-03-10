@@ -38,6 +38,7 @@ const Home: NextPage = (): JSX.Element => {
   const templates = useAppSelector((state: any) => state.templates);
   const entries = useAppSelector((state: any) => state.entries);
   const taxonomies = useAppSelector((state: any) => state.taxonomies);
+  const assets = useAppSelector((state: any) => state.assets);
 
   useEffect(() => {
     dispatch(setCurrentProcess(currentProcess));
@@ -52,14 +53,23 @@ const Home: NextPage = (): JSX.Element => {
       if (
         templates.isPublishable ||
         entries.isPublishable ||
-        taxonomies.isPublishable
+        taxonomies.isPublishable ||
+        assets.isPublishable
       ) {
         dispatch(setDisplayBanner(true));
       } else {
         dispatch(setDisplayBanner(false));
       }
     }
-  }, [displayBanner, connected, templates, entries, taxonomies, dispatch]);
+  }, [
+    displayBanner,
+    connected,
+    templates,
+    entries,
+    taxonomies,
+    dispatch,
+    assets,
+  ]);
 
   return (
     <div

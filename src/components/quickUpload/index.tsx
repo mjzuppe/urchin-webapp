@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 // Styles
@@ -7,29 +7,44 @@ import classes from './QuickUpload.module.scss';
 // Utils
 import { useAppDispatch } from '../../utils/useAppDispatch';
 import useForceUpdate from '../../utils/useForceUpdate';
+import { useAppSelector } from '../../utils/useAppSelector';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
+import { addNewAsset, setIsPublishable } from '../../redux/slices/assets';
 
 // lib
 import { FileUploader } from 'react-drag-drop-files';
+
+// types
+import { File } from '../../types/Files';
 
 // Components
 import BackButton from '../shared/backButton';
 import OrangeButton from '../shared/orangeButton';
 
-interface File {
-  name: string;
-  size: number;
-  type: string;
-  lastModified: number;
-  lastModifiedDate: Date;
-  webkitRelativePath: string;
-}
+// interface File {
+//   name: string;
+//   size: number;
+//   type: string;
+//   lastModified: number;
+//   lastModifiedDate: Date;
+//   // webkitRelativePath: string;
+// }
 
 const QuickUpload = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const [uploadForm, setUploadForm] = useState('');
+  // const [uploadForm, setUploadForm] = useState('');
+
+  const assets = useAppSelector((state) => state.assets.assets);
+  console.log('assets', assets);
+
+  // if taxonomies array has no empty value setIsPublishable to true
+  useEffect(() => {
+    if (assets.length) {
+      dispatch(setIsPublishable(true));
+    }
+  }, [assets, dispatch]);
 
   // Files upload
   const [files, setFiles] = useState<File[]>([]);
@@ -41,11 +56,26 @@ const QuickUpload = (): JSX.Element => {
 
   const forceUpdate = useForceUpdate();
 
-  const handleFileOnChange = (file: File) => {
+  const handleFileOnChange = (file: any) => {
     let newFiles: File[] = files;
     newFiles.push(file);
-    setFiles(newFiles);
     forceUpdate();
+    // TODO:
+    const reader = new FileReader();
+    reader.addEventListener(
+      'load',
+      () => {
+        // this will then display a text file
+        console.log(reader.result);
+        dispatch(addNewAsset({ original: reader.result }));
+      },
+      false
+    );
+
+    if (file) {
+      reader.readAsDataURL(file[0]);
+      // reader.readAsText(file[0]);
+    }
   };
 
   const removeFileHandler = (file: any) => {
@@ -58,17 +88,10 @@ const QuickUpload = (): JSX.Element => {
       <BackButton onClickHandler={handleBackClick} />
       <div className={classes.quickUpload_content_top}>
         <h3>Quick Upload</h3>
-        <OrangeButton
-          btnText="Save"
-          type="submit"
-          // TODO: change callback when available
-          callBack={() => console.log('save')}
-          className={classes.save_btn}
-        />
       </div>
       <div className={classes.quickUpload_content}>
         <form action="POST" className="form" name="quick_upload_form">
-          <div className="input_wrapper">
+          {/* <div className="input_wrapper">
             <label className="form_label">Name</label>
             <input
               type="text"
@@ -77,7 +100,7 @@ const QuickUpload = (): JSX.Element => {
               value={uploadForm}
               onChange={(e) => setUploadForm(e.target.value)}
             />
-          </div>
+          </div> */}
           <div className={classes.upload_section}>
             <div className={classes.upload_section_left}>
               <label className="form_label">Upload File(s)</label>
@@ -129,7 +152,7 @@ const QuickUpload = (): JSX.Element => {
                 })}
             </div>
           </div>
-          <div className="input_wrapper">
+          {/* <div className="input_wrapper">
             <label className="form_label">Description</label>
             <textarea
               placeholder="Enter file description"
@@ -137,7 +160,7 @@ const QuickUpload = (): JSX.Element => {
               // value={uploadForm}
               // onChange={(e) => setUploadForm(e.target.value)}
             />
-          </div>
+          </div> */}
         </form>
       </div>
     </section>
