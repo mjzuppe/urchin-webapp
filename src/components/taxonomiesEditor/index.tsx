@@ -40,6 +40,7 @@ const TaxonomiesEditor = (): JSX.Element => {
         updatedAt: Date.now(),
         solanaAddress: '',
         arweaveAddress: '',
+        publicKey: '',
       })
     );
     setTaxonomiesCount(taxonomiesCount + 1);

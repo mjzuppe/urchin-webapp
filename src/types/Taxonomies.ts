@@ -5,6 +5,7 @@ type Taxonomy = {
   updatedAt: number;
   solanaAddress: string;
   arweaveAddress: string;
+  publicKey: string;
 };
 
 type Taxonomies = Taxonomy[];

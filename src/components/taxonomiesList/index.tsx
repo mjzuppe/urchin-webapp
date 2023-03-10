@@ -18,6 +18,9 @@ import OrangeButton from '../shared/orangeButton';
 import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
 
+// SDK
+import connection from '../../utils/connection';
+
 const TaxonomiesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -37,11 +40,16 @@ const TaxonomiesList = () => {
   useEffect(() => {
     if (taxonomies.length) {
       const isPublishable = taxonomies.every((taxonomy) => {
-        return taxonomy.label !== '';
+        return taxonomy.label !== '' && taxonomy.publicKey === '';
       });
       isPublishable && dispatch(setIsPublishable(true));
     }
   }, [taxonomies, dispatch]);
+
+  useEffect(() => {
+    // const getAllTaxonomies = connection.taxonomy.get();
+    // console.log('getAll', getAllTaxonomies);
+  }, [connection.taxonomy]);
 
   return (
     <section className={classes.taxonomies_list_section}>

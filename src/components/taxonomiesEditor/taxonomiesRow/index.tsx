@@ -38,6 +38,7 @@ const TaxonomiesRow = (): JSX.Element => {
           updatedAt: Date.now(),
           solanaAddress: '',
           arweaveAddress: '',
+          publicKey: '',
         })
       );
   });
