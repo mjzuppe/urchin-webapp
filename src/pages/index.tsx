@@ -93,7 +93,7 @@ const Home: NextPage = (): JSX.Element => {
           {activeTab === 'Taxonomies' && <TaxonomiesList />}
         </>
       )}
-      {connected && currentProcess === 'quickUpload' && <QuickUpload />}
+      {/* {connected && currentProcess === 'quickUpload' && <QuickUpload />} */}
       {connected && currentProcess === 'taxonomiesEditor' && (
         <TaxonomiesEditor />
       )}

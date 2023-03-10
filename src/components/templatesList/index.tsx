@@ -90,9 +90,9 @@ const TemplatesList = () => {
           callBack={templatesEditorHandler}
         />
         {/* Modal */}
-        <AlertDialog.Root>
+        {/* <AlertDialog.Root>
           <AlertDialog.Trigger asChild>
-            {/* For some reason OrangeButton Component is not working here. To investigate later */}
+
             <button className={classes.import_button} type="button">
               Import
             </button>
@@ -139,7 +139,7 @@ const TemplatesList = () => {
               </div>
             </AlertDialog.Content>
           </AlertDialog.Portal>
-        </AlertDialog.Root>
+        </AlertDialog.Root> */}
       </div>
       {/* Templates List */}
       <div className={classes.templates_list}>
