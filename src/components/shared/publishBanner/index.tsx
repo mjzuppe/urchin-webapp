@@ -9,14 +9,12 @@ import * as AlertDialog from '@radix-ui/react-alert-dialog';
 import { useAppSelector } from '../../../utils/useAppSelector';
 
 //  SDK
-import { Keypair } from '@solana/web3.js';
-// TODO: comment out when pushing to dev. Until pkg on npm
-// import urchin from 'urchin';
-import bs58 from 'bs58';
+import connection from '../../../utils/connection';
 
 interface Taxonomy {
   label: string;
   parent?: string;
+  publicKey?: string;
 }
 
 interface TemplateInputs {
@@ -41,11 +39,6 @@ const PublishBanner = (): JSX.Element => {
     setOpenChangeLog(!openChangeLog);
   };
 
-  const publishHandler = () => {
-    console.log('publishHandler');
-    // TODO: Run publish process
-  };
-
   const cancelHandler = () => {
     // TODO: Purge Preflight + reset redux????
     console.log('cancelHandler');
@@ -55,16 +48,18 @@ const PublishBanner = (): JSX.Element => {
   const taxonomies = useAppSelector(
     (state: any) => state.taxonomies.taxonomies
   );
-  // console.log('taxonomies', taxonomies);
+  console.log('taxonomies', taxonomies);
 
   const taxonomiesToPublish = taxonomies.map((taxonomy: Taxonomy) => {
-    const { label, parent }: Taxonomy = taxonomy;
-    return {
-      label,
-      // parent, => should be a publickKey new PublicKey(string)
-    };
+    const { label, parent, publicKey }: Taxonomy = taxonomy;
+    if (publicKey === '') {
+      return {
+        label,
+        // parent, => should be a publicKey new PublicKey(string)
+      };
+    }
   });
-  // console.log('taxonomiesToPublish', taxonomiesToPublish);
+  console.log('taxonomiesToPublish', taxonomiesToPublish);
 
   // !! Templates
   const templates = useAppSelector((state: any) => state.templates.templates);
@@ -101,39 +96,44 @@ const PublishBanner = (): JSX.Element => {
       inputs,
     };
   });
-
   // console.log('templatesToPublish', templatesToPublish);
 
+  // !! ASSETS
+  // const assets = useAppSelector((state: any) => state.assets.assets);
+  // console.log('assets', assets);
+
+  // !! ENTRIES
+  const entries = useAppSelector((state: any) => state.entries.entries);
+  // console.log('entries', entries);
+
   const preflightHandler = async () => {
-    console.log('push to queue');
-    const payer = Keypair.fromSecretKey(
-      bs58.decode(
-        '4X6qkYZcGwu5KtLMLUXhf3F17born5or7sQwd3pfcFzuUkds5MPu3tUZXziboUzFVPqFJyqJXRsBzCEBY5exeQb5'
-      )
-    );
-
-    // TODO: comment out when pushing to dev. Until pkg on npm
-    // const connection = urchin({
-    //   payer,
-    //   cluster: 'devnet',
-    // });
-
-    // console.log('connection', connection);
-
     // Create taxonomy
-    // const createTaxonomy = connection.taxonomy.create(taxonomiesToPublish);
-    // console.log('createTaxonomy', createTaxonomy);
+    const createTaxonomy = connection.taxonomy.create(taxonomiesToPublish);
+    console.log('createTaxonomy', createTaxonomy);
 
     // Create template
     // const createTemplate = connection.template.create(templatesToPublish);
     // console.log('createTemplate', createTemplate);
 
+    // Create asset
+    // const createAsset = connection.asset.create(assets);
+    // console.log('createAsset', createAsset);
+
     // Preflight
-    // const preflight = await connection.preflight();
+    const preflight = await connection.preflight().then((res) => {
+      console.log('PREFLIGHT::', res);
+    });
     // console.log('PREFLIGHT::', preflight);
   };
 
-  // TODO:  the same for entries
+  const publishHandler = async () => {
+    // Send to chain
+    const sendToChain = await connection.process();
+    console.log('sendToChain', sendToChain);
+    // Reset state after publish
+  };
+
+  // TODO:  the same for entries + assets
   const taxonomiesChanges = {
     changeCategory: 'Taxonomies',
     //
