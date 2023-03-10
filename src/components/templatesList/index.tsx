@@ -26,6 +26,9 @@ import OrangeButton from '../shared/orangeButton';
 import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
 
+// SDK
+import connection from '../../utils/connection';
+
 const TemplatesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -60,6 +63,12 @@ const TemplatesList = () => {
     dispatch(setCurrentProcess('templatesEditor'));
     dispatch(setCurrentTemplateId(id));
   };
+
+  // Get taxonomies from blockchain on load
+  useEffect(() => {
+    // const getAllTemplates = connection.template.get();
+    // console.log('getAllTemplates', getAllTemplates);
+  }, []);
 
   // if taxonomies array has no empty value setIsPublishable to true
   useEffect(() => {
