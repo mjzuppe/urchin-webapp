@@ -1,10 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Taxonomy } from '../../types/Taxonomies';
-import connection from '../../utils/connection';
 
 interface TaxonomiesState {
-  // taxonomies: Array<Taxonomy>;
-  taxonomies: any;
+  taxonomies: Array<Taxonomy>;
   isPublishable: boolean;
 }
 

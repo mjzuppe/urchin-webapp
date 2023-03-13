@@ -38,12 +38,13 @@ const TaxonomiesList = () => {
 
   // if taxonomies array has no empty value setTaxonomiesIsPublishable to true
   useEffect(() => {
-    if (taxonomies.length) {
-      const isPublishable = taxonomies.some((taxonomy: any) => {
-        return taxonomy.label !== '' && taxonomy.publicKey === '';
-      });
+    if (taxonomies.length > 0) {
+      const taxoIsPublishable = taxonomies.some(
+        (taxo) => taxo.label !== '' && taxo.publicKey === ''
+      );
+      console.log('taxoIsPublishable', taxoIsPublishable);
 
-      isPublishable && dispatch(setTaxonomiesIsPublishable(true));
+      taxoIsPublishable && dispatch(setTaxonomiesIsPublishable(true));
     }
   }, [taxonomies, dispatch, taxoIsPublishable]);
 
