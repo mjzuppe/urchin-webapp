@@ -1,10 +1,12 @@
 import { Keypair } from '@solana/web3.js';
 import urchin from 'urchin-web3-cms';
+
 import bs58 from 'bs58';
 
+// TODO: change that
 const payer = Keypair.fromSecretKey(
   bs58.decode(
-    '4X6qkYZcGwu5KtLMLUXhf3F17born5or7sQwd3pfcFzuUkds5MPu3tUZXziboUzFVPqFJyqJXRsBzCEBY5exeQb5'
+    '5QA4FCiYuBfkizud8tRdUWomQqdvksJuSG5zY13uyHBPZP89Jb2LGWTNUcRuTUqJngwkG6xf7joRfo5jtLgfax1e'
   )
 );
 const connection = urchin({
