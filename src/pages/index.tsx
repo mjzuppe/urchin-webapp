@@ -109,7 +109,7 @@ const Home: NextPage = (): JSX.Element => {
       {connected && currentProcess === 'templatesEditor' && <TemplatesEditor />}
       {connected && currentProcess === 'entriesEditor' && <EntriesEditor />}
 
-      {displayBanner && <PublishBanner />}
+      {connected && displayBanner && <PublishBanner />}
     </div>
   );
 };
