@@ -61,7 +61,7 @@ const TaxonomiesList = () => {
       <div className={classes.taxonomies_list}>
         {paginatedData &&
           paginatedData.map((taxonomy: any) => {
-            const { updatedAt, solanaAddress } = taxonomy;
+            const { updatedAt } = taxonomy;
             return (
               <ListRow
                 key={taxonomy?.publicKey}
