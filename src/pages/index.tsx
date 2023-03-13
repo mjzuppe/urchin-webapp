@@ -5,12 +5,14 @@ import { useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 // redux
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 import { setDisplayBanner } from '../redux/slices/banner';
 import { setCurrentProcess } from '../redux/slices/process';
 
 // Utils
-import { useAppSelector } from '../utils/useAppSelector';
 import { useAppDispatch } from '../utils/useAppDispatch';
+import { useAppSelector } from '../utils/useAppSelector';
 import useWindowSize from '../utils/useWindowSize';
 
 // Components
@@ -37,9 +39,9 @@ const Home: NextPage = (): JSX.Element => {
     (state: any) => state.process.currentProcess
   );
 
-  const templates = useAppSelector((state: any) => state.templates);
-  const entries = useAppSelector((state: any) => state.entries);
-  const taxonomies = useAppSelector((state: any) => state.taxonomies);
+  const templates = useSelector((state: RootState) => state.templates);
+  const entries = useAppSelector((state: RootState) => state.entries);
+  const taxonomies = useAppSelector((state: RootState) => state.taxonomies);
   const assets = useAppSelector((state: any) => state.assets);
 
   useEffect(() => {
@@ -51,29 +53,6 @@ const Home: NextPage = (): JSX.Element => {
   );
 
   useEffect(() => {
-    if (connected) {
-      if (
-        templates.isPublishable ||
-        entries.isPublishable ||
-        taxonomies.isPublishable ||
-        assets.isPublishable
-      ) {
-        dispatch(setDisplayBanner(true));
-      } else {
-        dispatch(setDisplayBanner(false));
-      }
-    }
-  }, [
-    displayBanner,
-    connected,
-    templates,
-    entries,
-    taxonomies,
-    dispatch,
-    assets,
-  ]);
-
-  useEffect(() => {
     connection.taxonomy.getAll().then((res) => {
       const pubKeyArray = res.map((taxonomy) => {
         return taxonomy.publicKey;
@@ -83,6 +62,23 @@ const Home: NextPage = (): JSX.Element => {
       });
     });
   }, []);
+
+  useEffect(() => {
+    if (connected) {
+      if (
+        templates.isPublishable ||
+        entries.isPublishable ||
+        taxonomies.isPublishable ||
+        assets.isPublishable
+      ) {
+        console.log('displayBanner');
+        dispatch(setDisplayBanner(true));
+      } else {
+        // TODO: fix : state is not updated isPublishable is true
+        dispatch(setDisplayBanner(false));
+      }
+    }
+  }, [connected, templates, entries, dispatch, assets, taxonomies]);
 
   return (
     <div
