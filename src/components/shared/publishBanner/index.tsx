@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // Styles
 import classes from './PublishBanner.module.scss';
@@ -11,11 +11,15 @@ import { useAppSelector } from '../../../utils/useAppSelector';
 import { useAppDispatch } from '../../../utils/useAppDispatch';
 
 // REDUX
-import { setIsPublishable } from '../../../redux/slices/taxonomies';
+import { setTaxonomiesIsPublishable } from '../../../redux/slices/taxonomies';
+import { setTemplateIsPublishable } from '../../../redux/slices/templates';
+import { setDisplayBanner } from '../../../redux/slices/banner';
 
 //  SDK
 import connection from '../../../utils/connection';
-import { setDisplayBanner } from '../../../redux/slices/banner';
+
+// Components
+import Hourglass from '../hourglass';
 
 interface Taxonomy {
   label: string;
@@ -34,6 +38,7 @@ interface TemplateInputs {
 
 interface Template {
   title: string;
+  publicKey?: string;
   inputs: Array<TemplateInputs>;
   taxonomies?: Array<Taxonomy>;
 }
@@ -41,6 +46,7 @@ interface Template {
 const PublishBanner = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const [openChangeLog, setOpenChangeLog] = useState(false);
+  const [displayHourglass, setDisplayHourglass] = useState(false);
 
   const changelogHandler = () => {
     setOpenChangeLog(!openChangeLog);
@@ -49,15 +55,15 @@ const PublishBanner = (): JSX.Element => {
   const cancelHandler = () => {
     // TODO: Purge Preflight + reset redux????
     console.log('cancelHandler');
+    dispatch(setTaxonomiesIsPublishable(false));
+    dispatch(setTemplateIsPublishable(false));
   };
-
-  useEffect(() => {}, []);
 
   // !! Taxonomies
   const taxonomies = useAppSelector(
     (state: any) => state.taxonomies.taxonomies
   );
-  console.log('taxonomies', taxonomies);
+  // console.log('taxonomies', taxonomies);
   // filter taxonomies with empty pubKey
   const filteredTaxo = taxonomies.filter(
     (taxonomy: Taxonomy) => taxonomy.publicKey === ''
@@ -76,11 +82,16 @@ const PublishBanner = (): JSX.Element => {
   const templates = useAppSelector((state: any) => state.templates.templates);
   // console.log('templates', templates);
 
-  const templatesToPublish = templates.map((template: Template) => {
+  // filter taxonomies with empty pubKey
+  const filteredTemplate = templates.filter(
+    (template: Template) => template.publicKey === ''
+  );
+
+  const templatesToPublish = filteredTemplate.map((template: Template) => {
     const { title } = template;
     const taxonomies = template?.taxonomies?.map((taxonomy: Taxonomy) => {
-      const { label }: Taxonomy = taxonomy;
-      return label;
+      const { publicKey }: Taxonomy = taxonomy;
+      return publicKey;
     });
 
     const inputs = template.inputs.map((input: TemplateInputs) => {
@@ -135,17 +146,18 @@ const PublishBanner = (): JSX.Element => {
 
   const preflightHandler = async () => {
     // Create taxonomy
-    const createTaxonomy = connection.taxonomy.create(taxonomiesToPublish);
-    console.log('createTaxonomy', createTaxonomy);
-
+    const createTaxonomy =
+      taxonomiesToPublish.length > 0 &&
+      connection.taxonomy.create(taxonomiesToPublish);
+    // console.log('createTaxonomy', createTaxonomy);
     // Create template
-    // const createTemplate = connection.template.create(templatesToPublish);
-    // console.log('createTemplate', createTemplate);
-
+    const createTemplate =
+      templatesToPublish.length > 0 &&
+      connection.template.create(templatesToPublish);
+    console.log('createTemplate', createTemplate);
     // Create asset
     // const createAsset = connection.asset.create(assets);
     // console.log('createAsset', createAsset);
-
     // Preflight
     const preflight = await connection.preflight().then((res) => {
       console.log('PREFLIGHT::', res);
@@ -153,12 +165,13 @@ const PublishBanner = (): JSX.Element => {
   };
 
   const publishHandler = async () => {
-    const sendToChain = await connection.process();
-
-    // Taxonomies
-    dispatch(setIsPublishable(false));
-    // display banner to false
-    dispatch(setDisplayBanner(false));
+    setDisplayHourglass(true);
+    const sendToChain = await connection.process().then((res) => {
+      console.log('PROCESS::', res);
+      setDisplayHourglass(false);
+      dispatch(setTemplateIsPublishable(false));
+      dispatch(setDisplayBanner(false));
+    });
   };
 
   // TODO:  the same for entries + assets
@@ -193,83 +206,86 @@ const PublishBanner = (): JSX.Element => {
   }
 
   return (
-    <div className={classes.banner_container}>
-      <div className={classes.flex_left}>
-        <p className={classes.banner_text}>
-          You have {''}
-          <span className={classes.changes} onClick={changelogHandler}>
-            changes
-          </span>{' '}
-          {''}
-          not committed on the blockchain
-        </p>
+    <>
+      <div className={classes.banner_container}>
+        <div className={classes.flex_left}>
+          <p className={classes.banner_text}>
+            You have {''}
+            <span className={classes.changes} onClick={changelogHandler}>
+              changes
+            </span>{' '}
+            {''}
+            not committed on the blockchain
+          </p>
 
-        {openChangeLog && (
-          <div className={classes.changelog}>
-            {changes.map((change, index) => (
-              <div key={`change-${change.changeName}-${index}`}>
-                <span className={classes.category}>
-                  Create {change.changeCategory}: {''}
-                </span>
-                <span className={classes.name}>{change.changeName}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      <div className={classes.flex_right}>
-        <button
-          type="button"
-          className={classes.cancel_button}
-          onClick={cancelHandler}
-        >
-          Cancel All
-        </button>
+          {openChangeLog && (
+            <div className={classes.changelog}>
+              {changes.map((change, index) => (
+                <div key={`change-${change.changeName}-${index}`}>
+                  <span className={classes.category}>
+                    Create {change.changeCategory}: {''}
+                  </span>
+                  <span className={classes.name}>{change.changeName}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+        <div className={classes.flex_right}>
+          <button
+            type="button"
+            className={classes.cancel_button}
+            onClick={cancelHandler}
+          >
+            Cancel All
+          </button>
 
-        {/* Publish Modal */}
-        <AlertDialog.Root>
-          <AlertDialog.Trigger asChild>
-            <button
-              type="button"
-              className={classes.publish_button}
-              onClick={preflightHandler}
-            >
-              Publish
-            </button>
-          </AlertDialog.Trigger>
-          <AlertDialog.Portal>
-            <AlertDialog.Overlay className="DialogOverlay" />
-            <AlertDialog.Content className={classes.DialogContent}>
-              <AlertDialog.Title className={classes.AlertDialogTitle}>
-                Publish All Changes
-              </AlertDialog.Title>
-              <AlertDialog.Description
-                className={classes.AlertDialogDescription}
+          {/* Publish Modal */}
+          <AlertDialog.Root>
+            <AlertDialog.Trigger asChild>
+              <button
+                type="button"
+                className={classes.publish_button}
+                onClick={preflightHandler}
               >
-                Confirm that you want to save this entry on-chain. Signature
-                required and estimated fee is 0.001 SOL.
-              </AlertDialog.Description>
-              <div className="AlertDialogActions">
-                <AlertDialog.Cancel asChild>
-                  <button type="button" className={classes.cancel_btn}>
-                    Cancel
-                  </button>
-                </AlertDialog.Cancel>
-                <AlertDialog.Action asChild>
-                  <button
-                    type="button"
-                    className={classes.confirm_btn}
-                    onClick={publishHandler}
-                  >
-                    Confirm
-                  </button>
-                </AlertDialog.Action>
-              </div>
-            </AlertDialog.Content>
-          </AlertDialog.Portal>
-        </AlertDialog.Root>
+                Publish
+              </button>
+            </AlertDialog.Trigger>
+            <AlertDialog.Portal>
+              <AlertDialog.Overlay className="DialogOverlay" />
+              <AlertDialog.Content className={classes.DialogContent}>
+                <AlertDialog.Title className={classes.AlertDialogTitle}>
+                  Publish All Changes
+                </AlertDialog.Title>
+                <AlertDialog.Description
+                  className={classes.AlertDialogDescription}
+                >
+                  Confirm that you want to save this entry on-chain. Signature
+                  required and estimated fee is 0.001 SOL.
+                </AlertDialog.Description>
+                <div className="AlertDialogActions">
+                  <AlertDialog.Cancel asChild>
+                    <button type="button" className={classes.cancel_btn}>
+                      Cancel
+                    </button>
+                  </AlertDialog.Cancel>
+                  <AlertDialog.Action asChild>
+                    <button
+                      type="button"
+                      className={classes.confirm_btn}
+                      onClick={publishHandler}
+                    >
+                      Confirm
+                    </button>
+                  </AlertDialog.Action>
+                </div>
+              </AlertDialog.Content>
+            </AlertDialog.Portal>
+          </AlertDialog.Root>
+        </div>
       </div>
-    </div>
+      {displayHourglass && <Hourglass />}
+    </>
   );
 };
 
