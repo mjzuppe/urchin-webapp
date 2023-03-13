@@ -148,7 +148,7 @@ const TemplatesInputsRow = ({
                   { value: 'textarea', label: 'TextArea' },
                   { value: 'select', label: 'Select' },
                   { value: 'numeric', label: 'Numeric input' },
-                  { value: 'file', label: 'File uploader' },
+                  // { value: 'file', label: 'File uploader' },
                 ]}
                 onChange={(event: any) =>
                   onChangeTemplateInputHandler(event, index)
