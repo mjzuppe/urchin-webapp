@@ -1,6 +1,5 @@
 import { Keypair } from '@solana/web3.js';
-// TODO: comment out when pushing to dev. Until pkg on npm
-import urchin from 'urchin';
+import urchin from 'urchin-web3-cms';
 import bs58 from 'bs58';
 
 const payer = Keypair.fromSecretKey(
