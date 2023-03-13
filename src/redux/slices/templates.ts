@@ -49,7 +49,7 @@ const slice = createSlice({
       const { templateIndex, taxonomy } = payload;
       state.templates[templateIndex].taxonomies = taxonomy;
     },
-    setIsPublishable: (state, { payload }: PayloadAction<any>) => {
+    setTemplateIsPublishable: (state, { payload }: PayloadAction<any>) => {
       state.isPublishable = payload;
     },
   },
@@ -64,7 +64,7 @@ export const {
   addOrUpdateTemplateTitle,
   deleteTemplateInput,
   addNewTemplateTaxonomy,
-  setIsPublishable,
+  setTemplateIsPublishable,
 } = slice.actions;
 
 // Reducer

@@ -6,6 +6,7 @@ import taxonomies from './slices/taxonomies';
 import templates from './slices/templates';
 import entries from './slices/entries';
 import banner from './slices/banner';
+import assets from './slices/assets';
 
 const rootReducer = combineReducers({
   subNav: subNav,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   templates: templates,
   entries: entries,
   banner: banner,
+  assets: assets,
 });
 
 export { rootReducer };

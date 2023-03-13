@@ -73,29 +73,36 @@ const Navbar = (): JSX.Element => {
       </div>
 
       {/* TODO: Links TBC */}
-      {/* <div className={`${classes.link_container} ${classes.flex_right}`}> */}
-      {/* {!isMobile && (
-          <Link href="/" className={classes.navbar_links}>
+      <div className={`${classes.link_container} ${classes.flex_right}`}>
+        {!isMobile && (
+          <Link
+            href="https://urchin.gitbook.io/overview/getting-started"
+            className={classes.navbar_links}
+            target="_blank"
+          >
             <p>Getting Started</p>
           </Link>
         )}
-        <Link href="/" className={classes.navbar_links}>
+        <Link
+          href="https://urchin.gitbook.io/"
+          className={classes.navbar_links}
+          target="_blank"
+        >
           <p>Docs</p>
-        </Link> */}
+        </Link>
 
-      {/* Wallet */}
-      {/* <div
+        {/* Wallet */}
+        <div
           className={classes.wallet_wrapper}
           onClick={walletDropdownHandler}
           ref={walletMenuRef}
-        > */}
-      {/* Phantom not connected */}
-      {/* {!connected && <p>Connect Wallet</p>} */}
-      {/* Phantom connected*/}
-      {/* {connected && (
+        >
+          {/* Phantom not connected */}
+          {!connected && <p>Connect Wallet</p>}
+          {/* Phantom connected*/}
+          {connected && (
             <>
-              {/* Green Dot icon */}
-      {/* <Image
+              <Image
                 src="/assets/green-dot.svg"
                 width={5}
                 height={5}
@@ -114,11 +121,11 @@ const Navbar = (): JSX.Element => {
                 alt="chevron up icon - Wallet is connected"
               />
             </>
-          )}  */}
+          )}
 
-      {/* DROPDOWN Wallet */}
-      {/* {openWalletDropdown && ( */}
-      {/* <div className={classes.wallet_dropdown}>
+          {/* DROPDOWN Wallet */}
+          {openWalletDropdown && (
+            <div className={classes.wallet_dropdown}>
               <span className={classes.triangle}></span>
               <div className={classes.wallet_dropdown_container}>
                 <div className={classes.wallet_dropdown_inner_top_wrapper}>
@@ -131,29 +138,29 @@ const Navbar = (): JSX.Element => {
                         alt="green dot"
                       />
                       <span className={classes.textGrey}>Connected</span>
-                    </div> */}
-      {/* )} */}
-      {/* {!connected && ( */}
-      {/* <div className={classes.wallet_dropdown_inner_top}>
+                    </div>
+                  )}
+                  {!connected && (
+                    <div className={classes.wallet_dropdown_inner_top}>
                       <Image
                         src="/assets/red-plug.svg"
                         width="14"
                         height="14"
                         alt="Disconnected wallet icon - Barred red plug"
                       />
-                      <span className={classes.textGrey}>Disconnected</span> */}
-      {/* </div> */}
-      {/* )} */}
-      {/* {connected && ( */}
-      {/* <p
+                      <span className={classes.textGrey}>Disconnected</span>
+                    </div>
+                  )}
+                  {connected && (
+                    <p
                       className={classes.disconnect}
                       onClick={handleDisconnectWalletClick}
                     >
                       Disconnect wallet
-                    </p> */}
-      {/* )} */}
-      {/* </div> */}
-      {/* <div className={classes.wallet_adapter_container}>
+                    </p>
+                  )}
+                </div>
+                <div className={classes.wallet_adapter_container}>
                   <WalletMultiButtonDynamic
                     className={`${classes.btn_wallet_connect} ${
                       connected ? classes.connected : classes.disconnected
@@ -161,14 +168,14 @@ const Navbar = (): JSX.Element => {
                   >
                     {!connected ? 'Connect Wallet' : null}
                   </WalletMultiButtonDynamic>
-                </div> */}
-      {/* </div>
+                </div>
+              </div>
             </div>
           )}
-        </div> */}
+        </div>
 
-      {/* End wallet */}
-      {/* </div> */}
+        {/* End wallet */}
+      </div>
     </nav>
   );
 };

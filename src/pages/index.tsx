@@ -5,12 +5,14 @@ import { useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 
 // redux
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 import { setDisplayBanner } from '../redux/slices/banner';
 import { setCurrentProcess } from '../redux/slices/process';
 
 // Utils
-import { useAppSelector } from '../utils/useAppSelector';
 import { useAppDispatch } from '../utils/useAppDispatch';
+import { useAppSelector } from '../utils/useAppSelector';
 import useWindowSize from '../utils/useWindowSize';
 
 // Components
@@ -24,6 +26,8 @@ import TaxonomiesEditor from '../components/taxonomiesEditor';
 import TemplatesEditor from '../components/templatesEditor';
 import EntriesEditor from '../components/entriesEditor';
 import PublishBanner from '../components/shared/publishBanner';
+import connection from '../utils/connection';
+import { setTaxonomies } from '../redux/slices/taxonomies';
 
 const Home: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -35,9 +39,10 @@ const Home: NextPage = (): JSX.Element => {
     (state: any) => state.process.currentProcess
   );
 
-  const templates = useAppSelector((state: any) => state.templates);
-  const entries = useAppSelector((state: any) => state.entries);
-  const taxonomies = useAppSelector((state: any) => state.taxonomies);
+  const templates = useSelector((state: RootState) => state.templates);
+  const entries = useAppSelector((state: RootState) => state.entries);
+  const taxonomies = useAppSelector((state: RootState) => state.taxonomies);
+  const assets = useAppSelector((state: any) => state.assets);
 
   useEffect(() => {
     dispatch(setCurrentProcess(currentProcess));
@@ -48,18 +53,32 @@ const Home: NextPage = (): JSX.Element => {
   );
 
   useEffect(() => {
+    connection.taxonomy.getAll().then((res) => {
+      const pubKeyArray = res.map((taxonomy) => {
+        return taxonomy.publicKey;
+      });
+      connection.taxonomy.get(pubKeyArray).then((res) => {
+        return dispatch(setTaxonomies(res));
+      });
+    });
+  }, []);
+
+  useEffect(() => {
     if (connected) {
       if (
         templates.isPublishable ||
         entries.isPublishable ||
-        taxonomies.isPublishable
+        taxonomies.isPublishable ||
+        assets.isPublishable
       ) {
+        console.log('displayBanner');
         dispatch(setDisplayBanner(true));
       } else {
+        // TODO: fix : state is not updated isPublishable is true
         dispatch(setDisplayBanner(false));
       }
     }
-  }, [displayBanner, connected, templates, entries, taxonomies, dispatch]);
+  }, [connected, templates, entries, dispatch, assets, taxonomies]);
 
   return (
     <div
@@ -83,14 +102,14 @@ const Home: NextPage = (): JSX.Element => {
           {activeTab === 'Taxonomies' && <TaxonomiesList />}
         </>
       )}
-      {connected && currentProcess === 'quickUpload' && <QuickUpload />}
+      {/* {connected && currentProcess === 'quickUpload' && <QuickUpload />} */}
       {connected && currentProcess === 'taxonomiesEditor' && (
         <TaxonomiesEditor />
       )}
       {connected && currentProcess === 'templatesEditor' && <TemplatesEditor />}
       {connected && currentProcess === 'entriesEditor' && <EntriesEditor />}
 
-      {displayBanner && <PublishBanner />}
+      {connected && displayBanner && <PublishBanner />}
     </div>
   );
 };

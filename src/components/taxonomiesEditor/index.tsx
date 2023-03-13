@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 // Styles
 import classes from './TaxonomiesEditor.module.scss';
 
@@ -40,6 +40,7 @@ const TaxonomiesEditor = (): JSX.Element => {
         updatedAt: Date.now(),
         solanaAddress: '',
         arweaveAddress: '',
+        publicKey: '',
       })
     );
     setTaxonomiesCount(taxonomiesCount + 1);

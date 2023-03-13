@@ -31,7 +31,6 @@ const TemplatesEditor = (): JSX.Element => {
   // Handlers
   const handleBackClick = () => {
     // prevent Handle back if errors
-
     dispatch(setCurrentProcess('default'));
   };
 

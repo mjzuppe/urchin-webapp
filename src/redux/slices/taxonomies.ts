@@ -6,18 +6,8 @@ interface TaxonomiesState {
   isPublishable: boolean;
 }
 
-// Define the initial state using that type
 const initialState: TaxonomiesState = {
-  taxonomies: [
-    // {
-    //   label: '',
-    //   parent: '',
-    //   grandParent: '',
-    //   updatedAt: 0,
-    //   solanaAddress: 'string',
-    //   arweaveAddress: 'string',
-    // },
-  ],
+  taxonomies: [],
   isPublishable: false,
 };
 
@@ -25,6 +15,9 @@ const slice = createSlice({
   name: 'taxonomies',
   initialState,
   reducers: {
+    setTaxonomies: (state, { payload }: PayloadAction<any>) => {
+      state.taxonomies = payload;
+    },
     addNewTaxonomy: (state, action: PayloadAction<any>) => {
       state.taxonomies.push(action.payload);
     },
@@ -44,19 +37,20 @@ const slice = createSlice({
       const { grandParent, index } = payload;
       state.taxonomies[index].grandParent = grandParent;
     },
-    setIsPublishable: (state, { payload }: PayloadAction<any>) => {
+    setTaxonomiesIsPublishable: (state, { payload }: PayloadAction<any>) => {
       state.isPublishable = payload;
     },
   },
 });
 
 export const {
+  setTaxonomies,
   addNewTaxonomy,
   deleteTaxonomy,
   updateTaxonomyLabel,
   updateTaxonomyParent,
   updateTaxonomyGrandParent,
-  setIsPublishable,
+  setTaxonomiesIsPublishable,
 } = slice.actions;
 
 // Reducer

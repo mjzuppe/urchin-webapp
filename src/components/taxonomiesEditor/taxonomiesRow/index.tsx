@@ -18,6 +18,7 @@ import {
 // Components
 import Separator from '../../shared/separator';
 import { CustomSelectSingle } from '../../shared/customSelectSingle';
+import { Taxonomy } from '../../../types/Taxonomies';
 
 const TaxonomiesRow = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -38,13 +39,14 @@ const TaxonomiesRow = (): JSX.Element => {
           updatedAt: Date.now(),
           solanaAddress: '',
           arweaveAddress: '',
+          publicKey: '',
         })
       );
   });
 
   const findParent = (parent: any) => {
     const parentIndex = taxonomies.findIndex(
-      (taxonomy) => taxonomy.label.toLowerCase() === parent
+      (taxonomy: any) => taxonomy.label.toLowerCase() === parent
     );
     if (parentIndex !== -1) {
       return taxonomies[parentIndex].parent;
@@ -105,7 +107,7 @@ const TaxonomiesRow = (): JSX.Element => {
 
   return (
     <>
-      {taxonomies?.map((taxonomy, index) => (
+      {taxonomies?.map((taxonomy: Taxonomy, index: number) => (
         <div className={classes.taxonomies_row_container} key={index}>
           <div className="single_row_form">
             <div className={`single_input input_wrapper`}>

@@ -18,7 +18,7 @@ import { setCurrentProcess } from '../../redux/slices/process';
 import {
   addNewTemplate,
   setCurrentTemplateId,
-  setIsPublishable,
+  setTemplateIsPublishable,
 } from '../../redux/slices/templates';
 
 // Components
@@ -30,6 +30,7 @@ const TemplatesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const templates = useAppSelector((state) => state.templates.templates);
+  const templatesStates = useAppSelector((state) => state.templates);
 
   const paginatedData = paginate(templates, currentPage, pageSize);
 
@@ -45,7 +46,7 @@ const TemplatesList = () => {
       addNewTemplate({
         title: '',
         updatedAt: Date.now(),
-        solanaAddress: '',
+        publicKey: '',
         arweaveAddress: '',
         entriesNbr: 0,
         id: id,
@@ -61,13 +62,19 @@ const TemplatesList = () => {
     dispatch(setCurrentTemplateId(id));
   };
 
-  // if taxonomies array has no empty value setIsPublishable to true
+  // Get taxonomies from blockchain on load
+  useEffect(() => {
+    // const getAllTemplates = connection.template.get();
+    // console.log('getAllTemplates', getAllTemplates);
+  }, []);
+
+  // if taxonomies array has no empty value setTemplateIsPublishable to true
   useEffect(() => {
     if (templates.length) {
       const isPublishable = templates.every((templates) => {
         return templates.title !== '';
       });
-      isPublishable && dispatch(setIsPublishable(true));
+      isPublishable && dispatch(setTemplateIsPublishable(true));
     }
   }, [templates, dispatch]);
 
@@ -81,9 +88,9 @@ const TemplatesList = () => {
           callBack={templatesEditorHandler}
         />
         {/* Modal */}
-        <AlertDialog.Root>
+        {/* <AlertDialog.Root>
           <AlertDialog.Trigger asChild>
-            {/* For some reason OrangeButton Component is not working here. To investigate later */}
+
             <button className={classes.import_button} type="button">
               Import
             </button>
@@ -130,25 +137,20 @@ const TemplatesList = () => {
               </div>
             </AlertDialog.Content>
           </AlertDialog.Portal>
-        </AlertDialog.Root>
+        </AlertDialog.Root> */}
       </div>
       {/* Templates List */}
       <div className={classes.templates_list}>
         {paginatedData &&
           paginatedData.map((template: any) => {
-            const {
-              title,
-              updatedAt,
-              solanaAddress,
-              arweaveAddress,
-              entriesNbr,
-            } = template;
+            const { title, updatedAt, publicKey, arweaveAddress, entriesNbr } =
+              template;
             return (
               <ListRow
                 key={template.id}
                 title={title || 'Untitled'}
                 updatedAt={updatedAt}
-                solanaAddress={solanaAddress}
+                publicKey={publicKey}
                 arweaveAddress={arweaveAddress}
                 entriesNbr={entriesNbr}
                 onClickEditHandler={() =>

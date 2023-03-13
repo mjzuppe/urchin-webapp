@@ -13,7 +13,7 @@ type Templates = {
   id: string;
   title: string;
   updatedAt: number;
-  solanaAddress: string;
+  publicKey: string;
   arweaveAddress: string;
   entriesNbr: number;
   inputs: TemplatesInputs;

@@ -16,7 +16,7 @@ import Separator from '../separator';
 interface ListRowProps {
   title: string;
   updatedAt: number;
-  solanaAddress: string;
+  publicKey: string;
   arweaveAddress?: string;
   entriesNbr?: number;
   onClickEditHandler: () => void;
@@ -25,7 +25,7 @@ interface ListRowProps {
 const ListRow = ({
   title,
   updatedAt,
-  solanaAddress,
+  publicKey,
   arweaveAddress,
   entriesNbr,
   onClickEditHandler,
@@ -34,16 +34,23 @@ const ListRow = ({
   const isDesktop = width! > 1024;
   const activeTab = useAppSelector((state: any) => state.subNav.activeTab);
 
+  const publicKeyTruncated = `${publicKey?.slice(0, 4)}...${publicKey?.slice(
+    publicKey?.length - 4,
+    publicKey?.length
+  )}`;
+
   return (
     <div className={classes.list_row}>
       <div className={classes.list_row_content}>
         <div className={classes.mobile_flex}>
           <div className={classes.title}>
             <h3>{title}</h3>
-            <p>Updated {getFullDate(updatedAt)}</p>
+            {activeTab !== 'Taxonomies' && (
+              <p>Updated {getFullDate(updatedAt)}</p>
+            )}
           </div>
           <div className={classes.tablet_flex}>
-            {solanaAddress !== '' && (
+            {publicKey !== '' && (
               <div className={classes.solana}>
                 <Image
                   src="/assets/solana-logo.svg"
@@ -51,7 +58,7 @@ const ListRow = ({
                   height={isDesktop ? 20 : 10}
                   alt="Solana logo - token address"
                 />
-                <p>{solanaAddress}</p>
+                <p>{publicKeyTruncated}</p>
               </div>
             )}
             {activeTab !== 'Taxonomies' && arweaveAddress !== '' && (

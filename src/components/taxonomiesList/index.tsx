@@ -11,7 +11,7 @@ import { useAppSelector } from '../../utils/useAppSelector';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
-import { setIsPublishable } from '../../redux/slices/taxonomies';
+import { setTaxonomiesIsPublishable } from '../../redux/slices/taxonomies';
 
 // Components
 import OrangeButton from '../shared/orangeButton';
@@ -22,6 +22,9 @@ const TaxonomiesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
+  const taxoIsPublishable = useAppSelector(
+    (state) => state.taxonomies.isPublishable
+  );
 
   const paginatedData = paginate(taxonomies, currentPage, pageSize);
 
@@ -33,15 +36,17 @@ const TaxonomiesList = () => {
     dispatch(setCurrentProcess('taxonomiesEditor'));
   };
 
-  // if taxonomies array has no empty value setIsPublishable to true
+  // if taxonomies array has no empty value setTaxonomiesIsPublishable to true
   useEffect(() => {
-    if (taxonomies.length) {
-      const isPublishable = taxonomies.every((taxonomy) => {
-        return taxonomy.label !== '';
-      });
-      isPublishable && dispatch(setIsPublishable(true));
+    if (taxonomies.length > 0) {
+      const taxoIsPublishable = taxonomies.some(
+        (taxo) => taxo.label !== '' && taxo.publicKey === ''
+      );
+      console.log('taxoIsPublishable', taxoIsPublishable);
+
+      taxoIsPublishable && dispatch(setTaxonomiesIsPublishable(true));
     }
-  }, [taxonomies, dispatch]);
+  }, [taxonomies, dispatch, taxoIsPublishable]);
 
   return (
     <section className={classes.taxonomies_list_section}>
@@ -60,10 +65,10 @@ const TaxonomiesList = () => {
             const { updatedAt, solanaAddress } = taxonomy;
             return (
               <ListRow
-                key={taxonomy?.label}
+                key={taxonomy?.publicKey}
                 title={taxonomy?.label || 'Untitled'}
                 updatedAt={updatedAt}
-                solanaAddress={solanaAddress}
+                publicKey={taxonomy?.publicKey}
                 onClickEditHandler={() => {
                   dispatch(setCurrentProcess('taxonomiesEditor'));
                 }}
