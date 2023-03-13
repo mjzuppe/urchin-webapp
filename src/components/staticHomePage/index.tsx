@@ -181,9 +181,9 @@ const StaticHomePage = () => {
                 alt="link icon - redirect to github"
               />
             </Link>
-            <Link href="/" className={classes.footer_link}>
+            {/* <Link href="/" className={classes.footer_link}>
               <p>Contact</p>
-            </Link>
+            </Link> */}
           </div>
         </footer>
       </section>
