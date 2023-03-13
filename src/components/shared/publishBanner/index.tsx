@@ -48,7 +48,7 @@ const PublishBanner = (): JSX.Element => {
   const taxonomies = useAppSelector(
     (state: any) => state.taxonomies.taxonomies
   );
-  console.log('taxonomies', taxonomies);
+  // console.log('taxonomies', taxonomies);
 
   const taxonomiesToPublish = taxonomies.map((taxonomy: Taxonomy) => {
     const { label, parent, publicKey }: Taxonomy = taxonomy;
@@ -59,7 +59,7 @@ const PublishBanner = (): JSX.Element => {
       };
     }
   });
-  console.log('taxonomiesToPublish', taxonomiesToPublish);
+  // console.log('taxonomiesToPublish', taxonomiesToPublish);
 
   // !! Templates
   const templates = useAppSelector((state: any) => state.templates.templates);
@@ -98,13 +98,29 @@ const PublishBanner = (): JSX.Element => {
   });
   // console.log('templatesToPublish', templatesToPublish);
 
+  // !! ENTRIES
+  const entries = useAppSelector((state: any) => state.entries.entries);
+  console.log('entries', entries);
+
+  const entriesToPublish = entries.map((entry: any) => {
+    const { template, inputs } = entry;
+    const taxonomiesArray = entry.taxonomies.map((taxonomy: Taxonomy) => {
+      const { label }: Taxonomy = taxonomy;
+      return label;
+    });
+
+    return {
+      inputs: inputs,
+      taxonomies: taxonomiesArray,
+      //TODO: change id for pubKey
+      template,
+    };
+  });
+  console.log('entriesToPublish', entriesToPublish);
+
   // !! ASSETS
   // const assets = useAppSelector((state: any) => state.assets.assets);
   // console.log('assets', assets);
-
-  // !! ENTRIES
-  const entries = useAppSelector((state: any) => state.entries.entries);
-  // console.log('entries', entries);
 
   const preflightHandler = async () => {
     // Create taxonomy
@@ -123,7 +139,6 @@ const PublishBanner = (): JSX.Element => {
     const preflight = await connection.preflight().then((res) => {
       console.log('PREFLIGHT::', res);
     });
-    // console.log('PREFLIGHT::', preflight);
   };
 
   const publishHandler = async () => {
@@ -148,12 +163,21 @@ const PublishBanner = (): JSX.Element => {
       .join(', '),
   };
 
-  const changes =
-    taxonomiesToPublish.length > 0 && templatesToPublish.length > 0
-      ? [taxonomiesChanges, templatesChanges]
-      : taxonomiesToPublish.length > 0
-      ? [taxonomiesChanges]
-      : [templatesChanges];
+  const entriesChanges = {
+    changeCategory: 'Entries',
+    changeName: `${entriesToPublish.length} entries`,
+  };
+
+  const changes = [];
+  if (taxonomiesToPublish.length > 0) {
+    changes.push(taxonomiesChanges);
+  }
+  if (templatesToPublish.length > 0) {
+    changes.push(templatesChanges);
+  }
+  if (entriesToPublish.length > 0) {
+    changes.push(entriesChanges);
+  }
 
   return (
     <div className={classes.banner_container}>
