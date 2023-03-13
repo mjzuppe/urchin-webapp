@@ -39,7 +39,7 @@ const slice = createSlice({
       const { grandParent, index } = payload;
       state.taxonomies[index].grandParent = grandParent;
     },
-    setIsPublishable: (state, { payload }: PayloadAction<any>) => {
+    setTaxonomiesIsPublishable: (state, { payload }: PayloadAction<any>) => {
       state.isPublishable = payload;
     },
   },
@@ -52,7 +52,7 @@ export const {
   updateTaxonomyLabel,
   updateTaxonomyParent,
   updateTaxonomyGrandParent,
-  setIsPublishable,
+  setTaxonomiesIsPublishable,
 } = slice.actions;
 
 // Reducer
