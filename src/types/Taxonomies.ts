@@ -3,7 +3,7 @@ type Taxonomy = {
   parent: string;
   grandParent: string;
   updatedAt: number;
-  solanaAddress: string;
+  // solanaAddress: string;
   arweaveAddress: string;
   publicKey: string;
 };

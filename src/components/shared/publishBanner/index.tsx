@@ -1,15 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Styles
 import classes from './PublishBanner.module.scss';
 
 // Lib
 import * as AlertDialog from '@radix-ui/react-alert-dialog';
+
 // Utils
 import { useAppSelector } from '../../../utils/useAppSelector';
+import { useAppDispatch } from '../../../utils/useAppDispatch';
+
+// REDUX
+import { setIsPublishable } from '../../../redux/slices/taxonomies';
 
 //  SDK
 import connection from '../../../utils/connection';
+import { setDisplayBanner } from '../../../redux/slices/banner';
 
 interface Taxonomy {
   label: string;
@@ -33,6 +39,7 @@ interface Template {
 }
 
 const PublishBanner = (): JSX.Element => {
+  const dispatch = useAppDispatch();
   const [openChangeLog, setOpenChangeLog] = useState(false);
 
   const changelogHandler = () => {
@@ -44,20 +51,24 @@ const PublishBanner = (): JSX.Element => {
     console.log('cancelHandler');
   };
 
+  useEffect(() => {}, []);
+
   // !! Taxonomies
   const taxonomies = useAppSelector(
     (state: any) => state.taxonomies.taxonomies
   );
-  // console.log('taxonomies', taxonomies);
+  console.log('taxonomies', taxonomies);
+  // filter taxonomies with empty pubKey
+  const filteredTaxo = taxonomies.filter(
+    (taxonomy: Taxonomy) => taxonomy.publicKey === ''
+  );
 
-  const taxonomiesToPublish = taxonomies.map((taxonomy: Taxonomy) => {
+  const taxonomiesToPublish = filteredTaxo.map((taxonomy: Taxonomy) => {
     const { label, parent, publicKey }: Taxonomy = taxonomy;
-    if (publicKey === '') {
-      return {
-        label,
-        // parent, => should be a publicKey new PublicKey(string)
-      };
-    }
+    return {
+      label,
+      // parent, => should be a publicKey new PublicKey(string)
+    };
   });
   // console.log('taxonomiesToPublish', taxonomiesToPublish);
 
@@ -100,7 +111,7 @@ const PublishBanner = (): JSX.Element => {
 
   // !! ENTRIES
   const entries = useAppSelector((state: any) => state.entries.entries);
-  console.log('entries', entries);
+  // console.log('entries', entries);
 
   const entriesToPublish = entries.map((entry: any) => {
     const { template, inputs } = entry;
@@ -116,7 +127,7 @@ const PublishBanner = (): JSX.Element => {
       template,
     };
   });
-  console.log('entriesToPublish', entriesToPublish);
+  // console.log('entriesToPublish', entriesToPublish);
 
   // !! ASSETS
   // const assets = useAppSelector((state: any) => state.assets.assets);
@@ -142,10 +153,12 @@ const PublishBanner = (): JSX.Element => {
   };
 
   const publishHandler = async () => {
-    // Send to chain
     const sendToChain = await connection.process();
-    console.log('sendToChain', sendToChain);
-    // Reset state after publish
+
+    // Taxonomies
+    dispatch(setIsPublishable(false));
+    // display banner to false
+    dispatch(setDisplayBanner(false));
   };
 
   // TODO:  the same for entries + assets
@@ -192,7 +205,6 @@ const PublishBanner = (): JSX.Element => {
         </p>
 
         {openChangeLog && (
-          // TODO: Dynamise when available
           <div className={classes.changelog}>
             {changes.map((change, index) => (
               <div key={`change-${change.changeName}-${index}`}>

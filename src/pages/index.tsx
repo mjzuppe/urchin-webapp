@@ -24,6 +24,8 @@ import TaxonomiesEditor from '../components/taxonomiesEditor';
 import TemplatesEditor from '../components/templatesEditor';
 import EntriesEditor from '../components/entriesEditor';
 import PublishBanner from '../components/shared/publishBanner';
+import connection from '../utils/connection';
+import { setTaxonomies } from '../redux/slices/taxonomies';
 
 const Home: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -70,6 +72,17 @@ const Home: NextPage = (): JSX.Element => {
     dispatch,
     assets,
   ]);
+
+  useEffect(() => {
+    connection.taxonomy.getAll().then((res) => {
+      const pubKeyArray = res.map((taxonomy) => {
+        return taxonomy.publicKey;
+      });
+      connection.taxonomy.get(pubKeyArray).then((res) => {
+        return dispatch(setTaxonomies(res));
+      });
+    });
+  }, []);
 
   return (
     <div

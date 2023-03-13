@@ -18,9 +18,6 @@ import OrangeButton from '../shared/orangeButton';
 import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
 
-// SDK
-import connection from '../../utils/connection';
-
 const TaxonomiesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -39,17 +36,12 @@ const TaxonomiesList = () => {
   // if taxonomies array has no empty value setIsPublishable to true
   useEffect(() => {
     if (taxonomies.length) {
-      const isPublishable = taxonomies.every((taxonomy) => {
+      const isPublishable = taxonomies.some((taxonomy: any) => {
         return taxonomy.label !== '' && taxonomy.publicKey === '';
       });
       isPublishable && dispatch(setIsPublishable(true));
     }
-  }, [taxonomies, dispatch]);
-
-  useEffect(() => {
-    // const getAllTaxonomies = connection.taxonomy.get();
-    // console.log('getAll', getAllTaxonomies);
-  }, [connection.taxonomy]);
+  });
 
   return (
     <section className={classes.taxonomies_list_section}>
@@ -68,10 +60,10 @@ const TaxonomiesList = () => {
             const { updatedAt, solanaAddress } = taxonomy;
             return (
               <ListRow
-                key={taxonomy?.label}
+                key={taxonomy?.publicKey}
                 title={taxonomy?.label || 'Untitled'}
                 updatedAt={updatedAt}
-                solanaAddress={solanaAddress}
+                publicKey={taxonomy?.publicKey}
                 onClickEditHandler={() => {
                   dispatch(setCurrentProcess('taxonomiesEditor'));
                 }}
