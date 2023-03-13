@@ -154,7 +154,7 @@ const PublishBanner = (): JSX.Element => {
     const createTemplate =
       templatesToPublish.length > 0 &&
       connection.template.create(templatesToPublish);
-    console.log('createTemplate', createTemplate);
+    // console.log('createTemplate', createTemplate);
     // Create asset
     // const createAsset = connection.asset.create(assets);
     // console.log('createAsset', createAsset);
@@ -169,6 +169,7 @@ const PublishBanner = (): JSX.Element => {
     const sendToChain = await connection.process().then((res) => {
       console.log('PROCESS::', res);
       setDisplayHourglass(false);
+      dispatch(setTaxonomiesIsPublishable(false));
       dispatch(setTemplateIsPublishable(false));
       dispatch(setDisplayBanner(false));
     });

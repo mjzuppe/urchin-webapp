@@ -71,7 +71,6 @@ const Home: NextPage = (): JSX.Element => {
         taxonomies.isPublishable ||
         assets.isPublishable
       ) {
-        console.log('displayBanner');
         dispatch(setDisplayBanner(true));
       } else {
         // TODO: fix : state is not updated isPublishable is true

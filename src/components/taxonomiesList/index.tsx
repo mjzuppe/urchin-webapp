@@ -22,9 +22,6 @@ const TaxonomiesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
-  const taxoIsPublishable = useAppSelector(
-    (state) => state.taxonomies.isPublishable
-  );
 
   const paginatedData = paginate(taxonomies, currentPage, pageSize);
 
@@ -42,11 +39,13 @@ const TaxonomiesList = () => {
       const taxoIsPublishable = taxonomies.some(
         (taxo) => taxo.label !== '' && taxo.publicKey === ''
       );
-      console.log('taxoIsPublishable', taxoIsPublishable);
+      // console.log('taxoIsPublishable', taxoIsPublishable);
 
-      taxoIsPublishable && dispatch(setTaxonomiesIsPublishable(true));
+      taxoIsPublishable
+        ? dispatch(setTaxonomiesIsPublishable(true))
+        : dispatch(setTaxonomiesIsPublishable(false));
     }
-  }, [taxonomies, dispatch, taxoIsPublishable]);
+  }, [taxonomies, dispatch]);
 
   return (
     <section className={classes.taxonomies_list_section}>
