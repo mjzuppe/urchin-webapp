@@ -18,7 +18,7 @@ interface ListRowProps {
   updatedAt: number;
   publicKey: string;
   arweaveAddress?: string;
-  entriesNbr?: number;
+  entriesNbr: number;
   onClickEditHandler: () => void;
 }
 
@@ -37,6 +37,14 @@ const ListRow = ({
   const publicKeyTruncated = `${publicKey?.slice(0, 4)}...${publicKey?.slice(
     publicKey?.length - 4,
     publicKey?.length
+  )}`;
+
+  const aerweaveAddressTruncated = `${arweaveAddress?.slice(
+    0,
+    4
+  )}...${arweaveAddress?.slice(
+    arweaveAddress?.length - 4,
+    arweaveAddress?.length
   )}`;
 
   return (
@@ -61,17 +69,19 @@ const ListRow = ({
                 <p>{publicKeyTruncated}</p>
               </div>
             )}
-            {activeTab !== 'Taxonomies' && arweaveAddress !== '' && (
-              <div className={classes.arweave}>
-                <Image
-                  src="/assets/arweave-logo.svg"
-                  width={isDesktop ? 20 : 10}
-                  height={isDesktop ? 20 : 10}
-                  alt="Arweave logo - token adress"
-                />
-                <p>{arweaveAddress}</p>
-              </div>
-            )}
+            {activeTab !== 'Taxonomies' &&
+              publicKey !== '' &&
+              arweaveAddress !== '' && (
+                <div className={classes.arweave}>
+                  <Image
+                    src="/assets/arweave-logo.svg"
+                    width={isDesktop ? 20 : 10}
+                    height={isDesktop ? 20 : 10}
+                    alt="Arweave logo - token adress"
+                  />
+                  <p>{aerweaveAddressTruncated}</p>
+                </div>
+              )}
           </div>
         </div>
         {(isDesktop || activeTab === 'Entries') && (
@@ -80,7 +90,7 @@ const ListRow = ({
         {activeTab === 'Templates' && (
           <div className={classes.entries_nbr}>
             <p>
-              {entriesNbr} {entriesNbr && entriesNbr <= 1 ? 'Entry' : 'Entries'}
+              {entriesNbr} {entriesNbr <= 1 ? 'Entry' : 'Entries'}
             </p>
           </div>
         )}
