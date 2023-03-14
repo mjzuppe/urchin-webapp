@@ -8523,10 +8523,10 @@ update-browserslist-db@^1.0.10:
     escalade "^3.1.1"
     picocolors "^1.0.0"
 
-urchin-web3-cms@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/urchin-web3-cms/-/urchin-web3-cms-0.0.2.tgz#c2b503e693907ac4ab0c484d0e417b06d54d86ed"
-  integrity sha512-Q0s29Fo0EAyGw+3EFTm5s9BYCyxkZ2bMxBjYDxjyCg79lmUZ3Vn9H/QxJ1DQt+xbMMhj3BYTLQBpEC5H+/2MLQ==
+urchin-web3-cms@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/urchin-web3-cms/-/urchin-web3-cms-0.0.3.tgz#545d69cfbffecf10d516e5dee2da5a393945b17a"
+  integrity sha512-z8DgqQ4bgmENIDHef4V1Xts2R9Tx54wwbqUznpK/MA79oMQF6h07c8jDUEAKz+LsUICmqiAoVI5sdbS3KTzVqg==
   dependencies:
     "@bundlr-network/client" "^0.10.3"
     "@project-serum/anchor" "^0.26.0"
