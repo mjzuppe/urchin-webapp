@@ -11,6 +11,7 @@ import { setDisplayBanner } from '../redux/slices/banner';
 import { setCurrentProcess } from '../redux/slices/process';
 import { setTemplates } from '../redux/slices/templates';
 import { setTaxonomies } from '../redux/slices/taxonomies';
+import { setEntries } from '../redux/slices/entries';
 
 // Utils
 import { useAppDispatch } from '../utils/useAppDispatch';
@@ -29,7 +30,6 @@ import TaxonomiesEditor from '../components/taxonomiesEditor';
 import TemplatesEditor from '../components/templatesEditor';
 import EntriesEditor from '../components/entriesEditor';
 import PublishBanner from '../components/shared/publishBanner';
-import { setEntries } from '../redux/slices/entries';
 
 const Home: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
