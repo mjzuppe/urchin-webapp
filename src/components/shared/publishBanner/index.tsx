@@ -16,7 +16,13 @@ import { setTemplateIsPublishable } from '../../../redux/slices/templates';
 import { setDisplayBanner } from '../../../redux/slices/banner';
 
 //  SDK
-import connection from '../../../utils/connection';
+// import connection from '../../../utils/connection';
+
+// TESTING
+import { Keypair } from '@solana/web3.js';
+import urchin from 'urchin-web3-cms';
+import bs58 from 'bs58';
+import {useWallet} from '@solana/wallet-adapter-react';
 
 // Components
 import Hourglass from '../hourglass';
@@ -143,7 +149,17 @@ const PublishBanner = (): JSX.Element => {
   // !! ASSETS
   // const assets = useAppSelector((state: any) => state.assets.assets);
   // console.log('assets', assets);
+  const payer = Keypair.fromSecretKey(
+    bs58.decode(
+      '5QA4FCiYuBfkizud8tRdUWomQqdvksJuSG5zY13uyHBPZP89Jb2LGWTNUcRuTUqJngwkG6xf7joRfo5jtLgfax1e'
+    )
+  );
 
+  const connection = urchin({
+    payer,
+    cluster: 'devnet',
+    walletContextState: useWallet()
+  });
   const preflightHandler = async () => {
     // Create taxonomy
     const createTaxonomy =
