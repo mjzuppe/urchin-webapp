@@ -68,8 +68,9 @@ const ListRow = ({
                   height={isDesktop ? 20 : 10}
                   alt="Solana logo - token address"
                 />
+                {/* TODO: put cluster in env var */}
                 <Link
-                  href={`https://explorer.solana.com/address/${publicKey}`}
+                  href={`https://explorer.solana.com/address/${publicKey}?cluster=devnet`}
                   className={classes.solana_link}
                   target="_blank"
                 >
