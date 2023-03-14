@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Styles
 import classes from './EntriesList.module.scss';
@@ -15,7 +15,11 @@ import { useAppSelector } from '../../utils/useAppSelector';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
-import { addNewEntry, setCurrentEntryId } from '../../redux/slices/entries';
+import {
+  addNewEntry,
+  setCurrentEntryId,
+  setEntryIsPublishable,
+} from '../../redux/slices/entries';
 
 // Components
 import OrangeButton from '../shared/orangeButton';
@@ -41,8 +45,8 @@ const EntriesList = () => {
 
   const selectOptionList = templates.map((template) => {
     return {
-      value: template.id,
-      label: template.title,
+      value: template.publicKey,
+      label: template.title || 'Untitled',
     };
   });
 
@@ -72,7 +76,7 @@ const EntriesList = () => {
         // template id
         template: templateSelected.template,
         updatedAt: Date.now(),
-        solanaAddress: '',
+        publicKey: '',
         arweaveAddress: '',
         inputs: [],
         taxonomies: [],
@@ -85,6 +89,23 @@ const EntriesList = () => {
     dispatch(setCurrentProcess('entriesEditor'));
     dispatch(setCurrentEntryId(id));
   };
+
+  // if taxonomies array has no empty value setIsPublishable to true
+  useEffect(() => {
+    if (entries.length > 0) {
+      const entryIsPublishable = entries.some((entry) => {
+        return (
+          entry.inputs.length > 0 &&
+          entry.title !== '' &&
+          entry.publicKey === ''
+        );
+      });
+
+      entryIsPublishable
+        ? dispatch(setEntryIsPublishable(true))
+        : dispatch(setEntryIsPublishable(false));
+    }
+  }, [entries, dispatch]);
 
   return (
     <>
@@ -148,14 +169,16 @@ const EntriesList = () => {
         {/* Entries List */}
         <div className={classes.templates_list}>
           {paginatedData.map((entry: any) => {
-            const { title, updatedAt, solanaAddress, arweaveAddress } = entry;
+            const { created, publicKey, arweaveId, inputs } = entry;
+
             return (
               <ListRow
-                key={updatedAt}
-                title={title}
-                updatedAt={updatedAt}
-                solanaAddress={solanaAddress}
-                arweaveAddress={arweaveAddress}
+                key={arweaveId}
+                title={'Untitled'}
+                updatedAt={created}
+                publicKey={publicKey}
+                entriesNbr={0}
+                arweaveAddress={arweaveId}
                 onClickEditHandler={() => entriesEditorEditHandler(entry.id)}
               />
             );

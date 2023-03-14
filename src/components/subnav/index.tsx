@@ -23,9 +23,9 @@ const Subnav = (): JSX.Element => {
     };
   };
 
-  const quickUploadHandler = () => {
-    dispatch(setCurrentProcess('quickUpload'));
-  };
+  // const quickUploadHandler = () => {
+  //   dispatch(setCurrentProcess('quickUpload'));
+  // };
 
   return (
     <nav className={classes.subnav}>
@@ -40,7 +40,7 @@ const Subnav = (): JSX.Element => {
           </li>
         ))}
       </ul>
-      <div>
+      {/* <div>
         <button
           type="button"
           className="orange_link"
@@ -48,7 +48,7 @@ const Subnav = (): JSX.Element => {
         >
           Quick Upload
         </button>
-      </div>
+      </div> */}
     </nav>
   );
 };

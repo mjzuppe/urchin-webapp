@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Styles
 import classes from './TaxonomiesList.module.scss';
@@ -11,6 +11,7 @@ import { useAppSelector } from '../../utils/useAppSelector';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
+import { setTaxonomiesIsPublishable } from '../../redux/slices/taxonomies';
 
 // Components
 import OrangeButton from '../shared/orangeButton';
@@ -32,6 +33,20 @@ const TaxonomiesList = () => {
     dispatch(setCurrentProcess('taxonomiesEditor'));
   };
 
+  // if taxonomies array has no empty value setTaxonomiesIsPublishable to true
+  useEffect(() => {
+    if (taxonomies.length > 0) {
+      const taxoIsPublishable = taxonomies.some(
+        (taxo) => taxo.label !== '' && taxo.publicKey === ''
+      );
+      // console.log('taxoIsPublishable', taxoIsPublishable);
+
+      taxoIsPublishable
+        ? dispatch(setTaxonomiesIsPublishable(true))
+        : dispatch(setTaxonomiesIsPublishable(false));
+    }
+  }, [taxonomies, dispatch]);
+
   return (
     <section className={classes.taxonomies_list_section}>
       {/* action buttons */}
@@ -46,13 +61,14 @@ const TaxonomiesList = () => {
       <div className={classes.taxonomies_list}>
         {paginatedData &&
           paginatedData.map((taxonomy: any) => {
-            const { updatedAt, solanaAddress } = taxonomy;
+            const { updatedAt } = taxonomy;
             return (
               <ListRow
-                key={taxonomy?.label}
-                title={taxonomy?.label}
+                key={taxonomy?.publicKey}
+                title={taxonomy?.label || 'Untitled'}
                 updatedAt={updatedAt}
-                solanaAddress={solanaAddress}
+                publicKey={taxonomy?.publicKey}
+                entriesNbr={0}
                 onClickEditHandler={() => {
                   dispatch(setCurrentProcess('taxonomiesEditor'));
                 }}

@@ -15,7 +15,6 @@ import { setTemplatesEditorActiveTab } from '../../redux/slices/templates';
 
 // Components
 import BackButton from '../shared/backButton';
-import OrangeButton from '../shared/orangeButton';
 import TemplatesInputsList from './templatesInputsList';
 import TemplatesTaxonomies from './templatesTaxonomies';
 import Breadcrumbs from '../shared/breadcrumbs';
@@ -31,6 +30,7 @@ const TemplatesEditor = (): JSX.Element => {
 
   // Handlers
   const handleBackClick = () => {
+    // prevent Handle back if errors
     dispatch(setCurrentProcess('default'));
   };
 
@@ -39,11 +39,6 @@ const TemplatesEditor = (): JSX.Element => {
       setActive(tab);
       dispatch(setTemplatesEditorActiveTab(tab));
     };
-  };
-
-  const handleSaveClick = () => {
-    console.log('handleSaveClick');
-    // save template
   };
 
   const templates = useAppSelector((state) => state.templates.templates);
@@ -64,16 +59,6 @@ const TemplatesEditor = (): JSX.Element => {
         title={currentTemplate?.title || 'Untitled'}
       />
 
-      <div className="editors_action_btn_wrapper">
-        {/* if Edit add Revision nbr + last updated date */}
-        <OrangeButton
-          btnText={'Save'}
-          type="submit"
-          // TODO: change callback when available (add template in templates array from redux)
-          callBack={handleSaveClick}
-          className="save_btn"
-        />
-      </div>
       {/*  Templates Editor Nav */}
       <nav className={classes.templates_editor_nav}>
         <ul>

@@ -48,6 +48,7 @@ const StaticHomePage = () => {
           placeholder="blur"
           quality={100}
           fill
+          sizes="100vw, 100vh"
           style={{
             objectFit: 'cover',
           }}
@@ -58,12 +59,11 @@ const StaticHomePage = () => {
           <h1>Headless CMS</h1>
           <h2>for Web3</h2>
           <h3>Content and media management layer for dApp developers</h3>
-          {/* TODO: Btn hidden for now */}
-          {/* <WalletMultiButtonDynamic
+          <WalletMultiButtonDynamic
             className={`${classes.btn_wallet_connect} ${classes.btn_top}`}
           >
             {!connected ? 'Connect Wallet' : null}
-          </WalletMultiButtonDynamic> */}
+          </WalletMultiButtonDynamic>
         </div>
 
         <div className={classes.flex_container}>
@@ -92,10 +92,9 @@ const StaticHomePage = () => {
             <div className={classes.flex_wrapper_left}>
               <h3>Start Building With Urchin Content Studio</h3>
               <p>Start building with Urchin without any code.</p>
-              {/* TODO: Btn hidden for now */}
-              {/* <WalletMultiButtonDynamic className={classes.btn_wallet_connect}>
+              <WalletMultiButtonDynamic className={classes.btn_wallet_connect}>
                 {!connected ? 'Connect Wallet' : null}
-              </WalletMultiButtonDynamic> */}
+              </WalletMultiButtonDynamic>
             </div>
             <div className={classes.flex_wrapper_right}>
               <Image
@@ -168,18 +167,23 @@ const StaticHomePage = () => {
               />
             </Link>
             <span className="filler"></span>
-            {/* <Link href="/" className={classes.footer_link} id={classes.github}>
-            <p>Github</p>
-            <Image
-              src={linkIcon}
-              width={12}
-              height={12}
-              alt="link icon - redirect to github"
-            />
-          </Link>
-          <Link href="/" className={classes.footer_link}>
-            <p>Contact</p>
-          </Link> */}
+            <Link
+              href="https://github.com/juicebox-technologies/urchin-sdk"
+              target={'_blank'}
+              className={classes.footer_link}
+              id={classes.github}
+            >
+              <p>Github</p>
+              <Image
+                src={linkIcon}
+                width={12}
+                height={12}
+                alt="link icon - redirect to github"
+              />
+            </Link>
+            {/* <Link href="/" className={classes.footer_link}>
+              <p>Contact</p>
+            </Link> */}
           </div>
         </footer>
       </section>

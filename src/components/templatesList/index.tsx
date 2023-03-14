@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Styles
 import classes from './TemplatesList.module.scss';
@@ -18,6 +18,7 @@ import { setCurrentProcess } from '../../redux/slices/process';
 import {
   addNewTemplate,
   setCurrentTemplateId,
+  setTemplateIsPublishable,
 } from '../../redux/slices/templates';
 
 // Components
@@ -29,6 +30,7 @@ const TemplatesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const templates = useAppSelector((state) => state.templates.templates);
+  // const templatesStates = useAppSelector((state) => state.templates);
 
   const paginatedData = paginate(templates, currentPage, pageSize);
 
@@ -44,8 +46,8 @@ const TemplatesList = () => {
       addNewTemplate({
         title: '',
         updatedAt: Date.now(),
-        solanaAddress: '3SJ...93A',
-        arweaveAddress: '5SX...5AB',
+        publicKey: '',
+        arweaveAddress: '',
         entriesNbr: 0,
         id: id,
         inputs: [],
@@ -60,6 +62,18 @@ const TemplatesList = () => {
     dispatch(setCurrentTemplateId(id));
   };
 
+  // if taxonomies array has no empty value setTemplateIsPublishable to true
+  useEffect(() => {
+    if (templates.length > 0) {
+      const templateIsPublishable = templates.some((templates) => {
+        return templates.title !== '' && templates.publicKey === '';
+      });
+      templateIsPublishable
+        ? dispatch(setTemplateIsPublishable(true))
+        : dispatch(setTemplateIsPublishable(false));
+    }
+  }, [templates, dispatch]);
+
   return (
     <section className={classes.templates_list_section}>
       {/* action buttons */}
@@ -70,9 +84,9 @@ const TemplatesList = () => {
           callBack={templatesEditorHandler}
         />
         {/* Modal */}
-        <AlertDialog.Root>
+        {/* <AlertDialog.Root>
           <AlertDialog.Trigger asChild>
-            {/* For some reason OrangeButton Component is not working here. To investigate later */}
+
             <button className={classes.import_button} type="button">
               Import
             </button>
@@ -119,27 +133,22 @@ const TemplatesList = () => {
               </div>
             </AlertDialog.Content>
           </AlertDialog.Portal>
-        </AlertDialog.Root>
+        </AlertDialog.Root> */}
       </div>
       {/* Templates List */}
       <div className={classes.templates_list}>
         {paginatedData &&
           paginatedData.map((template: any) => {
-            const {
-              title,
-              updatedAt,
-              solanaAddress,
-              arweaveAddress,
-              entriesNbr,
-            } = template;
+            const { title, updatedAt, publicKey, arweaveAddress, entriesNbr } =
+              template;
             return (
               <ListRow
-                key={template.id}
+                key={template.publicKey}
                 title={title || 'Untitled'}
                 updatedAt={updatedAt}
-                solanaAddress={solanaAddress}
-                arweaveAddress={arweaveAddress}
-                entriesNbr={entriesNbr}
+                publicKey={publicKey}
+                arweaveAddress={template.arweaveId}
+                entriesNbr={entriesNbr || 0}
                 onClickEditHandler={() =>
                   templatesEditorEditHandler(template.id)
                 }

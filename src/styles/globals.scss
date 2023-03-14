@@ -54,38 +54,6 @@ main {
   margin-top: 5rem;
 }
 
-// Wallet btn
-.btn_wallet_connect {
-  font-family: 'Inter';
-  font-weight: 600;
-  // fixed width to override the default width of the wallet adapter button
-  width: 270px;
-  height: 57px;
-  margin-top: 10px;
-  text-align: center;
-  justify-content: center;
-  font-size: 18px;
-  border-radius: 6px;
-  padding: 10px 20px;
-
-  &:not([disabled]):hover {
-    background-color: $orange;
-    opacity: 0.9;
-  }
-
-  &:disabled {
-    background: $white;
-    cursor: not-allowed;
-    // used here to overwrite default GenericOrange Btn behavior
-    pointer-events: revert;
-  }
-
-  @include breakpoint-max(phoneMax) {
-    width: 100%;
-    padding: 1rem 2rem;
-  }
-}
-
 //  FORMS GLOBALS
 .input_wrapper {
   margin-bottom: 2rem;
@@ -111,7 +79,7 @@ main {
   border-radius: $radius-s;
   border: none;
   padding: 0.5rem 1rem;
-  height: 2.5rem;
+  height: 45px;
   width: 100%;
   color: $white;
   &:focus {
@@ -161,6 +129,7 @@ main {
 
 .single_input {
   width: 300px;
+  min-height: 100px;
   @include breakpoint-max(phoneMax) {
     width: 100%;
   }

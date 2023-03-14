@@ -3,6 +3,10 @@ import Image from 'next/image';
 // Styles
 import classes from './Pagination.module.scss';
 
+// Utils
+import { useAppSelector } from '../../../utils/useAppSelector';
+import useWindowSize from '../../../utils/useWindowSize';
+
 interface PaginationProps {
   items: number;
   pageSize: number;
@@ -17,9 +21,19 @@ const Pagination: React.FC<PaginationProps> = ({
   onPageChange,
 }): JSX.Element => {
   const pagesCount = Math.ceil(items / pageSize);
+  const { width } = useWindowSize();
+  const isMobile = width! < 1024;
+  const displayBanner = useAppSelector(
+    (state: any) => state.banner.displayBanner
+  );
 
   return (
-    <div className={classes.pagination_section}>
+    <div
+      className={classes.pagination_section}
+      style={{
+        bottom: !displayBanner ? '0' : isMobile ? '130px' : '100px',
+      }}
+    >
       <div className={classes.pages_wrapper}>
         <button
           onClick={() => onPageChange(currentPage - 1)}
