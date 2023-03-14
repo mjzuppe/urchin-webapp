@@ -13,6 +13,7 @@ import { useAppDispatch } from '../../../utils/useAppDispatch';
 // REDUX
 import { setTaxonomiesIsPublishable } from '../../../redux/slices/taxonomies';
 import { setTemplateIsPublishable } from '../../../redux/slices/templates';
+import { setEntryIsPublishable } from '../../../redux/slices/entries';
 import { setDisplayBanner } from '../../../redux/slices/banner';
 
 //  SDK
@@ -189,6 +190,7 @@ const PublishBanner = (): JSX.Element => {
       setDisplayHourglass(false);
       dispatch(setTaxonomiesIsPublishable(false));
       dispatch(setTemplateIsPublishable(false));
+      dispatch(setEntryIsPublishable(false));
       dispatch(setDisplayBanner(false));
     });
   };
