@@ -18,7 +18,7 @@ interface ListRowProps {
   updatedAt: number;
   publicKey: string;
   arweaveAddress?: string;
-  entriesNbr?: number;
+  entriesNbr: number;
   onClickEditHandler: () => void;
 }
 

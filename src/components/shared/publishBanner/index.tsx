@@ -144,7 +144,7 @@ const PublishBanner = (): JSX.Element => {
 
     const taxonomiesArray = entry?.taxonomies?.map((taxonomy: Taxonomy) => {
       const { publicKey }: Taxonomy = taxonomy;
-      return publicKey;
+      return new PublicKey(publicKey);
     });
 
     return {
@@ -153,7 +153,6 @@ const PublishBanner = (): JSX.Element => {
       template: new PublicKey(template),
     };
   });
-  console.log('entriesToPublish', entriesToPublish);
 
   //* ASSETS
   // const assets = useAppSelector((state: any) => state.assets.assets);
