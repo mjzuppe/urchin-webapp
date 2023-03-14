@@ -140,7 +140,12 @@ const PublishBanner = (): JSX.Element => {
   //* ENTRIES
   const entries = useAppSelector((state: any) => state.entries.entries);
 
-  const entriesToPublish = entries.map((entry: any) => {
+  // filter taxonomies with empty pubKey
+  const filteredEntries = entries.filter(
+    (entry: Template) => entry.publicKey === ''
+  );
+
+  const entriesToPublish = filteredEntries.map((entry: any) => {
     const { template, inputs } = entry;
 
     const taxonomiesArray = entry?.taxonomies?.map((taxonomy: Taxonomy) => {
