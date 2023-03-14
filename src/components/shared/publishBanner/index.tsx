@@ -57,7 +57,7 @@ const PublishBanner = (): JSX.Element => {
   const payer = Keypair.fromSecretKey(
     // TODO: change when available
     bs58.decode(
-      'JXepqbA3N2vcixpfuiLwCe1katXPF9cqU6GeUHEoBgEHJFsdpNXma7EwQsC1GSbmx8uczzNYCV98Svh1vNrnAPx'
+      '3YNWe72jopyTiJWtRBWTGVkyYb3VtxBfqJ1yaonKfJNwLaTWWL89fMDaswTXX1CJQoFypHkdW4AmfuwhpUc1RwP6'
     )
   );
   const connection = urchin({
