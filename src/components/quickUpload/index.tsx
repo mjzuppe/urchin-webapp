@@ -11,7 +11,7 @@ import { useAppSelector } from '../../utils/useAppSelector';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
-import { addNewAsset, setIsPublishable } from '../../redux/slices/assets';
+// import { addNewAsset, setIsPublishable } from '../../redux/slices/assets';
 
 // lib
 import { FileUploader } from 'react-drag-drop-files';
@@ -42,7 +42,7 @@ const QuickUpload = (): JSX.Element => {
   // if taxonomies array has no empty value setIsPublishable to true
   useEffect(() => {
     if (assets.length) {
-      dispatch(setIsPublishable(true));
+      // dispatch(setIsPublishable(true));
     }
   }, [assets, dispatch]);
 
@@ -67,7 +67,7 @@ const QuickUpload = (): JSX.Element => {
       () => {
         // this will then display a text file
         console.log(reader.result);
-        dispatch(addNewAsset({ original: reader.result }));
+        // dispatch(addNewAsset({ original: reader.result }));
       },
       false
     );

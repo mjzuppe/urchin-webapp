@@ -143,8 +143,7 @@ const PublishBanner = (): JSX.Element => {
     const { template, inputs } = entry;
 
     const taxonomiesArray = entry?.taxonomies?.map((taxonomy: Taxonomy) => {
-      const { publicKey }: Taxonomy = taxonomy;
-      return new PublicKey(publicKey);
+      return new PublicKey(taxonomy.publicKey!);
     });
 
     return {

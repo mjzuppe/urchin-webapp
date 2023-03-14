@@ -19,13 +19,13 @@ const slice = createSlice({
     setIsPublishable: (state, { payload }: PayloadAction<any>) => {
       state.isPublishable = payload;
     },
-    addNewAsset: (state, action: PayloadAction<any>) => {
-      state.assets.push(action.payload);
-    },
+    // addNewAsset: (state, action: PayloadAction<any>) => {
+    //   state.assets.push(action.payload);
+    // },
   },
 });
 
-export const { setIsPublishable, addNewAsset } = slice.actions;
+export const { setIsPublishable } = slice.actions;
 
 // Reducer
 export default slice.reducer;

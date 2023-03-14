@@ -170,13 +170,14 @@ const EntriesList = () => {
         <div className={classes.templates_list}>
           {paginatedData.map((entry: any) => {
             const { created, publicKey, arweaveId, inputs } = entry;
-            const title = Object.keys(inputs[0])[0];
+
             return (
               <ListRow
                 key={arweaveId}
-                title={title || 'Untitled'}
+                title={'Untitled'}
                 updatedAt={created}
                 publicKey={publicKey}
+                entriesNbr={0}
                 arweaveAddress={arweaveId}
                 onClickEditHandler={() => entriesEditorEditHandler(entry.id)}
               />

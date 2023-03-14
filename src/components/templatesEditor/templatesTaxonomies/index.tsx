@@ -45,7 +45,7 @@ const TemplatesTaxonomies = (): JSX.Element => {
   const onChangeTemplatesTaxonomyHandler = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const { value }: { value: Array<string> } = event.target;
+    const { value }: { value: any } = event.target;
     const publickKeyValues = value.map((value: any) => {
       return {
         label: value.label,

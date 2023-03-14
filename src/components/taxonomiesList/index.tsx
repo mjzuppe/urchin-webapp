@@ -68,6 +68,7 @@ const TaxonomiesList = () => {
                 title={taxonomy?.label || 'Untitled'}
                 updatedAt={updatedAt}
                 publicKey={taxonomy?.publicKey}
+                entriesNbr={0}
                 onClickEditHandler={() => {
                   dispatch(setCurrentProcess('taxonomiesEditor'));
                 }}
