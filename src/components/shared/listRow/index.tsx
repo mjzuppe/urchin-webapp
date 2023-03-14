@@ -89,7 +89,7 @@ const ListRow = ({
                   />
 
                   <Link
-                    href={` https://arweave.net/${arweaveAddress}`}
+                    href={`https://arweave.net/${arweaveAddress}`}
                     className={classes.solana_link}
                     target="_blank"
                   >
