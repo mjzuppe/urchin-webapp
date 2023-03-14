@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { setDisplayBanner } from '../redux/slices/banner';
 import { setCurrentProcess } from '../redux/slices/process';
+import { setTemplates } from '../redux/slices/templates';
 
 // Utils
 import { useAppDispatch } from '../utils/useAppDispatch';
@@ -53,12 +54,24 @@ const Home: NextPage = (): JSX.Element => {
   );
 
   useEffect(() => {
+    // Get taxonomies from chain
     connection.taxonomy.getAll().then((res) => {
-      const pubKeyArray = res.map((taxonomy) => {
+      const pubKeyArray = res.map((taxonomy: any) => {
         return taxonomy.publicKey;
       });
       connection.taxonomy.get(pubKeyArray).then((res) => {
         return dispatch(setTaxonomies(res));
+      });
+    });
+
+    // Get templates from chain
+    connection.template.getAll().then((res) => {
+      const templatePubKeyArray = res.map((template: any) => {
+        return template.publicKey;
+      });
+      connection.template.get(templatePubKeyArray).then((res) => {
+        console.log(res);
+        return dispatch(setTemplates(res));
       });
     });
   }, []);

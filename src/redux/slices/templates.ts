@@ -18,6 +18,9 @@ const slice = createSlice({
   name: 'templates',
   initialState,
   reducers: {
+    setTemplates: (state, { payload }: PayloadAction<any>) => {
+      state.templates = payload;
+    },
     setTemplatesEditorActiveTab(state, { payload }: PayloadAction<any>) {
       state.templatesEditorActiveTab = payload;
     },
@@ -56,6 +59,7 @@ const slice = createSlice({
 });
 
 export const {
+  setTemplates,
   addNewTemplate,
   deleteTemplate,
   setCurrentTemplateId,

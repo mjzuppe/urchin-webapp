@@ -30,7 +30,7 @@ const TemplatesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const templates = useAppSelector((state) => state.templates.templates);
-  const templatesStates = useAppSelector((state) => state.templates);
+  // const templatesStates = useAppSelector((state) => state.templates);
 
   const paginatedData = paginate(templates, currentPage, pageSize);
 
@@ -62,19 +62,15 @@ const TemplatesList = () => {
     dispatch(setCurrentTemplateId(id));
   };
 
-  // Get taxonomies from blockchain on load
-  useEffect(() => {
-    // const getAllTemplates = connection.template.get();
-    // console.log('getAllTemplates', getAllTemplates);
-  }, []);
-
   // if taxonomies array has no empty value setTemplateIsPublishable to true
   useEffect(() => {
-    if (templates.length) {
-      const isPublishable = templates.every((templates) => {
-        return templates.title !== '';
+    if (templates.length > 0) {
+      const templateIsPublishable = templates.some((templates) => {
+        return templates.title !== '' && templates.publicKey === '';
       });
-      isPublishable && dispatch(setTemplateIsPublishable(true));
+      templateIsPublishable
+        ? dispatch(setTemplateIsPublishable(true))
+        : dispatch(setTemplateIsPublishable(false));
     }
   }, [templates, dispatch]);
 
@@ -147,12 +143,12 @@ const TemplatesList = () => {
               template;
             return (
               <ListRow
-                key={template.id}
+                key={template.publicKey}
                 title={title || 'Untitled'}
                 updatedAt={updatedAt}
                 publicKey={publicKey}
-                arweaveAddress={arweaveAddress}
-                entriesNbr={entriesNbr}
+                arweaveAddress={template.arweaveId}
+                entriesNbr={entriesNbr || 0}
                 onClickEditHandler={() =>
                   templatesEditorEditHandler(template.id)
                 }
