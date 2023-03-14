@@ -12,6 +12,7 @@ import { getFullDate } from '../../../utils/time';
 
 // Components
 import Separator from '../separator';
+import Link from 'next/link';
 
 interface ListRowProps {
   title: string;
@@ -67,7 +68,13 @@ const ListRow = ({
                   height={isDesktop ? 20 : 10}
                   alt="Solana logo - token address"
                 />
-                <p>{publicKeyTruncated}</p>
+                <Link
+                  href={`https://explorer.solana.com/address/${publicKey}`}
+                  className={classes.solana_link}
+                  target="_blank"
+                >
+                  {publicKeyTruncated}
+                </Link>
               </div>
             )}
             {activeTab !== 'Taxonomies' &&
@@ -80,7 +87,14 @@ const ListRow = ({
                     height={isDesktop ? 20 : 10}
                     alt="Arweave logo - token adress"
                   />
-                  <p>{aerweaveAddressTruncated}</p>
+
+                  <Link
+                    href={` https://arweave.net/${arweaveAddress}`}
+                    className={classes.solana_link}
+                    target="_blank"
+                  >
+                    {aerweaveAddressTruncated}
+                  </Link>
                 </div>
               )}
           </div>

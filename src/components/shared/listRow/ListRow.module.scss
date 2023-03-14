@@ -65,7 +65,18 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 1.15rem;
+  // font-size: 1.15rem;
+  // font-weight: 500;
+  // color: $white;
+  @include breakpoint-max(tabletMax) {
+    font-size: 0.65rem;
+    width: fit-content;
+  }
+}
+
+.solana_link,
+.arweave_link {
+  font-size: 1rem;
   font-weight: 500;
   color: $white;
   @include breakpoint-max(tabletMax) {
