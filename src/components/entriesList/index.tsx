@@ -170,10 +170,11 @@ const EntriesList = () => {
         <div className={classes.templates_list}>
           {paginatedData.map((entry: any) => {
             const { created, publicKey, arweaveId, inputs } = entry;
+            const title = Object.keys(inputs[0])[0];
             return (
               <ListRow
-                key={created}
-                title={Object.keys(inputs[0])[0] || 'Untitled'}
+                key={arweaveId}
+                title={title || 'Untitled'}
                 updatedAt={created}
                 publicKey={publicKey}
                 arweaveAddress={arweaveId}

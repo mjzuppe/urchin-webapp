@@ -68,7 +68,7 @@ const EntriesEditor = (): JSX.Element => {
   // find entryTemplate.taxonomies in taxonomiesX
   const templatesTaxoWithValue = taxonomiesTransformed?.filter(
     (taxonomytoDisplay: any) => {
-      return entryTemplate?.taxonomies.includes(taxonomytoDisplay.publicKey);
+      return entryTemplate?.taxonomies?.includes(taxonomytoDisplay.publicKey);
     }
   );
 
@@ -88,7 +88,7 @@ const EntriesEditor = (): JSX.Element => {
   const onChangeEntryTaxonomiesHandler = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const { value } = event.target;
+    const { value }: { value: Array<string> } = event.target;
 
     const publickKeyValues = value.map((value: any) => {
       return {

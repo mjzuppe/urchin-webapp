@@ -27,18 +27,40 @@ const TemplatesTaxonomies = (): JSX.Element => {
     (template) => template.id === currentTemplate?.id
   );
 
+  // get label and value for taxonomies
+  const taxonomiesTransformed = taxonomies.map((taxonomy) => {
+    return {
+      label: taxonomy.label,
+      publicKey: taxonomy.publicKey,
+    };
+  });
+
+  // find entryTemplate.taxonomies in taxonomiesX
+  const templatesTaxoWithValue = taxonomiesTransformed?.filter(
+    (taxonomytoDisplay: any) => {
+      return currentTemplate?.taxonomies?.includes(taxonomytoDisplay.publicKey);
+    }
+  );
+
   const onChangeTemplatesTaxonomyHandler = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const { value } = event.target;
+    const { value }: { value: Array<string> } = event.target;
+    const publickKeyValues = value.map((value: any) => {
+      return {
+        label: value.label,
+        publicKey: value.publicKey,
+      };
+    });
 
     dispatch(
       addNewTemplateTaxonomy({
         templateIndex: currentTemplateIndex,
-        taxonomy: value,
+        taxonomy: publickKeyValues,
       })
     );
   };
+
   return (
     <div className={classes.taxonomies_row_container}>
       <div className="single_row_form">
@@ -50,7 +72,7 @@ const TemplatesTaxonomies = (): JSX.Element => {
             displayValue="label"
             optionsList={taxonomies || []}
             onChange={(event: any) => onChangeTemplatesTaxonomyHandler(event)}
-            value={currentTemplate?.taxonomies}
+            value={currentTemplate?.taxonomies || []}
             placeholder={'Select one or more'}
             showCheckbox={true}
           />

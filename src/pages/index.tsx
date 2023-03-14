@@ -80,9 +80,10 @@ const Home: NextPage = (): JSX.Element => {
       const entryPubKeyArray = res.map((entry: any) => {
         return entry.publicKey;
       });
-      connection.entry.get(entryPubKeyArray).then((res) => {
-        return dispatch(setEntries(res));
-      });
+      entryPubKeyArray.length > 0 &&
+        connection.entry.get(entryPubKeyArray).then((res) => {
+          return dispatch(setEntries(res));
+        });
     });
   }, []);
 

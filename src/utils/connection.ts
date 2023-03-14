@@ -6,7 +6,7 @@ import bs58 from 'bs58';
 // TODO: change that
 const payer = Keypair.fromSecretKey(
   bs58.decode(
-    '5QA4FCiYuBfkizud8tRdUWomQqdvksJuSG5zY13uyHBPZP89Jb2LGWTNUcRuTUqJngwkG6xf7joRfo5jtLgfax1e'
+    '5wuVvkeEgyn9kPCSmJVHtop2pga6c9MNjnuaCvi8Ak5um4hqGEatE9va59pkGzUhMjt6o5RxTAQG5PPEJtxQYYEp'
   )
 );
 const connection = urchin({

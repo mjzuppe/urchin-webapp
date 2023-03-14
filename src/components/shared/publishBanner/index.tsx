@@ -56,7 +56,7 @@ const PublishBanner = (): JSX.Element => {
   const payer = Keypair.fromSecretKey(
     // TODO: change when available
     bs58.decode(
-      '5QA4FCiYuBfkizud8tRdUWomQqdvksJuSG5zY13uyHBPZP89Jb2LGWTNUcRuTUqJngwkG6xf7joRfo5jtLgfax1e'
+      '5wuVvkeEgyn9kPCSmJVHtop2pga6c9MNjnuaCvi8Ak5um4hqGEatE9va59pkGzUhMjt6o5RxTAQG5PPEJtxQYYEp'
     )
   );
   const connection = urchin({
@@ -153,7 +153,7 @@ const PublishBanner = (): JSX.Element => {
       template: new PublicKey(template),
     };
   });
-  // console.log('entriesToPublish', entriesToPublish);
+  console.log('entriesToPublish', entriesToPublish);
 
   //* ASSETS
   // const assets = useAppSelector((state: any) => state.assets.assets);
