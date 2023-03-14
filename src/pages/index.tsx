@@ -10,11 +10,13 @@ import { RootState } from '../redux/store';
 import { setDisplayBanner } from '../redux/slices/banner';
 import { setCurrentProcess } from '../redux/slices/process';
 import { setTemplates } from '../redux/slices/templates';
+import { setTaxonomies } from '../redux/slices/taxonomies';
 
 // Utils
 import { useAppDispatch } from '../utils/useAppDispatch';
 import { useAppSelector } from '../utils/useAppSelector';
 import useWindowSize from '../utils/useWindowSize';
+import connection from '../utils/connection';
 
 // Components
 import Subnav from '../components/subnav';
@@ -27,8 +29,7 @@ import TaxonomiesEditor from '../components/taxonomiesEditor';
 import TemplatesEditor from '../components/templatesEditor';
 import EntriesEditor from '../components/entriesEditor';
 import PublishBanner from '../components/shared/publishBanner';
-import connection from '../utils/connection';
-import { setTaxonomies } from '../redux/slices/taxonomies';
+import { setEntries } from '../redux/slices/entries';
 
 const Home: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
@@ -70,8 +71,17 @@ const Home: NextPage = (): JSX.Element => {
         return template.publicKey;
       });
       connection.template.get(templatePubKeyArray).then((res) => {
-        console.log(res);
         return dispatch(setTemplates(res));
+      });
+    });
+
+    // Get entries from chain
+    connection.entry.getAll().then((res) => {
+      const entryPubKeyArray = res.map((entry: any) => {
+        return entry.publicKey;
+      });
+      connection.entry.get(entryPubKeyArray).then((res) => {
+        return dispatch(setEntries(res));
       });
     });
   }, []);
@@ -81,8 +91,7 @@ const Home: NextPage = (): JSX.Element => {
       if (
         templates.isPublishable ||
         entries.isPublishable ||
-        taxonomies.isPublishable ||
-        assets.isPublishable
+        taxonomies.isPublishable
       ) {
         dispatch(setDisplayBanner(true));
       } else {

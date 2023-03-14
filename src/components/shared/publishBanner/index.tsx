@@ -17,7 +17,7 @@ import { setDisplayBanner } from '../../../redux/slices/banner';
 
 //  SDK
 // import connection from '../../../utils/connection';
-import { Keypair } from '@solana/web3.js';
+import { Keypair, PublicKey } from '@solana/web3.js';
 import urchin from 'urchin-web3-cms';
 import bs58 from 'bs58';
 import { useWallet } from '@solana/wallet-adapter-react';
@@ -70,17 +70,16 @@ const PublishBanner = (): JSX.Element => {
   };
 
   const cancelHandler = () => {
-    // TODO: Purge Preflight + reset redux????
-    console.log('cancelHandler');
     dispatch(setTaxonomiesIsPublishable(false));
     dispatch(setTemplateIsPublishable(false));
   };
 
-  // !! Taxonomies
+  //* Taxonomies
   const taxonomies = useAppSelector(
     (state: any) => state.taxonomies.taxonomies
   );
   // console.log('taxonomies', taxonomies);
+
   // filter taxonomies with empty pubKey
   const filteredTaxo = taxonomies.filter(
     (taxonomy: Taxonomy) => taxonomy.publicKey === ''
@@ -95,7 +94,7 @@ const PublishBanner = (): JSX.Element => {
   });
   // console.log('taxonomiesToPublish', taxonomiesToPublish);
 
-  // !! Templates
+  //* Templates
   const templates = useAppSelector((state: any) => state.templates.templates);
   // console.log('templates', templates);
 
@@ -137,45 +136,47 @@ const PublishBanner = (): JSX.Element => {
   });
   // console.log('templatesToPublish', templatesToPublish);
 
-  // !! ENTRIES
+  //* ENTRIES
   const entries = useAppSelector((state: any) => state.entries.entries);
-  // console.log('entries', entries);
 
   const entriesToPublish = entries.map((entry: any) => {
     const { template, inputs } = entry;
-    const taxonomiesArray = entry.taxonomies.map((taxonomy: Taxonomy) => {
-      const { label }: Taxonomy = taxonomy;
-      return label;
+
+    const taxonomiesArray = entry?.taxonomies?.map((taxonomy: Taxonomy) => {
+      const { publicKey }: Taxonomy = taxonomy;
+      return publicKey;
     });
 
     return {
       inputs: inputs,
       taxonomies: taxonomiesArray,
-      //TODO: change id for pubKey
-      template,
+      template: new PublicKey(template),
     };
   });
   // console.log('entriesToPublish', entriesToPublish);
 
-  // !! ASSETS
+  //* ASSETS
   // const assets = useAppSelector((state: any) => state.assets.assets);
   // console.log('assets', assets);
 
   const preflightHandler = async () => {
-    // Create taxonomy
+    //* Create taxonomy
     const createTaxonomy =
       taxonomiesToPublish.length > 0 &&
       connection.taxonomy.create(taxonomiesToPublish);
     // console.log('createTaxonomy', createTaxonomy);
-    // Create template
+
+    //* Create template
     const createTemplate =
       templatesToPublish.length > 0 &&
       connection.template.create(templatesToPublish);
     // console.log('createTemplate', createTemplate);
-    // Create asset
-    // const createAsset = connection.asset.create(assets);
-    // console.log('createAsset', createAsset);
-    // Preflight
+
+    //* Create Entries
+    const createEntries =
+      entriesToPublish.length > 0 && connection.entry.create(entriesToPublish);
+
+    //* Preflight
     const preflight = await connection.preflight().then((res) => {
       console.log('PREFLIGHT::', res);
       return res;

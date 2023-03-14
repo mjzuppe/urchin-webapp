@@ -18,7 +18,7 @@ interface ListRowProps {
   updatedAt: number;
   publicKey: string;
   arweaveAddress?: string;
-  entriesNbr: number;
+  entriesNbr?: number;
   onClickEditHandler: () => void;
 }
 
@@ -53,9 +53,10 @@ const ListRow = ({
         <div className={classes.mobile_flex}>
           <div className={classes.title}>
             <h3>{title}</h3>
-            {activeTab !== 'Taxonomies' && (
+            {/* TODO: remove for now */}
+            {/* {activeTab !== 'Taxonomies' && (
               <p>Updated {getFullDate(updatedAt)}</p>
-            )}
+            )} */}
           </div>
           <div className={classes.tablet_flex}>
             {publicKey !== '' && (

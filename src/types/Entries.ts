@@ -3,7 +3,7 @@ import type { Taxonomies } from './Taxonomies';
 type Entry = {
   id: string;
   updatedAt: number;
-  solanaAddress: string;
+  publicKey: string;
   arweaveAddress: string;
   title: string;
   taxonomies: Array<Taxonomies>;

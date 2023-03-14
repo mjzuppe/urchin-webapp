@@ -37,6 +37,9 @@ const EntriesEditor = (): JSX.Element => {
   const { width } = useWindowSize();
   const dispatch = useAppDispatch();
   const entries = useAppSelector((state) => state.entries.entries);
+  const taxonomiesFromState = useAppSelector(
+    (state) => state.taxonomies.taxonomies
+  );
 
   const currentEntryId = useAppSelector(
     (state) => state.entries.currentEntryId
@@ -51,7 +54,22 @@ const EntriesEditor = (): JSX.Element => {
   const templates = useAppSelector((state) => state.templates.templates);
 
   const entryTemplate = templates.find(
-    (template) => template.id === currentEntry?.template
+    (template) => template.publicKey === currentEntry?.template
+  );
+
+  // get label and value for taxonomies
+  const taxonomiesTransformed = taxonomiesFromState.map((taxonomy) => {
+    return {
+      label: taxonomy.label,
+      publicKey: taxonomy.publicKey,
+    };
+  });
+
+  // find entryTemplate.taxonomies in taxonomiesX
+  const templatesTaxoWithValue = taxonomiesTransformed?.filter(
+    (taxonomytoDisplay: any) => {
+      return entryTemplate?.taxonomies.includes(taxonomytoDisplay.publicKey);
+    }
   );
 
   const [entryInputs, setEntryInputs] = useState<any>(
@@ -72,10 +90,17 @@ const EntriesEditor = (): JSX.Element => {
   ) => {
     const { value } = event.target;
 
+    const publickKeyValues = value.map((value: any) => {
+      return {
+        label: value.label,
+        publicKey: value.publicKey,
+      };
+    });
+
     dispatch(
       addEntryTaxonomies({
         entryIndex: currentEntryIndex,
-        taxonomies: value,
+        taxonomies: publickKeyValues,
       })
     );
   };
@@ -191,7 +216,7 @@ const EntriesEditor = (): JSX.Element => {
                 name="taxonomies"
                 label="Choose taxonomies"
                 displayValue="label"
-                optionsList={entryTemplate?.taxonomies || []}
+                optionsList={templatesTaxoWithValue || []}
                 onChange={(event: any) => onChangeEntryTaxonomiesHandler(event)}
                 value={currentEntry?.taxonomies}
                 placeholder={'Select one or more'}

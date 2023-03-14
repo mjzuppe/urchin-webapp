@@ -18,7 +18,7 @@ import { setCurrentProcess } from '../../redux/slices/process';
 import {
   addNewEntry,
   setCurrentEntryId,
-  setIsPublishable,
+  setEntryIsPublishable,
 } from '../../redux/slices/entries';
 
 // Components
@@ -45,7 +45,7 @@ const EntriesList = () => {
 
   const selectOptionList = templates.map((template) => {
     return {
-      value: template.id,
+      value: template.publicKey,
       label: template.title || 'Untitled',
     };
   });
@@ -76,7 +76,7 @@ const EntriesList = () => {
         // template id
         template: templateSelected.template,
         updatedAt: Date.now(),
-        solanaAddress: '',
+        publicKey: '',
         arweaveAddress: '',
         inputs: [],
         taxonomies: [],
@@ -92,15 +92,18 @@ const EntriesList = () => {
 
   // if taxonomies array has no empty value setIsPublishable to true
   useEffect(() => {
-    if (entries.length) {
-      const isPublishable = entries.every((entry) => {
+    if (entries.length > 0) {
+      const entryIsPublishable = entries.every((entry) => {
         return (
           entry.inputs.length > 0 &&
-          entry.taxonomies.length > 0 &&
-          entry.title !== ''
+          entry.title !== '' &&
+          entry.publicKey === ''
         );
       });
-      isPublishable && dispatch(setIsPublishable(true));
+
+      entryIsPublishable
+        ? dispatch(setEntryIsPublishable(true))
+        : dispatch(setEntryIsPublishable(false));
     }
   }, [entries, dispatch]);
 
@@ -166,14 +169,14 @@ const EntriesList = () => {
         {/* Entries List */}
         <div className={classes.templates_list}>
           {paginatedData.map((entry: any) => {
-            const { title, updatedAt, solanaAddress, arweaveAddress } = entry;
+            const { created, publicKey, arweaveId, inputs } = entry;
             return (
               <ListRow
-                key={updatedAt}
-                title={title}
-                updatedAt={updatedAt}
-                solanaAddress={solanaAddress}
-                arweaveAddress={arweaveAddress}
+                key={created}
+                title={Object.keys(inputs[0])[0] || 'Untitled'}
+                updatedAt={created}
+                publicKey={publicKey}
+                arweaveAddress={arweaveId}
                 onClickEditHandler={() => entriesEditorEditHandler(entry.id)}
               />
             );

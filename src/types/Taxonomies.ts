@@ -1,10 +1,10 @@
 type Taxonomy = {
   label: string;
-  parent: string;
-  grandParent: string;
-  updatedAt: number;
+  parent?: string;
+  grandParent?: string;
+  updatedAt?: number;
   // solanaAddress: string;
-  arweaveAddress: string;
+  arweaveAddress?: string;
   publicKey: string;
 };
 
