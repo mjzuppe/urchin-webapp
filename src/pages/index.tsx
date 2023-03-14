@@ -96,7 +96,6 @@ const Home: NextPage = (): JSX.Element => {
       ) {
         dispatch(setDisplayBanner(true));
       } else {
-        // TODO: fix : state is not updated isPublishable is true
         dispatch(setDisplayBanner(false));
       }
     }
