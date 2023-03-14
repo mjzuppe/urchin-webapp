@@ -93,7 +93,7 @@ const EntriesList = () => {
   // if taxonomies array has no empty value setIsPublishable to true
   useEffect(() => {
     if (entries.length > 0) {
-      const entryIsPublishable = entries.every((entry) => {
+      const entryIsPublishable = entries.some((entry) => {
         return (
           entry.inputs.length > 0 &&
           entry.title !== '' &&
