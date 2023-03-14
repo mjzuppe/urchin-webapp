@@ -37,6 +37,7 @@
     "redux-persist": "^6.0.0",
     "sharp": "^0.31.3",
     "typescript": "4.9.5",
+    "urchin-web3-cms": "^0.0.2",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
