@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Styles
 import classes from './PublishBanner.module.scss';
@@ -51,8 +51,10 @@ const PublishBanner = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const [openChangeLog, setOpenChangeLog] = useState(false);
   const [displayHourglass, setDisplayHourglass] = useState(false);
+  const [cost, setCost] = useState(0);
 
   const payer = Keypair.fromSecretKey(
+    // TODO: change when available
     bs58.decode(
       '5QA4FCiYuBfkizud8tRdUWomQqdvksJuSG5zY13uyHBPZP89Jb2LGWTNUcRuTUqJngwkG6xf7joRfo5jtLgfax1e'
     )
@@ -176,7 +178,9 @@ const PublishBanner = (): JSX.Element => {
     // Preflight
     const preflight = await connection.preflight().then((res) => {
       console.log('PREFLIGHT::', res);
+      return res;
     });
+    setCost(preflight.cost.sol);
   };
 
   const publishHandler = async () => {
@@ -277,7 +281,7 @@ const PublishBanner = (): JSX.Element => {
                   className={classes.AlertDialogDescription}
                 >
                   Confirm that you want to save this entry on-chain. Signature
-                  required and estimated fee is 0.001 SOL.
+                  required and estimated fee is {cost} SOL.
                 </AlertDialog.Description>
                 <div className="AlertDialogActions">
                   <AlertDialog.Cancel asChild>
