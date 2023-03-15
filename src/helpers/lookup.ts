@@ -21,12 +21,12 @@ export const mapTemplateAndEntryData = (entries: any, templates: any) => {
 }
 
 export const loadTemplateInputData = (entryInputs: any, templateInputs: any) => {
-  let templateTextInput = templateInputs.filter(input => input.type === "text")[0]
+  let templateTextInput = templateInputs.filter((input: { type: any }) => input.type === "text")[0]
 
   let entryWithName = {}
 
   if(templateTextInput !== undefined) {
-    entryWithName = entryInputs.filter(input => {
+    entryWithName = entryInputs.filter((input: { [x: string]: null }) => {
       return input[templateTextInput.label] !== null
     })
   }
