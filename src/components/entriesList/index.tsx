@@ -172,10 +172,11 @@ const EntriesList = () => {
             const { created, publicKey, arweaveId, inputs } = entry;
             const templateInputs = templates.filter(template => template.publicKey === entry.template)[0].inputs
             const updatedInputs = loadTemplateInputData(inputs, templateInputs)
+            const entryTitle = updatedInputs.entryInputData[updatedInputs.templateInputData.label]
             return (
               <ListRow
                 key={arweaveId}
-                title={updatedInputs.templateInputData.label}
+                title={entryTitle}
                 updatedAt={created}
                 publicKey={publicKey}
                 entriesNbr={0}
