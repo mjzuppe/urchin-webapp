@@ -74,13 +74,18 @@ const TemplatesInputsList = (): JSX.Element => {
     );
   };
 
+  const titleNameExists = (name: string) => {
+    let existingTemplates = templates.filter(template => template.id !== currentTemplate?.id)
+    let titles = existingTemplates.map(template => template.title.toLowerCase().trim())
+    return titles.includes(name.toLowerCase().trim())
+  }
+
   const onChangeTemplateTitleHandler = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     event.target.value !== '' && setTemplateTitleError(false);
-    const templateTitles = templates.map(template => template.title.toLowerCase().trim())
 
-    if(templateTitles.includes(event.target.value.toLowerCase().trim())) {
+    if( titleNameExists(event.target.value) ) {
       setTitleNameError(true)
     } else  {
       setTitleNameError(false)
@@ -98,9 +103,8 @@ const TemplatesInputsList = (): JSX.Element => {
   ) => {
     // if value empty render an error
     event.target.value === '' && setTemplateTitleError(true);
-    const templateTitles = templates.map(template => template.title.toLowerCase().trim())
     
-    if(templateTitles.includes(event.target.value.toLowerCase().trim())) {
+    if(titleNameExists(event.target.value) ) {
       setTitleNameError(true)
     } else {
       setTitleNameError(false)
@@ -112,6 +116,8 @@ const TemplatesInputsList = (): JSX.Element => {
       );
     }
   };
+
+  const currentTitle = currentTemplate?.title || ""
 
   return (
     <section className={classes.templates_inputs_list}>
@@ -127,6 +133,7 @@ const TemplatesInputsList = (): JSX.Element => {
             placeholder="Enter template Name"
             className="form_input"
             maxLength={200}
+            value={currentTitle}
             onChange={(event) => onChangeTemplateTitleHandler(event)}
             onBlur={onBlurTemplateTitleHandler}
           />
