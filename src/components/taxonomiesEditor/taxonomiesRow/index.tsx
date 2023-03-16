@@ -64,12 +64,6 @@ const TaxonomiesRow = (): JSX.Element => {
       setTaxonomyLabelError(false);
     }
 
-    const labelNames = taxonomies.map(taxonomy => taxonomy.label.toLowerCase().trim())
-
-    let labelDuplicates = (labelNames: any[]) => labelNames.filter((label: {type: any}, index) => labelNames.indexOf(label) !== index)
-    labelDuplicates(labelNames).length > 0 ? setLabelNameError(true) : setLabelNameError(false)
-
-
     const newTaxonomy = {
       [name]: value.trimStart(),
       grandparent: '',
@@ -82,6 +76,17 @@ const TaxonomiesRow = (): JSX.Element => {
       dispatch(updateTaxonomyParent(newTaxonomy));
       const grandParent = findParent(newTaxonomy.parent);
       dispatch(updateTaxonomyGrandParent({ grandParent, index }));
+    }
+
+    const labelNames = taxonomies.map(taxonomy => taxonomy.label.toLowerCase().trim())
+
+    let labelDuplicates = (labelNames: any[]) => labelNames.filter((label: {type: any}, index) => labelNames.indexOf(label) !== index)
+    
+    if (labelDuplicates(labelNames).length > 0) {
+      setLabelNameError(true)
+      setErrorIndex(index);
+    } else {
+      setLabelNameError(false)
     }
   };
 
