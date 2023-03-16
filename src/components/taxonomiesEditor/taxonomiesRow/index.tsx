@@ -23,6 +23,7 @@ import { Taxonomy } from '../../../types/Taxonomies';
 const TaxonomiesRow = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const [taxonomyLabelError, setTaxonomyLabelError] = useState<boolean>(false);
+  const [labelNameError, setLabelNameError] = useState<boolean>(false);
   const [errorIndex, setErrorIndex] = useState<number>(-1);
 
   const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
@@ -62,6 +63,13 @@ const TaxonomiesRow = (): JSX.Element => {
     if (name === 'label' && value !== '') {
       setTaxonomyLabelError(false);
     }
+
+    const labelNames = taxonomies.map(taxonomy => taxonomy.label.toLowerCase().trim())
+
+    let labelDuplicates = (labelNames: any[]) => labelNames.filter((label: {type: any}, index) => labelNames.indexOf(label) !== index)
+    labelDuplicates(labelNames).length > 0 ? setLabelNameError(true) : setLabelNameError(false)
+
+
     const newTaxonomy = {
       [name]: value.trimStart(),
       grandparent: '',
@@ -85,6 +93,16 @@ const TaxonomiesRow = (): JSX.Element => {
     if (name === 'label' && value === '') {
       setTaxonomyLabelError(true);
       setErrorIndex(index);
+    }
+
+    const labelNames = taxonomies.map(taxonomy => taxonomy.label.toLowerCase().trim())
+
+    let labelDuplicates = (labelNames: any[]) => labelNames.filter((label: {type: any}, index) => labelNames.indexOf(label) !== index)
+    if (labelDuplicates(labelNames).length > 0) {
+      setLabelNameError(true)
+      setErrorIndex(index);
+    } else {
+      setLabelNameError(false)
     }
 
     const newTaxonomy = {
@@ -129,6 +147,9 @@ const TaxonomiesRow = (): JSX.Element => {
 
               {taxonomyLabelError && errorIndex === index && (
                 <span className="error_message">Label is required</span>
+              )}
+              {labelNameError && errorIndex === index && (
+                <span className="error_message">Label name must be unique</span>
               )}
             </div>
             <div className={`single_input input_wrapper`}>
