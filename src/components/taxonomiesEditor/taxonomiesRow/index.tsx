@@ -81,8 +81,8 @@ const TaxonomiesRow = (): JSX.Element => {
     const labelNames = taxonomies.map(taxonomy => taxonomy.label.toLowerCase().trim())
 
     let labelDuplicates = (labelNames: any[]) => labelNames.filter((label: {type: any}, index) => labelNames.indexOf(label) !== index)
-    
-    if (labelDuplicates(labelNames).length > 0) {
+
+    if (labelDuplicates(labelNames).length > 0 && labelDuplicates(labelNames)[0] === value.toLocaleLowerCase().trim()) {
       setLabelNameError(true)
       setErrorIndex(index);
     } else {
@@ -103,7 +103,7 @@ const TaxonomiesRow = (): JSX.Element => {
     const labelNames = taxonomies.map(taxonomy => taxonomy.label.toLowerCase().trim())
 
     let labelDuplicates = (labelNames: any[]) => labelNames.filter((label: {type: any}, index) => labelNames.indexOf(label) !== index)
-    if (labelDuplicates(labelNames).length > 0) {
+    if (labelDuplicates(labelNames).length > 0 && labelDuplicates(labelNames)[0] === value.toLocaleLowerCase().trim() ) {
       setLabelNameError(true)
       setErrorIndex(index);
     } else {
