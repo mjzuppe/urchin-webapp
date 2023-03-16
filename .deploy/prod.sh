@@ -1,5 +1,6 @@
 #!/bin/bash
 echo "Start PROD deployment"
+set -e
 . ~/.nvm/nvm.sh
 cd ~/urchin.so
 git reset --hard
