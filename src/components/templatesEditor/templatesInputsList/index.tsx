@@ -23,8 +23,9 @@ import TemplatesInputsRow from '../templatesInputsRow';
 const TemplatesInputsList = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const [templateTitleError, setTemplateTitleError] = useState<boolean>(false);
-  const templates = useAppSelector((state) => state.templates.templates);
+  const [titleNameError, setTitleNameError] = useState<boolean>(false);
 
+  const templates = useAppSelector((state) => state.templates.templates);
   const currentTemplateId = useAppSelector(
     (state) => state.templates.currentTemplateId
   );
@@ -77,12 +78,19 @@ const TemplatesInputsList = (): JSX.Element => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     event.target.value !== '' && setTemplateTitleError(false);
-    dispatch(
-      addOrUpdateTemplateTitle({
-        templateIndex: currentTemplateIndex,
-        title: event.target.value,
-      } as any)
-    );
+    const templateTitles = templates.map(template => template.title.toLowerCase().trim())
+
+    if(templateTitles.includes(event.target.value.toLowerCase().trim())) {
+      setTitleNameError(true)
+    } else  {
+      setTitleNameError(false)
+      dispatch(
+        addOrUpdateTemplateTitle({
+          templateIndex: currentTemplateIndex,
+          title: event.target.value,
+        } as any)
+      );
+    }
   };
 
   const onBlurTemplateTitleHandler = (
@@ -90,12 +98,19 @@ const TemplatesInputsList = (): JSX.Element => {
   ) => {
     // if value empty render an error
     event.target.value === '' && setTemplateTitleError(true);
-    dispatch(
-      addOrUpdateTemplateTitle({
-        templateIndex: currentTemplateIndex,
-        title: event.target.value,
-      } as any)
-    );
+    const templateTitles = templates.map(template => template.title.toLowerCase().trim())
+    
+    if(templateTitles.includes(event.target.value.toLowerCase().trim())) {
+      setTitleNameError(true)
+    } else {
+      setTitleNameError(false)
+      dispatch(
+        addOrUpdateTemplateTitle({
+          templateIndex: currentTemplateIndex,
+          title: event.target.value,
+        } as any)
+      );
+    }
   };
 
   return (
@@ -111,13 +126,15 @@ const TemplatesInputsList = (): JSX.Element => {
             name="label"
             placeholder="Enter template Name"
             className="form_input"
-            value={currentTemplate?.title || ''}
             maxLength={200}
             onChange={(event) => onChangeTemplateTitleHandler(event)}
             onBlur={onBlurTemplateTitleHandler}
           />
           {templateTitleError && (
             <span className="error_message">Template title is required</span>
+          )}
+          {titleNameError && (
+            <span className="error_message">Template title already exists</span>
           )}
         </div>
       </div>
