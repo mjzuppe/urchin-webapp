@@ -19,6 +19,7 @@ import { TemplatesInputs } from '../../../types/Templates';
 // Components
 import OrangeButton from '../../shared/orangeButton';
 import TemplatesInputsRow from '../templatesInputsRow';
+import taxonomies from '../../../redux/slices/taxonomies';
 
 const TemplatesInputsList = (): JSX.Element => {
   const dispatch = useAppDispatch();

@@ -1,13 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Taxonomy } from '../../types/Taxonomies';
+import { Taxonomies, Taxonomy, TaxonomyErrors} from '../../types/Taxonomies';
 
 interface TaxonomiesState {
-  taxonomies: Array<Taxonomy>;
+  original: Taxonomy[], 
+  new: Taxonomy[], 
+  edited: Taxonomy[], 
+  errors: TaxonomyErrors[],
   isPublishable: boolean;
 }
 
 const initialState: TaxonomiesState = {
-  taxonomies: [],
+  original: [], 
+  new: [], 
+  edited: [], 
+  errors: [],
   isPublishable: false,
 };
 
@@ -16,26 +22,29 @@ const slice = createSlice({
   initialState,
   reducers: {
     setTaxonomies: (state, { payload }: PayloadAction<any>) => {
-      state.taxonomies = payload;
+      state.original = payload;
     },
     addNewTaxonomy: (state, action: PayloadAction<any>) => {
-      state.taxonomies.push(action.payload);
+      state.new.push(action.payload);
     },
     deleteTaxonomy: (state, { payload }: PayloadAction<any>) => {
       const { taxonomieIndex } = payload;
-      state.taxonomies.splice(taxonomieIndex, 1);
+      state.original.splice(taxonomieIndex, 1);
     },
     updateTaxonomyLabel: (state, { payload }: PayloadAction<any>) => {
       const { label, index } = payload;
-      state.taxonomies[index].label = label;
+      // map through updated list taxonomies
+      // if item exitsts update it 
+      // else push new item into this array
+      state.original[index].label = label;
     },
     updateTaxonomyParent: (state, { payload }: PayloadAction<any>) => {
       const { parent, index } = payload;
-      state.taxonomies[index].parent = parent;
+      state.original[index].parent = parent;
     },
     updateTaxonomyGrandParent: (state, { payload }: PayloadAction<any>) => {
       const { grandParent, index } = payload;
-      state.taxonomies[index].grandParent = grandParent;
+      state.original[index].grandParent = grandParent;
     },
     setTaxonomiesIsPublishable: (state, { payload }: PayloadAction<any>) => {
       state.isPublishable = payload;

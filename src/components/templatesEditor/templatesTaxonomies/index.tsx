@@ -12,7 +12,7 @@ import { addNewTemplateTaxonomy } from '../../../redux/slices/templates';
 
 const TemplatesTaxonomies = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
+  const taxonomies = useAppSelector((state) => state.taxonomies.original);
   const templates = useAppSelector((state) => state.templates.templates);
 
   const currentTemplateId = useAppSelector(

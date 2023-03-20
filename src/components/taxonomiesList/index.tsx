@@ -19,9 +19,20 @@ import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
 
 const TaxonomiesList = () => {
+
+  const taxonomiesList = (taxonomies: any) => {
+    let taxonomyList = taxonomies.original
+    const editedTaxonomies = taxonomies.edited
+    const newTaxonomies = taxonomies.new
+
+    return taxonomyList
+  }
+
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
+  const taxonomies = useAppSelector((state) => taxonomiesList(state.taxonomies));
+
+  console.log(taxonomies)
 
   const paginatedData = paginate(taxonomies, currentPage, pageSize);
 
@@ -37,7 +48,7 @@ const TaxonomiesList = () => {
   useEffect(() => {
     if (taxonomies.length > 0) {
       const taxoIsPublishable = taxonomies.some(
-        (taxo) => taxo.label !== '' && taxo.publicKey === ''
+        (taxo: { label: string; publicKey: string; }) => taxo.label !== '' && taxo.publicKey === ''
       );
       // console.log('taxoIsPublishable', taxoIsPublishable);
 

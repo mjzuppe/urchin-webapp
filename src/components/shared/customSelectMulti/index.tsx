@@ -77,7 +77,7 @@ export const CustomSelectMulti = ({
         className={`${classes.multiSelect} ${
           firstItemSeparator ? classes.firstItemSeparator : ''
         } ${error ? classes.hasError : ''}`}
-        options={optionsList}
+        options={optionsList.original}
         displayValue={displayValue} // tells which item from options object will be shown as label
         placeholder={placeholder}
         singleSelect={singleSelect}
