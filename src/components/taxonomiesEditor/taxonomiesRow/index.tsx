@@ -14,6 +14,8 @@ import {
   updateTaxonomyGrandParent,
   updateTaxonomyLabel,
   updateTaxonomyParent,
+  setTaxonomyErrors,
+  removeTaxonomyErrors,
 } from '../../../redux/slices/taxonomies';
 
 // Components
@@ -43,7 +45,8 @@ const TaxonomiesRow = (): JSX.Element => {
   }
 
   const taxonomies =  taxonomiesList(useAppSelector((state) => state.taxonomies))  
-   
+  const errors = useAppSelector((state) => state.taxonomies.errors)
+
   useEffect(() => {
     taxonomies.length === 0 &&
       dispatch(
@@ -79,6 +82,32 @@ const TaxonomiesRow = (): JSX.Element => {
       setTaxonomyLabelError(false);
     }
 
+    const labelNames = taxonomies.map((taxonomy: { label: string; }) => taxonomy.label.toLowerCase().trim())
+
+    let duplicateIndex = labelNames.indexOf(value.toLowerCase().trim())
+    if (duplicateIndex !== -1) {
+      dispatch(
+        setTaxonomyErrors({
+          publicKey, 
+          duplicateRecord: taxonomies[duplicateIndex].publicKey,
+          index, message: "label must be unique"
+        }),
+      )
+      dispatch(
+        setTaxonomyErrors({
+          publicKey: taxonomies[duplicateIndex].publicKey, 
+          duplicateRecord: publicKey,
+          duplicateIndex, 
+          message: "label must be unique"
+        })
+      )
+    } else {
+      console.log(errors)
+      dispatch(
+        removeTaxonomyErrors({publicKey})
+      )
+    }
+
     const newTaxonomy = {
       [name]: value.trimStart(),
       grandparent: '',
@@ -93,22 +122,12 @@ const TaxonomiesRow = (): JSX.Element => {
       const grandParent = findParent(newTaxonomy.parent);
       dispatch(updateTaxonomyGrandParent({ grandParent, index }));
     }
-
-    const labelNames = taxonomies.map((taxonomy: { label: string; }) => taxonomy.label.toLowerCase().trim())
-
-    let labelDuplicates = (labelNames: any[]) => labelNames.filter((label: {type: any}, index) => labelNames.indexOf(label) !== index)
-
-    if (labelDuplicates(labelNames).length > 0 && labelDuplicates(labelNames)[0] === value.toLocaleLowerCase().trim()) {
-      setLabelNameError(true)
-      setErrorIndex(index);
-    } else {
-      setLabelNameError(false)
-    }
   };
 
   const onBlurTaxonomyHandler = (
     event: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number, 
+    publicKey: string
   ) => {
     const { name, value } = event.target;
     if (name === 'label' && value === '') {
@@ -143,6 +162,10 @@ const TaxonomiesRow = (): JSX.Element => {
     if (taxonomies.length <= 1) return;
     dispatch(deleteTaxonomy({ taxonomieIndex: index }));
   };
+
+  const taxonomyError = (publicKey: string) => {
+    return errors.filter((e: { publicKey: string; }) => e.publicKey === publicKey)
+  }
   
   return (
     <>
@@ -164,14 +187,15 @@ const TaxonomiesRow = (): JSX.Element => {
                 onChange={(event) => onChangeTaxonomyHandler(event, index, taxonomy.publicKey)}
                 onBlur={(event) => onBlurTaxonomyHandler(event, index, taxonomy.publicKey)}
               />
-              {/* Input error for correct index */}
-
-              {taxonomyLabelError && errorIndex === index && (
-                <span className="error_message">Label is required</span>
-              )}
-              {labelNameError && errorIndex === index && (
-                <span className="error_message">Label name must be unique</span>
-              )}
+              {
+                errors.map((error: any) => {
+                  if(error.publicKey === taxonomy.publicKey) {
+                    (
+                      <span className="error_message">{error.message}</span>
+                    )
+                  }
+                })
+              }
             </div>
             <div className={`single_input input_wrapper`}>
               <CustomSelectSingle
@@ -185,7 +209,7 @@ const TaxonomiesRow = (): JSX.Element => {
                   { value: 'rock', label: 'rock' },
                 ]}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                  onChangeTaxonomyHandler(event, index)
+                  onChangeTaxonomyHandler(event, index, taxonomy.publicKey)
                 }
                 value={taxonomy.parent}
                 className={`${classes.genres_container}`}

@@ -1,5 +1,8 @@
 type TaxonomyErrors = {
-  message: string
+  [key: string]: {
+    index: number, 
+    message: string
+  }
 }
 
 type Taxonomy = {

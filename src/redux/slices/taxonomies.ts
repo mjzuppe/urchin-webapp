@@ -5,7 +5,7 @@ interface TaxonomiesState {
   original: Taxonomy[], 
   new: Taxonomy[], 
   edited: Taxonomy[], 
-  errors: TaxonomyErrors[],
+  errors: any,
   isPublishable: boolean;
 }
 
@@ -67,6 +67,24 @@ const slice = createSlice({
     setTaxonomiesIsPublishable: (state, { payload }: PayloadAction<any>) => {
       state.isPublishable = payload;
     },
+    setTaxonomyErrors: (state, {payload}: PayloadAction<any>) => {
+      const { publicKey, duplicateRecord, index, message } = payload
+      state.errors.push(
+        {
+          publicKey,
+          duplicateRecord,
+          index, 
+          message
+        }
+      ) 
+    },
+    removeTaxonomyErrors: (state, {payload}: PayloadAction<any>) => {
+      const { publicKey } = payload
+      let record = state.errors.filter((error: { publicKey: any; }) => error.publicKey == publicKey)
+      let duplicatePairRecord = state.errors.filter((error: { duplicateRecord: any; }) => error.duplicateRecord == publicKey)
+      state.errors.splice(state.errors.indexOf(record), 1);
+      state.errors.splice(state.errors.indexOf(duplicatePairRecord), 1);
+    },
   },
 });
 
@@ -78,6 +96,8 @@ export const {
   updateTaxonomyParent,
   updateTaxonomyGrandParent,
   setTaxonomiesIsPublishable,
+  setTaxonomyErrors, 
+  removeTaxonomyErrors
 } = slice.actions;
 
 // Reducer
