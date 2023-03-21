@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 // Styles
 import classes from './TaxonomiesRow.module.scss';
+import { Keypair } from '@solana/web3.js';
 
 // Utils
 import { useAppDispatch } from '../../../utils/useAppDispatch';
@@ -26,10 +27,23 @@ const TaxonomiesRow = (): JSX.Element => {
   const [labelNameError, setLabelNameError] = useState<boolean>(false);
   const [errorIndex, setErrorIndex] = useState<number>(-1);
 
-  const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
+  const taxonomiesList = (taxonomies: any) => {
+    let taxonomyList = taxonomies.original
+    const editedTaxonomies = taxonomies.edited
+    
+    taxonomyList.forEach((originalTaxo: { publicKey: any; }, originalIndex: number) => {
+      editedTaxonomies.forEach((editedTaxo: { publicKey: any; }) => {
+        if(originalTaxo.publicKey === editedTaxo.publicKey) {
+          taxonomyList.splice(originalIndex, 1, editedTaxo);
+        }
+      });
+    });
 
-  //
+    return [...taxonomyList, ...taxonomies.new]
+  }
 
+  const taxonomies =  taxonomiesList(useAppSelector((state) => state.taxonomies))  
+   
   useEffect(() => {
     taxonomies.length === 0 &&
       dispatch(
@@ -40,11 +54,13 @@ const TaxonomiesRow = (): JSX.Element => {
           updatedAt: Date.now(),
           solanaAddress: '',
           arweaveAddress: '',
-          publicKey: '',
+          publicKey: Keypair.generate().publicKey,
         })
       );
   });
 
+  // probably change it to use original taxonomies list but not sure
+  // or could use original + new 
   const findParent = (parent: any) => {
     const parentIndex = taxonomies.findIndex(
       (taxonomy: any) => taxonomy.label.toLowerCase() === parent
@@ -78,7 +94,7 @@ const TaxonomiesRow = (): JSX.Element => {
       dispatch(updateTaxonomyGrandParent({ grandParent, index }));
     }
 
-    const labelNames = taxonomies.map(taxonomy => taxonomy.label.toLowerCase().trim())
+    const labelNames = taxonomies.map((taxonomy: { label: string; }) => taxonomy.label.toLowerCase().trim())
 
     let labelDuplicates = (labelNames: any[]) => labelNames.filter((label: {type: any}, index) => labelNames.indexOf(label) !== index)
 
@@ -100,7 +116,7 @@ const TaxonomiesRow = (): JSX.Element => {
       setErrorIndex(index);
     }
 
-    const labelNames = taxonomies.map(taxonomy => taxonomy.label.toLowerCase().trim())
+    const labelNames = taxonomies.map((taxonomy: { label: string; }) => taxonomy.label.toLowerCase().trim())
 
     let labelDuplicates = (labelNames: any[]) => labelNames.filter((label: {type: any}, index) => labelNames.indexOf(label) !== index)
     if (labelDuplicates(labelNames).length > 0 && labelDuplicates(labelNames)[0] === value.toLocaleLowerCase().trim() ) {
@@ -127,7 +143,7 @@ const TaxonomiesRow = (): JSX.Element => {
     if (taxonomies.length <= 1) return;
     dispatch(deleteTaxonomy({ taxonomieIndex: index }));
   };
-
+  
   return (
     <>
       {taxonomies?.map((taxonomy: Taxonomy, index: number) => (

@@ -84,7 +84,7 @@ const PublishBanner = (): JSX.Element => {
   // filter taxonomies with empty pubKey
   // change to taxonomies that are edited and taxonomies that are new 
   // for now use the same helper function that merges all taxonomies into one array
-  const filteredTaxo = taxonomies.filter(
+  const filteredTaxo = taxonomies.original.filter(
     (taxonomy: Taxonomy) => taxonomy.publicKey === ''
   );
 

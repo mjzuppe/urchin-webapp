@@ -25,6 +25,8 @@ const slice = createSlice({
       state.original = payload;
     },
     addNewTaxonomy: (state, action: PayloadAction<any>) => {
+      // assign temporary public keys that get removed later? 
+      // or use lookup by labels 
       state.new.push(action.payload);
     },
     deleteTaxonomy: (state, { payload }: PayloadAction<any>) => {
@@ -32,11 +34,32 @@ const slice = createSlice({
       state.original.splice(taxonomieIndex, 1);
     },
     updateTaxonomyLabel: (state, { payload }: PayloadAction<any>) => {
-      const { label, index } = payload;
-      // map through updated list taxonomies
-      // if item exitsts update it 
-      // else push new item into this array
-      state.original[index].label = label;
+      const { label, index, publicKey } = payload;
+      // use index to find taxonomy in original array 
+      let originalTaxonomy = state.original[index]
+      // check if that taxonomy exists in edited 
+      if( originalTaxonomy !== null || originalTaxonomy !== undefined ) {
+        state.edited.forEach((editedTaxo, index) => {
+          if(editedTaxo.publicKey === originalTaxonomy.publicKey) {
+            state.edited[index].label = label
+          } else {
+            state.edited.push(originalTaxonomy)
+            state.edited[state.edited.length - 1].label = label
+          }
+        })
+      } else {
+        // we always add new items at the end of the list 
+        state.new.forEach((newTaxo) => {
+          if(newTaxo.publicKey === publicKey) {
+            newTaxo.label = label
+          } 
+        })
+      }
+      // if not push it there 
+      // else override it with new info
+      console.log(payload)
+      return 
+      state.edited[index].label = label;
     },
     updateTaxonomyParent: (state, { payload }: PayloadAction<any>) => {
       const { parent, index } = payload;

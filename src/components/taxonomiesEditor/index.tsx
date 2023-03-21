@@ -1,6 +1,7 @@
 import { useState } from 'react';
 // Styles
 import classes from './TaxonomiesEditor.module.scss';
+import { Keypair } from '@solana/web3.js';
 
 // Utils
 import { useAppDispatch } from '../../utils/useAppDispatch';
@@ -19,7 +20,7 @@ import Breadcrumbs from '../shared/breadcrumbs';
 const TaxonomiesEditor = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
-  const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
+  const taxonomies = useAppSelector((state) => state.taxonomies.original);
 
   const initialTaxonomiesCount = taxonomies.length;
   const [taxonomiesCount, setTaxonomiesCount] = useState<number>(
@@ -40,7 +41,7 @@ const TaxonomiesEditor = (): JSX.Element => {
         updatedAt: Date.now(),
         solanaAddress: '',
         arweaveAddress: '',
-        publicKey: '',
+        publicKey: Keypair.generate().publicKey,
       })
     );
     setTaxonomiesCount(taxonomiesCount + 1);
