@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { Key, useEffect, useState } from 'react';
 // Styles
 import classes from './TaxonomiesRow.module.scss';
 import { Keypair } from '@solana/web3.js';
@@ -71,7 +71,8 @@ const TaxonomiesRow = (): JSX.Element => {
 
   const onChangeTaxonomyHandler = (
     event: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number, 
+    publicKey: string
   ) => {
     const { name, value } = event.target;
     if (name === 'label' && value !== '') {
@@ -82,6 +83,7 @@ const TaxonomiesRow = (): JSX.Element => {
       [name]: value.trimStart(),
       grandparent: '',
       index,
+      publicKey
     };
     if (newTaxonomy.hasOwnProperty('label')) {
       dispatch(updateTaxonomyLabel(newTaxonomy));
@@ -159,8 +161,8 @@ const TaxonomiesRow = (): JSX.Element => {
                 className="form_input"
                 value={taxonomy.label || ''}
                 maxLength={24}
-                onChange={(event) => onChangeTaxonomyHandler(event, index)}
-                onBlur={(event) => onBlurTaxonomyHandler(event, index)}
+                onChange={(event) => onChangeTaxonomyHandler(event, index, taxonomy.publicKey)}
+                onBlur={(event) => onBlurTaxonomyHandler(event, index, taxonomy.publicKey)}
               />
               {/* Input error for correct index */}
 

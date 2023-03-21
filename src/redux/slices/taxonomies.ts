@@ -36,7 +36,7 @@ const slice = createSlice({
       // use index to find taxonomy in original array 
       let originalTaxonomy = state.original[index]
       // check if that taxonomy exists in edited 
-      if( originalTaxonomy !== null || originalTaxonomy !== undefined ) {
+      if( originalTaxonomy !== null && originalTaxonomy !== undefined ) {
         if(state.edited.length == 0) {
           state.edited.push(originalTaxonomy)
           state.edited[state.edited.length - 1].label = label
@@ -51,17 +51,12 @@ const slice = createSlice({
           })
         }
       } else {
-        // we always add new items at the end of the list 
         state.new.forEach((newTaxo) => {
           if(newTaxo.publicKey === publicKey) {
             newTaxo.label = label
           } 
         })
       }
-      // if not push it there 
-      // else override it with new info
-      return 
-      state.edited[index].label = label;
     },
     updateTaxonomyParent: (state, { payload }: PayloadAction<any>) => {
       const { parent, index } = payload;
