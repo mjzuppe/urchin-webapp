@@ -33,9 +33,7 @@ const slice = createSlice({
     },
     updateTaxonomyLabel: (state, { payload }: PayloadAction<any>) => {
       const { label, index, publicKey } = payload;
-      // use index to find taxonomy in original array 
       let originalTaxonomy = state.original[index]
-      // check if that taxonomy exists in edited 
       if( originalTaxonomy !== null && originalTaxonomy !== undefined ) {
         if(state.edited.length == 0) {
           state.edited.push(originalTaxonomy)
