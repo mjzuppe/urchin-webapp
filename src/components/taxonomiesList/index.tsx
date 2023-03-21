@@ -32,8 +32,6 @@ const TaxonomiesList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const taxonomies = useAppSelector((state) => taxonomiesList(state.taxonomies));
 
-  console.log(taxonomies)
-
   const paginatedData = paginate(taxonomies, currentPage, pageSize);
 
   const onPageChange = (page: number) => {

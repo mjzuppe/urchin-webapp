@@ -28,7 +28,7 @@ const TaxonomiesRow = (): JSX.Element => {
   const [errorIndex, setErrorIndex] = useState<number>(-1);
 
   const taxonomiesList = (taxonomies: any) => {
-    let taxonomyList = taxonomies.original
+    let taxonomyList = [...taxonomies.original]
     const editedTaxonomies = taxonomies.edited
     
     taxonomyList.forEach((originalTaxo: { publicKey: any; }, originalIndex: number) => {
@@ -59,8 +59,6 @@ const TaxonomiesRow = (): JSX.Element => {
       );
   });
 
-  // probably change it to use original taxonomies list but not sure
-  // or could use original + new 
   const findParent = (parent: any) => {
     const parentIndex = taxonomies.findIndex(
       (taxonomy: any) => taxonomy.label.toLowerCase() === parent

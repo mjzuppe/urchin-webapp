@@ -25,8 +25,6 @@ const slice = createSlice({
       state.original = payload;
     },
     addNewTaxonomy: (state, action: PayloadAction<any>) => {
-      // assign temporary public keys that get removed later? 
-      // or use lookup by labels 
       state.new.push(action.payload);
     },
     deleteTaxonomy: (state, { payload }: PayloadAction<any>) => {
@@ -39,14 +37,19 @@ const slice = createSlice({
       let originalTaxonomy = state.original[index]
       // check if that taxonomy exists in edited 
       if( originalTaxonomy !== null || originalTaxonomy !== undefined ) {
-        state.edited.forEach((editedTaxo, index) => {
-          if(editedTaxo.publicKey === originalTaxonomy.publicKey) {
-            state.edited[index].label = label
-          } else {
-            state.edited.push(originalTaxonomy)
-            state.edited[state.edited.length - 1].label = label
-          }
-        })
+        if(state.edited.length == 0) {
+          state.edited.push(originalTaxonomy)
+          state.edited[state.edited.length - 1].label = label
+        } else {
+          state.edited.forEach((editedTaxo, index) => {
+            if(editedTaxo.publicKey === originalTaxonomy.publicKey) {
+              state.edited[index].label = label
+            } else {
+              state.edited.push(originalTaxonomy)
+              state.edited[state.edited.length - 1].label = label
+            }
+          })
+        }
       } else {
         // we always add new items at the end of the list 
         state.new.forEach((newTaxo) => {
@@ -57,7 +60,6 @@ const slice = createSlice({
       }
       // if not push it there 
       // else override it with new info
-      console.log(payload)
       return 
       state.edited[index].label = label;
     },
