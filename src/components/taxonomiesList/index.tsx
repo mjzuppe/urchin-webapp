@@ -19,11 +19,9 @@ import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
 
 const TaxonomiesList = () => {
-
-
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const taxonomies =  useAppSelector((state) => state.taxonomies.taxonomies) 
+  const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
 
   const paginatedData = paginate(taxonomies, currentPage, pageSize);
 

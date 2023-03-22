@@ -14,8 +14,6 @@ type Taxonomy = {
   publicKey: string;
 };
 
-type Taxonomies = {
-  taxonomies: Taxonomy[], 
-};
+type Taxonomies = Taxonomy[];
 
 export type { Taxonomy, Taxonomies, TaxonomyError };
