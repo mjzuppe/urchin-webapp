@@ -20,24 +20,10 @@ import Pagination from '../shared/pagination';
 
 const TaxonomiesList = () => {
 
-  const taxonomiesList = (taxonomies: any) => {
-    let taxonomyList = [...taxonomies.original]
-    const editedTaxonomies = taxonomies.edited
-    
-    taxonomyList.forEach((originalTaxo: { publicKey: any; }, originalIndex: number) => {
-      editedTaxonomies.forEach((editedTaxo: { publicKey: any; }) => {
-        if(originalTaxo.publicKey === editedTaxo.publicKey) {
-          taxonomyList.splice(originalIndex, 1, editedTaxo);
-        }
-      });
-    });
-
-    return [...taxonomyList, ...taxonomies.new]
-  }
 
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const taxonomies =  taxonomiesList(useAppSelector((state) => state.taxonomies))  
+  const taxonomies =  useAppSelector((state) => state.taxonomies.original) 
 
   const paginatedData = paginate(taxonomies, currentPage, pageSize);
 

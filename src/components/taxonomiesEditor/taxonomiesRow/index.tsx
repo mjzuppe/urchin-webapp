@@ -26,25 +26,9 @@ import { Taxonomy } from '../../../types/Taxonomies';
 const TaxonomiesRow = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const [taxonomyLabelError, setTaxonomyLabelError] = useState<boolean>(false);
-  const [labelNameError, setLabelNameError] = useState<boolean>(false);
   const [errorIndex, setErrorIndex] = useState<number>(-1);
 
-  const taxonomiesList = (taxonomies: any) => {
-    let taxonomyList = [...taxonomies.original]
-    const editedTaxonomies = taxonomies.edited
-    
-    taxonomyList.forEach((originalTaxo: { publicKey: any; }, originalIndex: number) => {
-      editedTaxonomies.forEach((editedTaxo: { publicKey: any; }) => {
-        if(originalTaxo.publicKey === editedTaxo.publicKey) {
-          taxonomyList.splice(originalIndex, 1, editedTaxo);
-        }
-      });
-    });
-
-    return [...taxonomyList, ...taxonomies.new]
-  }
-
-  const taxonomies =  taxonomiesList(useAppSelector((state) => state.taxonomies))  
+  const taxonomies =  useAppSelector((state) => state.taxonomies.original)
   const errors = useAppSelector((state) => state.taxonomies.errors)
 
   useEffect(() => {
@@ -62,6 +46,36 @@ const TaxonomiesRow = (): JSX.Element => {
       );
   });
 
+  
+  const checkErrors = (taxonomy: Taxonomy, index: number) => {
+    const labelNames = taxonomies.map((taxonomy: { label: string; }) => taxonomy.label.toLowerCase().trim())
+    
+    const toFindDuplicates = () => labelNames.filter((item, index) => labelNames.indexOf(item) !== index)
+    const duplicateLabels = toFindDuplicates();
+    
+    if(duplicateLabels.includes(taxonomy.label.toLowerCase().trim())) {
+      dispatch(
+        setTaxonomyErrors({
+          publicKey: taxonomy.publicKey, 
+          index, 
+          message: "label must be unique"
+        }),
+      )
+    } else {
+      dispatch(
+        removeTaxonomyErrors({
+          publicKey: taxonomy.publicKey
+        })
+      )
+    }
+  }
+    
+    useEffect(() => {
+      taxonomies.map((taxonomy, index )=> {
+        checkErrors(taxonomy, index)
+      })
+    }, [])
+  
   const findParent = (parent: any) => {
     const parentIndex = taxonomies.findIndex(
       (taxonomy: any) => taxonomy.label.toLowerCase() === parent
@@ -82,32 +96,6 @@ const TaxonomiesRow = (): JSX.Element => {
       setTaxonomyLabelError(false);
     }
 
-    const labelNames = taxonomies.map((taxonomy: { label: string; }) => taxonomy.label.toLowerCase().trim())
-
-    let duplicateIndex = labelNames.indexOf(value.toLowerCase().trim())
-    if (duplicateIndex !== -1) {
-      dispatch(
-        setTaxonomyErrors({
-          publicKey, 
-          duplicateRecord: taxonomies[duplicateIndex].publicKey,
-          index, message: "label must be unique"
-        }),
-      )
-      dispatch(
-        setTaxonomyErrors({
-          publicKey: taxonomies[duplicateIndex].publicKey, 
-          duplicateRecord: publicKey,
-          duplicateIndex, 
-          message: "label must be unique"
-        })
-      )
-    } else {
-      console.log(errors)
-      dispatch(
-        removeTaxonomyErrors({publicKey})
-      )
-    }
-
     const newTaxonomy = {
       [name]: value.trimStart(),
       grandparent: '',
@@ -122,6 +110,9 @@ const TaxonomiesRow = (): JSX.Element => {
       const grandParent = findParent(newTaxonomy.parent);
       dispatch(updateTaxonomyGrandParent({ grandParent, index }));
     }
+
+    console.log(taxonomies)
+    // checkErrors(taxonomies[index], index)
   };
 
   const onBlurTaxonomyHandler = (
@@ -131,20 +122,9 @@ const TaxonomiesRow = (): JSX.Element => {
   ) => {
     const { name, value } = event.target;
     if (name === 'label' && value === '') {
-      setTaxonomyLabelError(true);
       setErrorIndex(index);
     }
-
-    const labelNames = taxonomies.map((taxonomy: { label: string; }) => taxonomy.label.toLowerCase().trim())
-
-    let labelDuplicates = (labelNames: any[]) => labelNames.filter((label: {type: any}, index) => labelNames.indexOf(label) !== index)
-    if (labelDuplicates(labelNames).length > 0 && labelDuplicates(labelNames)[0] === value.toLocaleLowerCase().trim() ) {
-      setLabelNameError(true)
-      setErrorIndex(index);
-    } else {
-      setLabelNameError(false)
-    }
-
+    
     const newTaxonomy = {
       [name]: value.trimEnd(),
       index,
@@ -163,8 +143,13 @@ const TaxonomiesRow = (): JSX.Element => {
     dispatch(deleteTaxonomy({ taxonomieIndex: index }));
   };
 
-  const taxonomyError = (publicKey: string) => {
-    return errors.filter((e: { publicKey: string; }) => e.publicKey === publicKey)
+  const renderTaxonomyErrorMesage = (taxonomy: Taxonomy, index: number) => {
+    let inputErrors = errors.filter((err: { publicKey: string, index: number }) => err.publicKey === taxonomy.publicKey)
+    if(inputErrors.length > 0) {
+      return(
+        <span className="error_message">{inputErrors[0].message}</span>
+      ) 
+    }
   }
   
   return (
@@ -188,13 +173,7 @@ const TaxonomiesRow = (): JSX.Element => {
                 onBlur={(event) => onBlurTaxonomyHandler(event, index, taxonomy.publicKey)}
               />
               {
-                errors.map((error: any) => {
-                  if(error.publicKey === taxonomy.publicKey) {
-                    (
-                      <span className="error_message">{error.message}</span>
-                    )
-                  }
-                })
+                renderTaxonomyErrorMesage(taxonomy, index) 
               }
             </div>
             <div className={`single_input input_wrapper`}>
