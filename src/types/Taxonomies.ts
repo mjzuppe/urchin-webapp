@@ -16,7 +16,6 @@ type Taxonomy = {
 
 type Taxonomies = {
   taxonomies: Taxonomy[], 
-  errors: TaxonomyError[]
 };
 
 export type { Taxonomy, Taxonomies, TaxonomyError };
