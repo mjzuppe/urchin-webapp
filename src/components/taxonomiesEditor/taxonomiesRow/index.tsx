@@ -123,7 +123,7 @@ const TaxonomiesRow = (): JSX.Element => {
     if (newTaxonomy.hasOwnProperty('parent')) {
       dispatch(updateTaxonomyParent(newTaxonomy));
       const grandParent = findParent(newTaxonomy.parent);
-      dispatch(updateTaxonomyGrandParent({ grandParent, index }));
+      dispatch(updateTaxonomyGrandParent({ grandParent, index, publicKey }));
     }
   };
 
@@ -137,6 +137,7 @@ const TaxonomiesRow = (): JSX.Element => {
     const newTaxonomy = {
       [name]: value.trimEnd(),
       index,
+      publicKey
     };
 
     if (newTaxonomy.hasOwnProperty('label')) {
@@ -179,7 +180,7 @@ const TaxonomiesRow = (): JSX.Element => {
                 value={taxonomy.label || ''}
                 maxLength={24}
                 onChange={(event) => onChangeTaxonomyHandler(event, index, taxonomy.publicKey)}
-                // onBlur={(event) => onBlurTaxonomyHandler(event, index, taxonomy.publicKey)}
+                onBlur={(event) => onBlurTaxonomyHandler(event, index, taxonomy.publicKey)}
               />
               {
                 renderTaxonomyErrorMesage(taxonomy, index) 

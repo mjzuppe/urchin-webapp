@@ -62,7 +62,6 @@ const slice = createSlice({
           } 
           else {
             let editedTaxonomyIndex = state.edited.findIndex(taxonomy => taxonomy.publicKey == publicKey)
-            console.log(editedTaxonomyIndex)
             if(editedTaxonomyIndex !== -1 && state.edited[editedTaxonomyIndex]) {
               state.edited[editedTaxonomyIndex].label = label
             } else {
@@ -80,12 +79,70 @@ const slice = createSlice({
       }
     },
     updateTaxonomyParent: (state, { payload }: PayloadAction<any>) => {
-      const { parent, index } = payload;
-      state.edited[index].parent = parent;
+      const { parent, index, publicKey } = payload;
+      if( index > state.taxonomies.length ) { 
+        state.new.forEach((newTaxo) => {
+          if(newTaxo.publicKey === publicKey) {
+            newTaxo.parent = parent
+          } 
+        })
+      } 
+      else {
+        if(parent !== state.taxonomies[index].parent) {
+          if(state.edited.length == 0) {  
+            state.edited.push({...state.taxonomies[index]})
+            state.edited[state.edited.length - 1].parent = parent
+          } 
+          else {
+            let editedTaxonomyIndex = state.edited.findIndex(taxonomy => taxonomy.publicKey == publicKey)
+            if(editedTaxonomyIndex !== -1 && state.edited[editedTaxonomyIndex]) {
+              state.edited[editedTaxonomyIndex].parent = parent
+            } else {
+              state.edited.push({...state.taxonomies[index]})
+              state.edited[state.edited.length - 1].parent = parent
+            }
+          }
+        } else {
+          state.edited.forEach((record, index) => {
+            if(record.publicKey == publicKey) {
+              state.edited.splice(index, 1);
+            }
+          })
+        }
+      }
     },
     updateTaxonomyGrandParent: (state, { payload }: PayloadAction<any>) => {
-      const { grandParent, index } = payload;
-      state.taxonomies[index].grandParent = grandParent;
+      const { grandParent, index, publicKey } = payload;
+      if( index > state.taxonomies.length ) { 
+        state.new.forEach((newTaxo) => {
+          if(newTaxo.publicKey === publicKey) {
+            newTaxo.grandParent = grandParent
+          } 
+        })
+      } 
+      else {
+        if(grandParent !== state.taxonomies[index].grandParent) {
+          if(state.edited.length == 0) {  
+            state.edited.push({...state.taxonomies[index]})
+            state.edited[state.edited.length - 1].grandParent = grandParent
+          } 
+          else {
+            let editedTaxonomyIndex = state.edited.findIndex(taxonomy => taxonomy.publicKey == publicKey)
+            if(editedTaxonomyIndex !== -1 && state.edited[editedTaxonomyIndex]) {
+              state.edited[editedTaxonomyIndex].grandParent = grandParent
+            } else {
+              state.edited.push({...state.taxonomies[index]})
+              state.edited[state.edited.length - 1].grandParent = grandParent
+            }
+          }
+        } else {
+          state.edited.forEach((record, index) => {
+            if(record.publicKey == publicKey) {
+              state.edited.splice(index, 1);
+            }
+          })
+        }
+      }
     },
     setTaxonomiesIsPublishable: (state, { payload }: PayloadAction<any>) => {
       state.isPublishable = payload;
