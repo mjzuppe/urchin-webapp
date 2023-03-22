@@ -20,7 +20,7 @@ import Breadcrumbs from '../shared/breadcrumbs';
 const TaxonomiesEditor = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
-  const taxonomies = useAppSelector((state) => state.taxonomies.original);
+  const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
 
   const initialTaxonomiesCount = taxonomies.length;
   const [taxonomiesCount, setTaxonomiesCount] = useState<number>(

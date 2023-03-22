@@ -23,7 +23,7 @@ const TaxonomiesList = () => {
 
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const taxonomies =  useAppSelector((state) => state.taxonomies.original) 
+  const taxonomies =  useAppSelector((state) => state.taxonomies.taxonomies) 
 
   const paginatedData = paginate(taxonomies, currentPage, pageSize);
 

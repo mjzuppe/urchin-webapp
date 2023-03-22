@@ -1,8 +1,7 @@
-type TaxonomyErrors = {
-  [key: string]: {
-    index: number, 
-    message: string
-  }
+type TaxonomyError = {
+  publicKey: string,
+  index: number, 
+  message: string
 }
 
 type Taxonomy = {
@@ -16,10 +15,8 @@ type Taxonomy = {
 };
 
 type Taxonomies = {
-  original: Taxonomy[], 
-  new: Taxonomy[], 
-  edited: Taxonomy[], 
-  errors: TaxonomyErrors[]
+  taxonomies: Taxonomy[], 
+  errors: TaxonomyError[]
 };
 
-export type { Taxonomy, Taxonomies, TaxonomyErrors };
+export type { Taxonomy, Taxonomies, TaxonomyError };

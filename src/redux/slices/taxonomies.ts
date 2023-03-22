@@ -1,14 +1,14 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Taxonomies, Taxonomy, TaxonomyErrors} from '../../types/Taxonomies';
+import { Taxonomies, Taxonomy, TaxonomyError} from '../../types/Taxonomies';
 
 interface TaxonomiesState {
-  original: Taxonomy[], 
-  errors: any,
+  taxonomies: Taxonomy[], 
+  errors: TaxonomyError[],
   isPublishable: boolean;
 }
 
 const initialState: TaxonomiesState = {
-  original: [], 
+  taxonomies: [], 
   errors: [],
   isPublishable: false,
 };
@@ -18,26 +18,26 @@ const slice = createSlice({
   initialState,
   reducers: {
     setTaxonomies: (state, { payload }: PayloadAction<any>) => {
-      state.original = payload;
+      state.taxonomies = payload;
     },
     addNewTaxonomy: (state, action: PayloadAction<any>) => {
-      state.original.push(action.payload);
+      state.taxonomies.push(action.payload);
     },
     deleteTaxonomy: (state, { payload }: PayloadAction<any>) => {
       const { taxonomieIndex } = payload;
-      state.original.splice(taxonomieIndex, 1);
+      state.taxonomies.splice(taxonomieIndex, 1);
     },
     updateTaxonomyLabel: (state, { payload }: PayloadAction<any>) => {
       const { label, index } = payload;
-      state.original[index].label = label;
+      state.taxonomies[index].label = label;
     },
     updateTaxonomyParent: (state, { payload }: PayloadAction<any>) => {
       const { parent, index } = payload;
-      state.original[index].parent = parent;
+      state.taxonomies[index].parent = parent;
     },
     updateTaxonomyGrandParent: (state, { payload }: PayloadAction<any>) => {
       const { grandParent, index } = payload;
-      state.original[index].grandParent = grandParent;
+      state.taxonomies[index].grandParent = grandParent;
     },
     setTaxonomiesIsPublishable: (state, { payload }: PayloadAction<any>) => {
       state.isPublishable = payload;

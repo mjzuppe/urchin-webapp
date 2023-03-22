@@ -30,7 +30,7 @@ const TaxonomiesRow = (): JSX.Element => {
   const [taxonomyLabelError, setTaxonomyLabelError] = useState<boolean>(false);
   const [errorIndex, setErrorIndex] = useState<number>(-1);
 
-  const taxonomies =  useAppSelector((state) => state.taxonomies.original)
+  const taxonomies =  useAppSelector((state) => state.taxonomies.taxonomies)
   const errors = useAppSelector((state) => state.taxonomies.errors)
 
   useEffect(() => {
