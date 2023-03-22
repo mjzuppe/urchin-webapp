@@ -29,8 +29,25 @@ const REQUIRED_ERROR_MESSAGE = "Label is required"
 const TaxonomiesRow = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
-  const taxonomies =  useAppSelector((state) => state.taxonomies.taxonomies)
+  const taxonomiesList = (taxonomies: any) => {
+    let taxonomyList = [...taxonomies.taxonomies]
+    const editedTaxonomies = [...taxonomies.edited]
+
+    taxonomyList.forEach((originalTaxo: { publicKey: any; }, originalIndex: number) => {
+      editedTaxonomies.forEach((editedTaxo: { publicKey: any; }) => {
+        if(originalTaxo.publicKey === editedTaxo.publicKey) {
+          taxonomyList.splice(originalIndex, 1, editedTaxo);
+        }
+      });
+    });
+
+    return [...taxonomyList, ...taxonomies.new]
+  }
+
+  console.log(useAppSelector((state) => state.taxonomies))
+  const taxonomies =  taxonomiesList(useAppSelector((state) => state.taxonomies))  
   const errors = useAppSelector((state) => state.taxonomies.errors)
+
 
   useEffect(() => {
     taxonomies.length === 0 &&
@@ -63,7 +80,6 @@ const TaxonomiesRow = (): JSX.Element => {
         }),
       )
     } else {
-      console.log(errors)
       dispatch(
         removeTaxonomyErrors({
           publicKey: taxonomy.publicKey
@@ -131,9 +147,9 @@ const TaxonomiesRow = (): JSX.Element => {
     }
   };
 
-  const removeRowHandler = (index: number) => {
+  const removeRowHandler = (index: number, publicKey: string) => {
     if (taxonomies.length <= 1) return;
-    dispatch(deleteTaxonomy({ taxonomieIndex: index }));
+    dispatch(deleteTaxonomy({ taxonomieIndex: index, publicKey }));
   };
 
   const renderTaxonomyErrorMesage = (taxonomy: Taxonomy, index: number) => {
@@ -163,7 +179,7 @@ const TaxonomiesRow = (): JSX.Element => {
                 value={taxonomy.label || ''}
                 maxLength={24}
                 onChange={(event) => onChangeTaxonomyHandler(event, index, taxonomy.publicKey)}
-                onBlur={(event) => onBlurTaxonomyHandler(event, index, taxonomy.publicKey)}
+                // onBlur={(event) => onBlurTaxonomyHandler(event, index, taxonomy.publicKey)}
               />
               {
                 renderTaxonomyErrorMesage(taxonomy, index) 
@@ -197,7 +213,7 @@ const TaxonomiesRow = (): JSX.Element => {
               {index >= 1 && (
                 <button
                   className={`${classes.btn_text} blue_white_link`}
-                  onClick={() => removeRowHandler(index)}
+                  onClick={() => removeRowHandler(index, taxonomy.publicKey)}
                 >
                   Remove
                 </button>

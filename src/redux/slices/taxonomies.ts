@@ -2,13 +2,17 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Taxonomies, Taxonomy, TaxonomyError} from '../../types/Taxonomies';
 
 interface TaxonomiesState {
-  taxonomies: Taxonomy[], 
-  errors: TaxonomyError[],
+  taxonomies: Array<Taxonomy>;
+  new: Array<Taxonomy>;
+  edited: Array<Taxonomy>;
+  errors: TaxonomyError[];
   isPublishable: boolean;
 }
 
 const initialState: TaxonomiesState = {
-  taxonomies: [], 
+  taxonomies: [],
+  new: [],
+  edited: [],
   errors: [],
   isPublishable: false,
 };
@@ -21,19 +25,63 @@ const slice = createSlice({
       state.taxonomies = payload;
     },
     addNewTaxonomy: (state, action: PayloadAction<any>) => {
-      state.taxonomies.push(action.payload);
+      state.new.push(action.payload);
     },
     deleteTaxonomy: (state, { payload }: PayloadAction<any>) => {
-      const { taxonomieIndex } = payload;
-      state.taxonomies.splice(taxonomieIndex, 1);
+      const { taxonomieIndex, publicKey } = payload;
+      if( taxonomieIndex >= state.taxonomies.length ) { 
+        state.new.forEach((newTaxo, index) => {
+          if(newTaxo.publicKey === publicKey) {
+            state.new.splice(index, 1);
+          } 
+        })
+      } else {
+        state.edited.forEach((editedTaxo, index) => {
+          if(editedTaxo.publicKey === publicKey) {
+            state.new.splice(index, 1);
+          } else {
+            // handle deleted taxonomies 
+          }
+        })
+      }
     },
     updateTaxonomyLabel: (state, { payload }: PayloadAction<any>) => {
-      const { label, index } = payload;
-      state.taxonomies[index].label = label;
+      const { label, index, publicKey } = payload;
+      if( index > state.taxonomies.length ) { 
+        state.new.forEach((newTaxo) => {
+          if(newTaxo.publicKey === publicKey) {
+            newTaxo.label = label
+          } 
+        })
+      } 
+      else {
+        if(label !== state.taxonomies[index].label) {
+          if(state.edited.length == 0) {  
+            state.edited.push({...state.taxonomies[index]})
+            state.edited[state.edited.length - 1].label = label
+          } 
+          else {
+            let editedTaxonomyIndex = state.edited.findIndex(taxonomy => taxonomy.publicKey == publicKey)
+            console.log(editedTaxonomyIndex)
+            if(editedTaxonomyIndex !== -1 && state.edited[editedTaxonomyIndex]) {
+              state.edited[editedTaxonomyIndex].label = label
+            } else {
+              state.edited.push({...state.taxonomies[index]})
+              state.edited[state.edited.length - 1].label = label
+            }
+          }
+        } else {
+          state.edited.forEach((record, index) => {
+            if(record.publicKey == publicKey) {
+              state.edited.splice(index, 1);
+            }
+          })
+        }
+      }
     },
     updateTaxonomyParent: (state, { payload }: PayloadAction<any>) => {
       const { parent, index } = payload;
-      state.taxonomies[index].parent = parent;
+      state.edited[index].parent = parent;
     },
     updateTaxonomyGrandParent: (state, { payload }: PayloadAction<any>) => {
       const { grandParent, index } = payload;
