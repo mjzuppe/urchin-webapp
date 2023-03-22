@@ -23,6 +23,8 @@ import Separator from '../../shared/separator';
 import { CustomSelectSingle } from '../../shared/customSelectSingle';
 import { Taxonomy } from '../../../types/Taxonomies';
 
+const DUPLICATE_LABEL_ERROR = "label name must be unique"
+
 const TaxonomiesRow = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const [taxonomyLabelError, setTaxonomyLabelError] = useState<boolean>(false);
@@ -52,16 +54,17 @@ const TaxonomiesRow = (): JSX.Element => {
     
     const toFindDuplicates = () => labelNames.filter((item, index) => labelNames.indexOf(item) !== index)
     const duplicateLabels = toFindDuplicates();
-    
+
     if(duplicateLabels.includes(taxonomy.label.toLowerCase().trim())) {
       dispatch(
         setTaxonomyErrors({
           publicKey: taxonomy.publicKey, 
           index, 
-          message: "label must be unique"
+          message: DUPLICATE_LABEL_ERROR
         }),
       )
     } else {
+      console.log(errors)
       dispatch(
         removeTaxonomyErrors({
           publicKey: taxonomy.publicKey
@@ -70,11 +73,11 @@ const TaxonomiesRow = (): JSX.Element => {
     }
   }
     
-    useEffect(() => {
-      taxonomies.map((taxonomy, index )=> {
-        checkErrors(taxonomy, index)
-      })
-    }, [])
+  useEffect(() => {
+    taxonomies.map((taxonomy, index )=> {
+      checkErrors(taxonomy, index)
+    })
+  }, [taxonomies.map(taxo => taxo.label)])
   
   const findParent = (parent: any) => {
     const parentIndex = taxonomies.findIndex(
@@ -110,9 +113,6 @@ const TaxonomiesRow = (): JSX.Element => {
       const grandParent = findParent(newTaxonomy.parent);
       dispatch(updateTaxonomyGrandParent({ grandParent, index }));
     }
-
-    console.log(taxonomies)
-    // checkErrors(taxonomies[index], index)
   };
 
   const onBlurTaxonomyHandler = (

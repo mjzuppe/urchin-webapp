@@ -43,14 +43,13 @@ const slice = createSlice({
       state.isPublishable = payload;
     },
     setTaxonomyErrors: (state, {payload}: PayloadAction<any>) => {
-      const { publicKey, duplicateRecord, index, message } = payload
+      const { publicKey, index, message } = payload
       let existingError = state.errors.filter( (error: { publicKey: any; }) => error.publicKey == publicKey)
       
       if( existingError.length == 0) {
         state.errors.push(
           {
             publicKey,
-            duplicateRecord,
             index, 
             message
           }
@@ -60,11 +59,9 @@ const slice = createSlice({
     removeTaxonomyErrors: (state, {payload}: PayloadAction<any>) => {
       const { publicKey } = payload
       let record = state.errors.filter((error: { publicKey: any; }) => error.publicKey == publicKey)
-      let duplicatePairRecord = state.errors.filter((error: { duplicateRecord: any; }) => error.duplicateRecord == publicKey)
 
-      if( record.length > 0 && duplicatePairRecord.length > 0 ) {
-        state.errors.splice(state.errors.indexOf(record), 1);
-        state.errors.splice(state.errors.indexOf(duplicatePairRecord), 1);
+      if( record.length > 0  ) {
+        state.errors.splice(state.errors.indexOf(record[0]), 1);
       }
     },
   },
