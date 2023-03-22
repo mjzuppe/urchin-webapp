@@ -23,12 +23,11 @@ import Separator from '../../shared/separator';
 import { CustomSelectSingle } from '../../shared/customSelectSingle';
 import { Taxonomy } from '../../../types/Taxonomies';
 
-const DUPLICATE_LABEL_ERROR = "label name must be unique"
+const DUPLICATE_LABEL_ERROR = "Label name must be unique"
+const REQUIRED_ERROR_MESSAGE = "Label is required"
 
 const TaxonomiesRow = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const [taxonomyLabelError, setTaxonomyLabelError] = useState<boolean>(false);
-  const [errorIndex, setErrorIndex] = useState<number>(-1);
 
   const taxonomies =  useAppSelector((state) => state.taxonomies.taxonomies)
   const errors = useAppSelector((state) => state.taxonomies.errors)
@@ -49,7 +48,7 @@ const TaxonomiesRow = (): JSX.Element => {
   });
 
   
-  const checkErrors = (taxonomy: Taxonomy, index: number) => {
+  const checkDuplicateLabelErrors = (taxonomy: Taxonomy, index: number) => {
     const labelNames = taxonomies.map((taxonomy: { label: string; }) => taxonomy.label.toLowerCase().trim())
     
     const toFindDuplicates = () => labelNames.filter((item, index) => labelNames.indexOf(item) !== index)
@@ -75,7 +74,7 @@ const TaxonomiesRow = (): JSX.Element => {
     
   useEffect(() => {
     taxonomies.map((taxonomy, index )=> {
-      checkErrors(taxonomy, index)
+      checkDuplicateLabelErrors(taxonomy, index)
     })
   }, [taxonomies.map(taxo => taxo.label)])
   
@@ -95,9 +94,6 @@ const TaxonomiesRow = (): JSX.Element => {
     publicKey: string
   ) => {
     const { name, value } = event.target;
-    if (name === 'label' && value !== '') {
-      setTaxonomyLabelError(false);
-    }
 
     const newTaxonomy = {
       [name]: value.trimStart(),
@@ -121,9 +117,6 @@ const TaxonomiesRow = (): JSX.Element => {
     publicKey: string
   ) => {
     const { name, value } = event.target;
-    if (name === 'label' && value === '') {
-      setErrorIndex(index);
-    }
     
     const newTaxonomy = {
       [name]: value.trimEnd(),
@@ -174,6 +167,10 @@ const TaxonomiesRow = (): JSX.Element => {
               />
               {
                 renderTaxonomyErrorMesage(taxonomy, index) 
+              } {
+                taxonomy.label.length == 0 && (
+                  <span className="error_message">{REQUIRED_ERROR_MESSAGE}</span>
+                )
               }
             </div>
             <div className={`single_input input_wrapper`}>
