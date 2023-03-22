@@ -7,6 +7,7 @@ import { Keypair } from '@solana/web3.js';
 import { useAppDispatch } from '../../../utils/useAppDispatch';
 import { useAppSelector } from '../../../utils/useAppSelector';
 
+import { taxonomiesList } from '../../../helpers/taxonomyList'
 // redux
 import {
   addNewTaxonomy,
@@ -29,25 +30,8 @@ const REQUIRED_ERROR_MESSAGE = "Label is required"
 const TaxonomiesRow = (): JSX.Element => {
   const dispatch = useAppDispatch();
 
-  const taxonomiesList = (taxonomies: any) => {
-    let taxonomyList = [...taxonomies.taxonomies]
-    const editedTaxonomies = [...taxonomies.edited]
-
-    taxonomyList.forEach((originalTaxo: { publicKey: any; }, originalIndex: number) => {
-      editedTaxonomies.forEach((editedTaxo: { publicKey: any; }) => {
-        if(originalTaxo.publicKey === editedTaxo.publicKey) {
-          taxonomyList.splice(originalIndex, 1, editedTaxo);
-        }
-      });
-    });
-
-    return [...taxonomyList, ...taxonomies.new]
-  }
-
-  console.log(useAppSelector((state) => state.taxonomies))
   const taxonomies =  taxonomiesList(useAppSelector((state) => state.taxonomies))  
   const errors = useAppSelector((state) => state.taxonomies.errors)
-
 
   useEffect(() => {
     taxonomies.length === 0 &&
@@ -63,7 +47,6 @@ const TaxonomiesRow = (): JSX.Element => {
         })
       );
   });
-
   
   const checkDuplicateLabelErrors = (taxonomy: Taxonomy, index: number) => {
     const labelNames = taxonomies.map((taxonomy: { label: string; }) => taxonomy.label.toLowerCase().trim())

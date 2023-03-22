@@ -47,7 +47,7 @@ const slice = createSlice({
     },
     updateTaxonomyLabel: (state, { payload }: PayloadAction<any>) => {
       const { label, index, publicKey } = payload;
-      if( index > state.taxonomies.length ) { 
+      if( index >= state.taxonomies.length ) { 
         state.new.forEach((newTaxo) => {
           if(newTaxo.publicKey === publicKey) {
             newTaxo.label = label

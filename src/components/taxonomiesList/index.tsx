@@ -8,6 +8,7 @@ import paginate from '../../utils/paginate';
 import { PAGE_SIZE as pageSize } from '../../utils/constants';
 import { useAppDispatch } from '../../utils/useAppDispatch';
 import { useAppSelector } from '../../utils/useAppSelector';
+import { taxonomiesList } from '../..//helpers/taxonomyList'
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
@@ -21,7 +22,7 @@ import Pagination from '../shared/pagination';
 const TaxonomiesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
+  const taxonomies =  taxonomiesList(useAppSelector((state) => state.taxonomies))  
 
   const paginatedData = paginate(taxonomies, currentPage, pageSize);
 
