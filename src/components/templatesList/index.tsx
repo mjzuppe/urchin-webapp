@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-
+import { Keypair } from '@solana/web3.js';
 // Styles
 import classes from './TemplatesList.module.scss';
 
@@ -46,7 +46,7 @@ const TemplatesList = () => {
       addNewTemplate({
         title: '',
         updatedAt: Date.now(),
-        publicKey: '',
+        publicKey: Keypair.generate().publicKey.toString(),
         arweaveAddress: '',
         entriesNbr: 0,
         id: id,

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Taxonomies, Taxonomy, TaxonomyError} from '../../types/Taxonomies';
+import { Taxonomy, TaxonomyError} from '../../types/Taxonomies';
 
 interface TaxonomiesState {
   taxonomies: Array<Taxonomy>;
@@ -25,6 +25,7 @@ const slice = createSlice({
       state.taxonomies = payload;
     },
     addNewTaxonomy: (state, action: PayloadAction<any>) => {
+      console.log(action.payload.publicKey)
       state.new.push(action.payload);
     },
     deleteTaxonomy: (state, { payload }: PayloadAction<any>) => {
