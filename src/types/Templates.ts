@@ -20,6 +20,12 @@ type Templates = {
   taxonomies?: Array<Taxonomy>;
 };
 
+type TemplateError = {
+  publicKey: string
+  index: number
+  message: string
+};
+
 type TemplatesInputs = TemplateInput[];
 
-export type { Templates, TemplatesInputs, TemplateInput };
+export type { Templates, TemplatesInputs, TemplateInput, TemplateError};

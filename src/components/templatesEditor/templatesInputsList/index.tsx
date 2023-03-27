@@ -16,7 +16,7 @@ import {
 } from '../../../redux/slices/templates';
 
 // Types
-import { TemplatesInputs, Templates } from '../../../types/Templates';
+import { TemplatesInputs, TemplateError } from '../../../types/Templates';
 
 import { templatesList } from '../../../helpers/templateList'
 
@@ -31,7 +31,6 @@ const TemplatesInputsList = (): JSX.Element => {
   const [templateTitleError, setTemplateTitleError] = useState<boolean>(false);
 
   const templates = templatesList(useAppSelector((state) => state.templates));
-  const templateTitles = useRef(templates.map(template => template.title))
 
   const errors = useAppSelector((state) => state.templates.errors);
   const currentTemplateId = useAppSelector(
@@ -140,8 +139,16 @@ const TemplatesInputsList = (): JSX.Element => {
     );
   };
 
+  const renderTaxonomyErrorMesage = () => {
+    let inputErrors = errors.filter((err: { publicKey: string, index: number }) => err.publicKey === currentTemplate.publicKey)
+    if(inputErrors.length > 0) {
+      return(
+        <span className="error_message">{inputErrors[0].message}</span>
+      ) 
+    }
+  }
+
   const currentTitle = currentTemplate?.title || ""
-  console.log(errors) 
   return (
     <section className={classes.templates_inputs_list}>
       <div className="single_row_form">
@@ -160,6 +167,9 @@ const TemplatesInputsList = (): JSX.Element => {
             onChange={(event) => onChangeTemplateTitleHandler(event)}
             onBlur={onBlurTemplateTitleHandler}
           />
+          {
+            renderTaxonomyErrorMesage()
+          }
           {templateTitleError && (
             <span className="error_message">Template title is required</span>
           )}

@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Templates } from '../../types/Templates';
+import { Templates, TemplateError } from '../../types/Templates';
 
 interface TemplatesState {
   templates: Array<Templates>;
   new: Array<Templates>;
   edited: Array<Templates>;
-  errors: any;
+  errors: TemplateError[];
   templatesEditorActiveTab: string;
   currentTemplateId?: string;
   isPublishable: boolean;
