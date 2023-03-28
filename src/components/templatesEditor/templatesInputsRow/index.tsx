@@ -42,7 +42,6 @@ const TemplatesInputsRow = ({
   const currentTemplate = templates.find(
     (template) => template.id === currentTemplateId
   );
-  console.log(currentTemplate)
 
   const currentTemplateIndex = templates.findIndex(
     (template) => template.id === currentTemplate?.id
@@ -83,7 +82,6 @@ const TemplatesInputsRow = ({
       return newState;
     });
 
-    console.log("here")
     dispatch(
       addOrUpdateTemplateInput({
         templateIndex: currentTemplateIndex,

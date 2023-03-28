@@ -125,9 +125,7 @@ const slice = createSlice({
       }
     },
     deleteTemplateInput: (state, { payload }: PayloadAction<any>) => {
-      // refactor to look for new and edited 
       const { templateIndex, inputIndex, id } = payload;
-      // state.templates[templateIndex].inputs.splice(inputIndex, 1);
       if( templateIndex >= state.templates.length ) { 
         state.new.forEach((newTemplate, index) => {
           if(newTemplate.id === id) {
@@ -145,9 +143,37 @@ const slice = createSlice({
       }
     },
     addNewTemplateTaxonomy: (state, { payload }: PayloadAction<any>) => {
-      const { templateIndex, taxonomy } = payload;
-      // refactor to look for new and edited and not update original
-      state.templates[templateIndex].taxonomies = taxonomy;
+      const { templateIndex, taxonomies, id } = payload;
+      if( templateIndex >= state.templates.length ) { 
+        state.new.forEach((newTemplate) => {
+          if(newTemplate.id === id) {
+            newTemplate.taxonomies = taxonomies
+          } 
+        })
+      } else {
+        if(JSON.stringify(taxonomies) !== JSON.stringify(state.templates[templateIndex].taxonomies)) {
+          console.log(taxonomies)
+          console.log("not equals do an update")
+          if(state.edited.length == 0) {  
+            state.edited.push({...state.templates[templateIndex]})
+            state.edited[state.edited.length - 1].taxonomies = taxonomies
+          } else {
+            let editedTemplateIndex = state.edited.findIndex(template => template.id == id)
+            if(editedTemplateIndex !== -1 && state.edited[editedTemplateIndex]) {
+              state.edited[editedTemplateIndex].taxonomies = taxonomies
+            } else {
+              state.edited.push({...state.templates[templateIndex]})
+              state.edited[state.edited.length - 1].taxonomies = taxonomies
+            }
+          }
+        } else {
+          state.edited.forEach((record, index) => {
+            if(record.id == id) {
+              state.edited.splice(index, 1);
+            }
+          })
+        }
+      }
     },
     setTemplateIsPublishable: (state, { payload }: PayloadAction<any>) => {
       state.isPublishable = payload;
