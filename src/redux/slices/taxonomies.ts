@@ -25,7 +25,6 @@ const slice = createSlice({
       state.taxonomies = payload;
     },
     addNewTaxonomy: (state, action: PayloadAction<any>) => {
-      console.log(action.payload.publicKey)
       state.new.push(action.payload);
     },
     deleteTaxonomy: (state, { payload }: PayloadAction<any>) => {

@@ -16,7 +16,7 @@ import {
 } from '../../../redux/slices/templates';
 
 // Types
-import { TemplatesInputs, TemplateError } from '../../../types/Templates';
+import { TemplatesInputs, Templates } from '../../../types/Templates';
 
 import { templatesList } from '../../../helpers/templateList'
 
@@ -139,7 +139,7 @@ const TemplatesInputsList = (): JSX.Element => {
     );
   };
 
-  const renderTaxonomyErrorMesage = () => {
+  const renderErrorMessage = () => {
     let inputErrors = errors.filter((err: { publicKey: string, index: number }) => err.publicKey === currentTemplate.publicKey)
     if(inputErrors.length > 0) {
       return(
@@ -168,7 +168,7 @@ const TemplatesInputsList = (): JSX.Element => {
             onBlur={onBlurTemplateTitleHandler}
           />
           {
-            renderTaxonomyErrorMesage()
+            renderErrorMessage()
           }
           {templateTitleError && (
             <span className="error_message">Template title is required</span>

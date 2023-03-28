@@ -36,16 +36,30 @@ const slice = createSlice({
     },
 
     addNewTemplate: (state, action: PayloadAction<any>) => {
-      state.templates.push(action.payload);
+      state.new.push(action.payload);
     },
     deleteTemplate: (state, { payload }: PayloadAction<any>) => {
-      const { templateIndex } = payload;
-      // update delete logic
-      state.templates.splice(templateIndex, 1);
+      const { templateIndex, publicKey } = payload;
+      if( templateIndex >= state.templates.length ) { 
+        state.new.forEach((newTemplate, index) => {
+          if(newTemplate.publicKey === publicKey) {
+            state.new.splice(index, 1);
+          } 
+        })
+      } else {
+        state.edited.forEach((editedTemplate, index) => {
+          if(editedTemplate.publicKey === publicKey) {
+            state.new.splice(index, 1);
+          } else {
+            // handle deleted templates loaded from api
+          }
+        })
+      }
     },
     addOrUpdateTemplateInput: (state, { payload }: PayloadAction<any>) => {
       const { templateIndex, input } = payload;
       // refactor to look for new and edited 
+      // this implementation is currently broken
       state.templates[templateIndex].inputs = input;
     },
     addOrUpdateTemplateTitle: (state, { payload }: PayloadAction<any>) => {

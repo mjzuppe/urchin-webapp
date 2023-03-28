@@ -5,7 +5,6 @@ import classes from './TemplatesList.module.scss';
 
 // Libs
 import { v4 as uuidv4 } from 'uuid';
-import * as AlertDialog from '@radix-ui/react-alert-dialog';
 
 // utils
 import paginate from '../../utils/paginate';
@@ -46,7 +45,7 @@ const TemplatesList = () => {
       addNewTemplate({
         title: '',
         updatedAt: Date.now(),
-        publicKey: Keypair.generate().publicKey.toString(),
+        publicKey: '',
         arweaveAddress: '',
         entriesNbr: 0,
         id: id,
