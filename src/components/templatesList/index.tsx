@@ -25,10 +25,12 @@ import OrangeButton from '../shared/orangeButton';
 import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
 
+import { templatesList } from '../../helpers/templateList'
+
 const TemplatesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const templates = useAppSelector((state) => state.templates.templates);
+  const templates = templatesList(useAppSelector((state) => state.templates));
   // const templatesStates = useAppSelector((state) => state.templates);
 
   const paginatedData = paginate(templates, currentPage, pageSize);

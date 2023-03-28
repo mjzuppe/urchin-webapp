@@ -90,7 +90,7 @@ const TemplatesInputsList = (): JSX.Element => {
     if(duplicateTitles.includes(template.title.toLowerCase().trim())) {
       dispatch(
         updateTemplateErrors({
-          publicKey: template.publicKey, 
+          id: template.id, 
           index, 
           message: DUPLICATE_TITLE_ERROR
         }),
@@ -99,7 +99,7 @@ const TemplatesInputsList = (): JSX.Element => {
     else {
       dispatch(
         removeTemplateErrors({
-          publicKey: template.publicKey
+          id: template.id
         })
       )
     }
@@ -120,6 +120,7 @@ const TemplatesInputsList = (): JSX.Element => {
     dispatch(
       addOrUpdateTemplateTitle({
         templateIndex: currentTemplateIndex,
+        id: currentTemplateId,
         title: event.target.value,
       } as any)
     );

@@ -63,9 +63,41 @@ const slice = createSlice({
       state.templates[templateIndex].inputs = input;
     },
     addOrUpdateTemplateTitle: (state, { payload }: PayloadAction<any>) => {
-      // refactor to look for new and edited 
-      const { templateIndex, title } = payload;
-      state.templates[templateIndex].title = title;
+      const { templateIndex, title, id } = payload;
+
+      console.log(templateIndex)
+      console.log(title)
+      console.log(id)
+      if( templateIndex >= state.templates.length ) { 
+        state.new.forEach((newTemplate) => {
+          if(newTemplate.id === id) {
+            newTemplate.title = title
+          } 
+        })
+      } 
+      else {
+        if(title !== state.templates[templateIndex].title) {
+          if(state.edited.length == 0) {  
+            state.edited.push({...state.templates[templateIndex]})
+            state.edited[state.edited.length - 1].title = title
+          } 
+          else {
+            let editedTemplateIndex = state.edited.findIndex(taxonomy => taxonomy.id == id)
+            if(editedTemplateIndex !== -1 && state.edited[editedTemplateIndex]) {
+              state.edited[editedTemplateIndex].title = title
+            } else {
+              state.edited.push({...state.templates[templateIndex]})
+              state.edited[state.edited.length - 1].title = title
+            }
+          }
+        } else {
+          state.edited.forEach((record, index) => {
+            if(record.id == id) {
+              state.edited.splice(index, 1);
+            }
+          })
+        }
+      }
     },
     deleteTemplateInput: (state, { payload }: PayloadAction<any>) => {
       // refactor to look for new and edited 
@@ -81,13 +113,13 @@ const slice = createSlice({
       state.isPublishable = payload;
     },
     updateTemplateErrors: (state, {payload}: PayloadAction<any>) => {
-      const { publicKey, index, message } = payload
-      let existingError = state.errors.filter( (error: { publicKey: any; }) => error.publicKey == publicKey)
+      const { id, index, message } = payload
+      let existingError = state.errors.filter( (error: { id: string; }) => error.id == id)
       
       if( existingError.length == 0) {
         state.errors.push(
           {
-            publicKey,
+            id,
             index, 
             message
           }
@@ -95,8 +127,8 @@ const slice = createSlice({
       }
     },
     removeTemplateErrors: (state, {payload}: PayloadAction<any>) => {
-      const { publicKey } = payload
-      let record = state.errors.filter((error: { publicKey: any; }) => error.publicKey == publicKey)
+      const { id } = payload
+      let record = state.errors.filter((error: { id: any; }) => error.id == id)
 
       if( record.length > 0  ) {
         state.errors.splice(state.errors.indexOf(record[0]), 1);

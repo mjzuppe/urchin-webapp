@@ -21,7 +21,7 @@ type Templates = {
 };
 
 type TemplateError = {
-  publicKey: string
+  id: string
   index: number
   message: string
 };
