@@ -135,13 +135,14 @@ const TemplatesInputsList = (): JSX.Element => {
     dispatch(
       addOrUpdateTemplateTitle({
         templateIndex: currentTemplateIndex,
+        id: currentTemplateId,
         title: event.target.value,
       } as any)
     );
   };
 
   const renderErrorMessage = () => {
-    let inputErrors = errors.filter((err: { publicKey: string, index: number }) => err.publicKey === currentTemplate.publicKey)
+    let inputErrors = errors.filter((err: { id: string, index: number }) => err.id === currentTemplate.id)
     if(inputErrors.length > 0) {
       return(
         <span className="error_message">{inputErrors[0].message}</span>
