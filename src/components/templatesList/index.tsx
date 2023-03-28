@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Keypair } from '@solana/web3.js';
 // Styles
 import classes from './TemplatesList.module.scss';
 
