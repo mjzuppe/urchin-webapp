@@ -57,17 +57,42 @@ const slice = createSlice({
       }
     },
     addOrUpdateTemplateInput: (state, { payload }: PayloadAction<any>) => {
-      const { templateIndex, input } = payload;
-      // refactor to look for new and edited 
-      // this implementation is currently broken
-      state.templates[templateIndex].inputs = input;
+      const { templateIndex, inputs, id } = payload;
+
+      if( templateIndex >= state.templates.length ) { 
+        state.new.forEach((newTemplate) => {
+          if(newTemplate.id === id) {
+            newTemplate.inputs = inputs
+          } 
+        })
+      } 
+      else {
+        if(inputs !== state.templates[templateIndex].inputs) {
+          if(state.edited.length == 0) {  
+            state.edited.push({...state.templates[templateIndex]})
+            state.edited[state.edited.length - 1].inputs = inputs
+          } 
+          else {
+            let editedTemplateIndex = state.edited.findIndex(template => template.id == id)
+            if(editedTemplateIndex !== -1 && state.edited[editedTemplateIndex]) {
+              state.edited[editedTemplateIndex].inputs = inputs
+            } else {
+              state.edited.push({...state.templates[templateIndex]})
+              state.edited[state.edited.length - 1].inputs = inputs
+            }
+          }
+        } else {
+          state.edited.forEach((record, index) => {
+            if(record.id == id) {
+              state.edited.splice(index, 1);
+            }
+          })
+        }
+      }
     },
     addOrUpdateTemplateTitle: (state, { payload }: PayloadAction<any>) => {
       const { templateIndex, title, id } = payload;
 
-      console.log(templateIndex)
-      console.log(title)
-      console.log(id)
       if( templateIndex >= state.templates.length ) { 
         state.new.forEach((newTemplate) => {
           if(newTemplate.id === id) {
@@ -82,7 +107,7 @@ const slice = createSlice({
             state.edited[state.edited.length - 1].title = title
           } 
           else {
-            let editedTemplateIndex = state.edited.findIndex(taxonomy => taxonomy.id == id)
+            let editedTemplateIndex = state.edited.findIndex(template => template.id == id)
             if(editedTemplateIndex !== -1 && state.edited[editedTemplateIndex]) {
               state.edited[editedTemplateIndex].title = title
             } else {
@@ -101,8 +126,23 @@ const slice = createSlice({
     },
     deleteTemplateInput: (state, { payload }: PayloadAction<any>) => {
       // refactor to look for new and edited 
-      const { templateIndex, inputIndex } = payload;
-      state.templates[templateIndex].inputs.splice(inputIndex, 1);
+      const { templateIndex, inputIndex, id } = payload;
+      // state.templates[templateIndex].inputs.splice(inputIndex, 1);
+      if( templateIndex >= state.templates.length ) { 
+        state.new.forEach((newTemplate, index) => {
+          if(newTemplate.id === id) {
+            state.new[index].inputs.splice(inputIndex, 1);
+          } 
+        })
+      } else {
+        state.edited.forEach((editedTemplate, index) => {
+          if(editedTemplate.id === id) {
+            state.edited[index].inputs.splice(inputIndex, 1);
+          } else {
+            // handle deleted templates loaded from api
+          }
+        })
+      }
     },
     addNewTemplateTaxonomy: (state, { payload }: PayloadAction<any>) => {
       const { templateIndex, taxonomy } = payload;

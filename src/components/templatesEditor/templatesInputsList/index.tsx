@@ -76,7 +76,8 @@ const TemplatesInputsList = (): JSX.Element => {
     dispatch(
       addOrUpdateTemplateInput({
         templateIndex: currentTemplateIndex,
-        input: templateInputs,
+        inputs: templateInputs,
+        id: currentTemplateId
       } as any)
     );
   };

@@ -8,6 +8,10 @@ import { TemplatesInputs } from '../../../types/Templates';
 import { useAppDispatch } from '../../../utils/useAppDispatch';
 import { useAppSelector } from '../../../utils/useAppSelector';
 
+
+// Helpers
+import { templatesList } from '../../../helpers/templateList'
+
 // redux
 import {
   addOrUpdateTemplateInput,
@@ -29,7 +33,7 @@ const TemplatesInputsRow = ({
   setTemplateInputs,
 }: TemplatesInputsRowProps): JSX.Element => {
   const dispatch = useAppDispatch();
-  const templates = useAppSelector((state) => state.templates.templates);
+  const templates = templatesList(useAppSelector((state) => state.templates));
 
   const currentTemplateId = useAppSelector(
     (state) => state.templates.currentTemplateId
@@ -38,6 +42,7 @@ const TemplatesInputsRow = ({
   const currentTemplate = templates.find(
     (template) => template.id === currentTemplateId
   );
+  console.log(currentTemplate)
 
   const currentTemplateIndex = templates.findIndex(
     (template) => template.id === currentTemplate?.id
@@ -78,10 +83,12 @@ const TemplatesInputsRow = ({
       return newState;
     });
 
+    console.log("here")
     dispatch(
       addOrUpdateTemplateInput({
         templateIndex: currentTemplateIndex,
-        input: templateInputs,
+        inputs: templateInputs,
+        id: currentTemplateId,
       } as any)
     );
   };
@@ -90,7 +97,8 @@ const TemplatesInputsRow = ({
     dispatch(
       addOrUpdateTemplateInput({
         templateIndex: currentTemplateIndex,
-        input: templateInputs,
+        inputs: templateInputs,
+        id: currentTemplateId,
       } as any)
     );
   };
@@ -110,7 +118,8 @@ const TemplatesInputsRow = ({
     dispatch(
       addOrUpdateTemplateInput({
         templateIndex: currentTemplateIndex,
-        input: nextInputs,
+        inputs: nextInputs,
+        id: currentTemplateId,
       } as any)
     );
   };
