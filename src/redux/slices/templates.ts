@@ -164,8 +164,6 @@ const slice = createSlice({
           JSON.stringify(taxonomies) !==
           JSON.stringify(state.templates[templateIndex].taxonomies)
         ) {
-          console.log(taxonomies);
-          console.log('not equals do an update');
           if (state.edited.length == 0) {
             state.edited.push({ ...state.templates[templateIndex] });
             state.edited[state.edited.length - 1].taxonomies = taxonomies;
