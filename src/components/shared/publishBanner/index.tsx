@@ -51,6 +51,7 @@ interface TemplateInputs {
 }
 
 interface Template {
+  id: string;
   title: string;
   publicKey?: string;
   inputs: Array<TemplateInputs>;
@@ -117,11 +118,15 @@ const PublishBanner = (): JSX.Element => {
   //* Templates
   const templates = useAppSelector((state: any) => state.templates);
   // console.log('templates', templates);
+  const templateErrorIds = templates.errors.map((error: { id: any; }) => error.id)
 
-  // filter templates that were created in the FE and not sent to urchin
-  const filteredTemplate = templates.new || [];
+  const newTemplatesWithNoErrors = templates.new.filter((template: Template) => {
+    if (!templateErrorIds.includes(template.id)) {
+      return template
+    }
+  })
 
-  const templatesToPublish = filteredTemplate.map((template: Template) => {
+  const templatesToPublish = newTemplatesWithNoErrors.map((template: Template) => {
     const { title } = template;
     const taxonomies = template?.taxonomies?.map((taxonomy: Taxonomy) => {
       const { publicKey }: Taxonomy = taxonomy;
@@ -152,7 +157,6 @@ const PublishBanner = (): JSX.Element => {
       inputs,
     };
   });
-  // console.log('templatesToPublish', templatesToPublish);
 
   //* ENTRIES
   const entries = useAppSelector((state: any) => state.entries.entries);
