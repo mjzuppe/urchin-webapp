@@ -1,5 +1,4 @@
 export const templatesList = (templates: any) => {
-  console.log(templates)
   let templateList = [...templates.templates]
   const editedTemplates = [...templates.edited || []]
 
