@@ -8,7 +8,7 @@ import paginate from '../../utils/paginate';
 import { PAGE_SIZE as pageSize } from '../../utils/constants';
 import { useAppDispatch } from '../../utils/useAppDispatch';
 import { useAppSelector } from '../../utils/useAppSelector';
-import { taxonomiesList } from '../..//helpers/taxonomyList'
+// import { taxonomiesList } from '../../helpers/taxonomyList';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
@@ -22,9 +22,10 @@ import Pagination from '../shared/pagination';
 const TaxonomiesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const taxonomies =  taxonomiesList(useAppSelector((state) => state.taxonomies))  
 
-  const paginatedData = paginate(taxonomies, currentPage, pageSize);
+  const taxonomies = useAppSelector((state) => state.taxonomies);
+
+  const paginatedData = paginate(taxonomies.taxonomies, currentPage, pageSize);
 
   const onPageChange = (page: number) => {
     setCurrentPage(page);
@@ -36,16 +37,20 @@ const TaxonomiesList = () => {
 
   // if taxonomies array has no empty value setTaxonomiesIsPublishable to true
   useEffect(() => {
-    if (taxonomies.length > 0) {
-      const taxoIsPublishable = taxonomies.some(
-        (taxo: { label: string; publicKey: string; }) => taxo.label !== '' && taxo.publicKey === ''
-      );
-      // console.log('taxoIsPublishable', taxoIsPublishable);
-
-      taxoIsPublishable
-        ? dispatch(setTaxonomiesIsPublishable(true))
-        : dispatch(setTaxonomiesIsPublishable(false));
+    if (taxonomies.new.length > 0) {
+      dispatch(setTaxonomiesIsPublishable(true));
     }
+    // if (taxonomies.length > 0) {
+    //   const taxoIsPublishable = taxonomies.some(
+    //     (taxo: { label: string; publicKey: string }) =>
+    //       taxo.label !== '' && taxo.publicKey === ''
+    //   );
+    //   // console.log('taxoIsPublishable', taxoIsPublishable);
+
+    //   taxoIsPublishable
+    //     ? dispatch(setTaxonomiesIsPublishable(true))
+    //     : dispatch(setTaxonomiesIsPublishable(false));
+    // }
   }, [taxonomies, dispatch]);
 
   return (
@@ -81,7 +86,7 @@ const TaxonomiesList = () => {
         )}
       </div>
       <Pagination
-        items={taxonomies.length}
+        items={taxonomies.taxonomies.length}
         pageSize={pageSize}
         currentPage={currentPage}
         onPageChange={onPageChange}

@@ -26,6 +26,7 @@ import TemplatesList from '../components/templatesList';
 import EntriesList from '../components/entriesList';
 import TaxonomiesList from '../components/taxonomiesList';
 import StaticHomePage from '../components/staticHomePage';
+// import QuickUpload from '../components/quickUpload';
 import TaxonomiesEditor from '../components/taxonomiesEditor';
 import TemplatesEditor from '../components/templatesEditor';
 import EntriesEditor from '../components/entriesEditor';
@@ -71,11 +72,11 @@ const Home: NextPage = (): JSX.Element => {
         return template.publicKey;
       });
       connection.template.get(templatePubKeyArray).then((res) => {
-        let templates: any[] = []
-        res.map(template => {
-          templates.push(template)
-          templates[templates.length -1].id = uuidv4()
-        })
+        let templates: any[] = [];
+        res.map((template) => {
+          templates.push(template);
+          templates[templates.length - 1].id = uuidv4();
+        });
 
         return dispatch(setTemplates(templates));
       });
@@ -91,7 +92,7 @@ const Home: NextPage = (): JSX.Element => {
           return dispatch(setEntries(res));
         });
     });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (connected) {
@@ -112,7 +113,6 @@ const Home: NextPage = (): JSX.Element => {
       className="container"
       style={{
         paddingBottom:
-          // connected && displayBanner ? '90px' : isMobile ? '135px' : '0',
           connected && displayBanner && !isMobile
             ? '110px'
             : isMobile && connected
