@@ -27,10 +27,11 @@ import { setEntries } from '../../../redux/slices/entries';
 
 //  SDK
 // import connection from '../../../utils/connection';
-import { Keypair, PublicKey } from '@solana/web3.js';
+import { Keypair, PublicKey, Transaction, clusterApiUrl, Connection } from '@solana/web3.js';
 import urchin from 'urchin-web3-cms';
 import bs58 from 'bs58';
 import { useWallet } from '@solana/wallet-adapter-react';
+
 
 // Components
 import Hourglass from '../hourglass';
@@ -216,13 +217,31 @@ const PublishBanner = (): JSX.Element => {
   const publishHandler = async () => {
     setDisplayHourglass(true);
     const getTransactions= await connection.process().then((res) => {
-      const transactions = [res.taxonomy] //TODO: add template and entry
-      
+      const txs = res.taxonomy.map((r:any) => {
+        const transactionDecoded = bs58.decode(r);
+        const t = Transaction.from(transactionDecoded);
+        return t;
+      })
+      const cluster = "devnet";
+      const rpc = clusterApiUrl(cluster);
+      let connection = new Connection(rpc, 'confirmed');
+      const transactions: Transaction[] = txs //TODO: add template and entry
       if (!wallet.signAllTransactions) throw new Error('No wallet found, connection failed');
       const signedTransactions = wallet.signAllTransactions(transactions).then((res) => {
-        console.log('signedTransactions', res);
-        return res;
-      });
+        for (const ta of res){
+          const txid = connection.sendRawTransaction(
+            ta.serialize(),
+            {
+              skipPreflight: false,
+            }
+          ).then((v)=>console.log("V: ", v));
+          
+          // const instrCnt = ta.instructions.length;
+        }
+    });
+
+  
+      
       setDisplayHourglass(false);
       dispatch(setTaxonomiesIsPublishable(false));
       dispatch(purgeTaxonomiesNew());
@@ -231,39 +250,39 @@ const PublishBanner = (): JSX.Element => {
       dispatch(setEntryIsPublishable(false));
       dispatch(setDisplayBanner(false));
 
-      // TODO: Implement a loading state
-      setLoading(true);
+      // // TODO: Implement a loading state
+      // setLoading(true);
 
-      // Get taxonomies from chain
-      connection.taxonomy.getAll().then((res) => {
-        const pubKeyArray = res.map((taxonomy: any) => {
-          return taxonomy.publicKey;
-        });
-        connection.taxonomy.get(pubKeyArray).then((res) => {
-          return dispatch(setTaxonomies(res));
-        });
-      });
+      // // Get taxonomies from chain
+      // connection.taxonomy.getAll().then((res) => {
+      //   const pubKeyArray = res.map((taxonomy: any) => {
+      //     return taxonomy.publicKey;
+      //   });
+      //   connection.taxonomy.get(pubKeyArray).then((res) => {
+      //     return dispatch(setTaxonomies(res));
+      //   });
+      // });
 
-      // Get templates from chain
-      connection.template.getAll().then((res) => {
-        const templatePubKeyArray = res.map((template: any) => {
-          return template.publicKey;
-        });
-        connection.template.get(templatePubKeyArray).then((res) => {
-          return dispatch(setTemplates(res));
-        });
-      });
+      // // Get templates from chain
+      // connection.template.getAll().then((res) => {
+      //   const templatePubKeyArray = res.map((template: any) => {
+      //     return template.publicKey;
+      //   });
+      //   connection.template.get(templatePubKeyArray).then((res) => {
+      //     return dispatch(setTemplates(res));
+      //   });
+      // });
 
-      // Get entries from chain
-      connection.entry.getAll().then((res) => {
-        const entryPubKeyArray = res.map((entry: any) => {
-          return entry.publicKey;
-        });
-        entryPubKeyArray.length > 0 &&
-          connection.entry.get(entryPubKeyArray).then((res) => {
-            return dispatch(setEntries(res));
-          });
-      });
+      // // Get entries from chain
+      // connection.entry.getAll().then((res) => {
+      //   const entryPubKeyArray = res.map((entry: any) => {
+      //     return entry.publicKey;
+      //   });
+      //   entryPubKeyArray.length > 0 &&
+      //     connection.entry.get(entryPubKeyArray).then((res) => {
+      //       return dispatch(setEntries(res));
+      //     });
+      // });
 
       // end loading state
       setTimeout(() => {
