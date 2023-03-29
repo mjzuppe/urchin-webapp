@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // Styles
 import classes from './PublishBanner.module.scss';
@@ -15,6 +15,15 @@ import { setTaxonomiesIsPublishable } from '../../../redux/slices/taxonomies';
 import { setTemplateIsPublishable } from '../../../redux/slices/templates';
 import { setEntryIsPublishable } from '../../../redux/slices/entries';
 import { setDisplayBanner } from '../../../redux/slices/banner';
+import {
+  setTemplates,
+  purgeTemplatesNew,
+} from '../../../redux/slices/templates';
+import {
+  setTaxonomies,
+  purgeTaxonomiesNew,
+} from '../../../redux/slices/taxonomies';
+import { setEntries } from '../../../redux/slices/entries';
 
 //  SDK
 // import connection from '../../../utils/connection';
@@ -53,6 +62,8 @@ const PublishBanner = (): JSX.Element => {
   const [openChangeLog, setOpenChangeLog] = useState(false);
   const [displayHourglass, setDisplayHourglass] = useState(false);
   const [cost, setCost] = useState(0);
+  const [loading, setLoading] = useState(false);
+
 
   // const payer = Keypair.fromSecretKey(
   //   // TODO: change when available
@@ -62,6 +73,7 @@ const PublishBanner = (): JSX.Element => {
   // );
   const payer = useWallet().publicKey;
   if (!payer) throw new Error('No payer found, connection failed');
+
   const connection = urchin({
     payer,
     cluster: 'devnet',
@@ -78,9 +90,12 @@ const PublishBanner = (): JSX.Element => {
   };
 
   //* Taxonomies
-  const taxonomies = useAppSelector(
-    (state: any) => state.taxonomies
-  );
+
+  const taxonomies = useAppSelector((state: any) => state.taxonomies);
+  // console.log('taxonomies', taxonomies);
+
+  // filter taxonomies that were created in the FE and not sent to urchin
+  const filteredTaxo = taxonomies.new;
 
   const taxonomiesToCreate = taxonomies.new.map((taxonomy: Taxonomy) => {
     const { label, parent, publicKey }: Taxonomy = taxonomy;
@@ -92,13 +107,11 @@ const PublishBanner = (): JSX.Element => {
   const taxonomiesToUpdate = taxonomies.updated || [];
 
   //* Templates
-  const templates = useAppSelector((state: any) => state.templates.templates);
+  const templates = useAppSelector((state: any) => state.templates);
   // console.log('templates', templates);
 
-  // filter taxonomies with empty pubKey
-  const filteredTemplate = templates.filter(
-    (template: Template) => template.publicKey === ''
-  );
+  // filter templates that were created in the FE and not sent to urchin
+  const filteredTemplate = templates.new;
 
   const templatesToPublish = filteredTemplate.map((template: Template) => {
     const { title } = template;
@@ -196,13 +209,57 @@ const PublishBanner = (): JSX.Element => {
       console.log('PROCESS::', res);
       setDisplayHourglass(false);
       dispatch(setTaxonomiesIsPublishable(false));
+      dispatch(purgeTaxonomiesNew());
       dispatch(setTemplateIsPublishable(false));
+      dispatch(purgeTemplatesNew());
       dispatch(setEntryIsPublishable(false));
       dispatch(setDisplayBanner(false));
+
+      // TODO: Implement a loading state
+      setLoading(true);
+
+      // Get taxonomies from chain
+      connection.taxonomy.getAll().then((res) => {
+        const pubKeyArray = res.map((taxonomy: any) => {
+          return taxonomy.publicKey;
+        });
+        connection.taxonomy.get(pubKeyArray).then((res) => {
+          return dispatch(setTaxonomies(res));
+        });
+      });
+
+      // Get templates from chain
+      connection.template.getAll().then((res) => {
+        const templatePubKeyArray = res.map((template: any) => {
+          return template.publicKey;
+        });
+        connection.template.get(templatePubKeyArray).then((res) => {
+          return dispatch(setTemplates(res));
+        });
+      });
+
+      // Get entries from chain
+      connection.entry.getAll().then((res) => {
+        const entryPubKeyArray = res.map((entry: any) => {
+          return entry.publicKey;
+        });
+        entryPubKeyArray.length > 0 &&
+          connection.entry.get(entryPubKeyArray).then((res) => {
+            return dispatch(setEntries(res));
+          });
+      });
+
+      // end loading state
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     });
   };
 
-  // TODO:  the same for entries + assets
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
   const taxonomiesChanges = {
     changeCategory: 'Taxonomies',
     //
