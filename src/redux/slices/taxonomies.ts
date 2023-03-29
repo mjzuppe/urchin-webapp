@@ -157,6 +157,7 @@ const slice = createSlice({
       }
     },
     setTaxonomiesIsPublishable: (state, { payload }: PayloadAction<any>) => {
+      console.log("IS PUBLISHABLE::", payload)
       state.isPublishable = payload;
     },
     setTaxonomyErrors: (state, { payload }: PayloadAction<any>) => {

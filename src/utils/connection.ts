@@ -1,18 +1,19 @@
-import { Keypair } from '@solana/web3.js';
-import urchin from 'urchin-web3-cms';
+// import { Keypair } from '@solana/web3.js';
+// import urchin from 'urchin-web3-cms';
+// import { useWallet } from '@solana/wallet-adapter-react';
 
-import bs58 from 'bs58';
+// import bs58 from 'bs58';
+// console.log("USE WALLET::", useWallet().publicKey);
+// // TODO: change that
+// const payer = Keypair.fromSecretKey(
+//   bs58.decode(
+//     '3YNWe72jopyTiJWtRBWTGVkyYb3VtxBfqJ1yaonKfJNwLaTWWL89fMDaswTXX1CJQoFypHkdW4AmfuwhpUc1RwP6'
+//   )
+// );
+// const connection = urchin({
+//   payer,
+//   cluster: 'devnet',
+// });
+// // console.log('connection', connection);
+// export default connection;
 
-// TODO: change that
-const payer = Keypair.fromSecretKey(
-  bs58.decode(
-    '5CxcteLbaDghQn5EM6AssiPVPhL5DZrrKboXEN5h8PDJBoW4nNNxpxUAub2GaMMxppSucmZy9N4knppM9w9UHXVU'
-  )
-);
-const connection = urchin({
-  payer,
-  cluster: 'devnet',
-});
-// console.log('connection', connection);
-
-export default connection;

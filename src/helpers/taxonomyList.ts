@@ -1,6 +1,6 @@
 export const taxonomiesList = (taxonomies: any) => {
   let taxonomyList = [...taxonomies.taxonomies]
-  const editedTaxonomies = [...taxonomies.edited]
+  const editedTaxonomies = [...taxonomies.edited || []]
 
   taxonomyList.forEach((originalTaxo: { publicKey: any; }, originalIndex: number) => {
     editedTaxonomies.forEach((editedTaxo: { publicKey: any; }) => {
@@ -10,5 +10,5 @@ export const taxonomiesList = (taxonomies: any) => {
     });
   });
 
-  return [...taxonomyList, ...taxonomies.new]
+  return [...taxonomyList, ...taxonomies.new || []]
 }
