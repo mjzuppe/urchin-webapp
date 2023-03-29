@@ -92,19 +92,27 @@ const PublishBanner = (): JSX.Element => {
   //* Taxonomies
 
   const taxonomies = useAppSelector((state: any) => state.taxonomies);
-  // console.log('taxonomies', taxonomies);
+  const taxonomyErrorPublicKeys = taxonomies.errors.map((error: { publicKey: any; }) => error.publicKey)
 
-  // filter taxonomies that were created in the FE and not sent to urchin
-  const filteredTaxo = taxonomies.new;
-
-  const taxonomiesToCreate = taxonomies.new.map((taxonomy: Taxonomy) => {
+  const newTaxonomiesWithNoErrors = taxonomies.new.filter((taxonomy: Taxonomy) => {
+    if (!taxonomyErrorPublicKeys.includes(taxonomy.publicKey)) {
+      return taxonomy
+    }
+  })
+  
+  const taxonomiesToCreate = newTaxonomiesWithNoErrors.map((taxonomy: Taxonomy) => {
     const { label, parent, publicKey }: Taxonomy = taxonomy;
     return {
       label,
     };
   });
 
-  const taxonomiesToUpdate = taxonomies.updated || [];
+  const editedTaxonomiesWithNoErrors = taxonomies.edited.filter((taxonomy: Taxonomy) => {
+    if (!taxonomyErrorPublicKeys.includes(taxonomy.publicKey)) {
+      return taxonomy
+    }
+  })
+  const taxonomiesToUpdate = editedTaxonomiesWithNoErrors || [];
 
   //* Templates
   const templates = useAppSelector((state: any) => state.templates);
