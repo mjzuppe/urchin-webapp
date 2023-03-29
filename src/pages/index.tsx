@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 
 // Libs
 import { useWallet } from '@solana/wallet-adapter-react';
-
 // redux
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
@@ -106,7 +105,6 @@ const Home: NextPage = (): JSX.Element => {
       className="container"
       style={{
         paddingBottom:
-          // connected && displayBanner ? '90px' : isMobile ? '135px' : '0',
           connected && displayBanner && !isMobile
             ? '110px'
             : isMobile && connected
