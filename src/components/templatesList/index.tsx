@@ -30,8 +30,6 @@ const TemplatesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const templates = templatesList(useAppSelector((state) => state.templates));
-  console.log('templates', templates);
-  // const templatesStates = useAppSelector((state) => state.templates);
 
   const paginatedData = paginate(templates, currentPage, pageSize);
 
