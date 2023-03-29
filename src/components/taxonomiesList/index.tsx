@@ -37,8 +37,8 @@ const TaxonomiesList = () => {
 
   // if taxonomies array has no empty value setTaxonomiesIsPublishable to true
   useEffect(() => {
-    if (taxonomies.new.length > 0) {
-      const taxoIsPublishable = taxonomies.new.some(
+    if (taxonomies.length > 0) {
+      const taxoIsPublishable = taxonomies.some(
         (taxo: { label: string; publicKey: string; }) => taxo.label !== ''
       );
       // console.log('taxoIsPublishable', taxoIsPublishable);
