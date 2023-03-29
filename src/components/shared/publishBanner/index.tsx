@@ -111,7 +111,7 @@ const PublishBanner = (): JSX.Element => {
   // console.log('templates', templates);
 
   // filter templates that were created in the FE and not sent to urchin
-  const filteredTemplate = templates.new;
+  const filteredTemplate = templates.new || [];
 
   const templatesToPublish = filteredTemplate.map((template: Template) => {
     const { title } = template;

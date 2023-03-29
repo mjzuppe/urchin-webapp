@@ -99,7 +99,7 @@ const Home: NextPage = (): JSX.Element => {
         });
     });
 
-  }, [dispatch]);
+  }}, [dispatch]);
 
   useEffect(() => {
     if (connected) {
