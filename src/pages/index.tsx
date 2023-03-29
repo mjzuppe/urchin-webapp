@@ -25,7 +25,7 @@ import TemplatesList from '../components/templatesList';
 import EntriesList from '../components/entriesList';
 import TaxonomiesList from '../components/taxonomiesList';
 import StaticHomePage from '../components/staticHomePage';
-import QuickUpload from '../components/quickUpload';
+// import QuickUpload from '../components/quickUpload';
 import TaxonomiesEditor from '../components/taxonomiesEditor';
 import TemplatesEditor from '../components/templatesEditor';
 import EntriesEditor from '../components/entriesEditor';
@@ -85,7 +85,7 @@ const Home: NextPage = (): JSX.Element => {
           return dispatch(setEntries(res));
         });
     });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (connected) {
