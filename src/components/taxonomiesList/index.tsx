@@ -38,7 +38,7 @@ const TaxonomiesList = () => {
   useEffect(() => {
     if (taxonomies.length > 0) {
       const taxoIsPublishable = taxonomies.some(
-        (taxo: { label: string; publicKey: string; }) => taxo.label !== '' && taxo.publicKey === ''
+        (taxo: { label: string; publicKey: string; }) => taxo.label !== ''
       );
       // console.log('taxoIsPublishable', taxoIsPublishable);
 

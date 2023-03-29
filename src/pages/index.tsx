@@ -17,7 +17,7 @@ import { setEntries } from '../redux/slices/entries';
 import { useAppDispatch } from '../utils/useAppDispatch';
 import { useAppSelector } from '../utils/useAppSelector';
 import useWindowSize from '../utils/useWindowSize';
-import connection from '../utils/connection';
+import urchin from 'urchin-web3-cms';
 
 // Components
 import Subnav from '../components/subnav';
@@ -35,7 +35,7 @@ const Home: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const { width } = useWindowSize();
   const isMobile = width! < 1024;
-  const { connected } = useWallet();
+  const { connected, publicKey } = useWallet();
   const activeTab = useAppSelector((state: any) => state.subNav.activeTab);
   const currentProcess = useAppSelector(
     (state: any) => state.process.currentProcess
@@ -55,6 +55,12 @@ const Home: NextPage = (): JSX.Element => {
   );
 
   useEffect(() => {
+    if (connected && publicKey) {
+    const connection = urchin({
+      payer: publicKey,
+      cluster: 'devnet',
+    });
+    console.log("PREFLIGHT::", connection.preflight())
     // Get taxonomies from chain
     connection.taxonomy.getAll().then((res) => {
       const pubKeyArray = res.map((taxonomy: any) => {
@@ -85,7 +91,7 @@ const Home: NextPage = (): JSX.Element => {
           return dispatch(setEntries(res));
         });
     });
-  }, []);
+  }}, []);
 
   useEffect(() => {
     if (connected) {

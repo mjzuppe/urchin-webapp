@@ -54,12 +54,14 @@ const PublishBanner = (): JSX.Element => {
   const [displayHourglass, setDisplayHourglass] = useState(false);
   const [cost, setCost] = useState(0);
 
-  const payer = Keypair.fromSecretKey(
-    // TODO: change when available
-    bs58.decode(
-      '3YNWe72jopyTiJWtRBWTGVkyYb3VtxBfqJ1yaonKfJNwLaTWWL89fMDaswTXX1CJQoFypHkdW4AmfuwhpUc1RwP6'
-    )
-  );
+  // const payer = Keypair.fromSecretKey(
+  //   // TODO: change when available
+  //   bs58.decode(
+  //     '3YNWe72jopyTiJWtRBWTGVkyYb3VtxBfqJ1yaonKfJNwLaTWWL89fMDaswTXX1CJQoFypHkdW4AmfuwhpUc1RwP6'
+  //   )
+  // );
+  const payer = useWallet().publicKey;
+  if (!payer) throw new Error('No payer found, connection failed');
   const connection = urchin({
     payer,
     cluster: 'devnet',
@@ -77,23 +79,17 @@ const PublishBanner = (): JSX.Element => {
 
   //* Taxonomies
   const taxonomies = useAppSelector(
-    (state: any) => state.taxonomies.taxonomies
-  );
-  // console.log('taxonomies', taxonomies);
-
-  // filter taxonomies with empty pubKey
-  const filteredTaxo = taxonomies.filter(
-    (taxonomy: Taxonomy) => taxonomy.publicKey === ''
+    (state: any) => state.taxonomies
   );
 
-  const taxonomiesToPublish = filteredTaxo.map((taxonomy: Taxonomy) => {
+  const taxonomiesToCreate = taxonomies.new.map((taxonomy: Taxonomy) => {
     const { label, parent, publicKey }: Taxonomy = taxonomy;
     return {
       label,
-      // parent, => should be a publicKey new PublicKey(string)
     };
   });
-  // console.log('taxonomiesToPublish', taxonomiesToPublish);
+
+  const taxonomiesToUpdate = taxonomies.updated || [];
 
   //* Templates
   const templates = useAppSelector((state: any) => state.templates.templates);
@@ -166,8 +162,12 @@ const PublishBanner = (): JSX.Element => {
   const preflightHandler = async () => {
     //* Create taxonomy
     const createTaxonomy =
-      taxonomiesToPublish.length > 0 &&
-      connection.taxonomy.create(taxonomiesToPublish);
+      taxonomiesToCreate.length > 0 &&
+      connection.taxonomy.create(taxonomiesToCreate);
+
+    const updateTaxonomy = 
+      taxonomiesToUpdate.length > 0 &&
+      connection.taxonomy.update(taxonomiesToUpdate);
     // console.log('createTaxonomy', createTaxonomy);
 
     //* Create template
@@ -190,7 +190,9 @@ const PublishBanner = (): JSX.Element => {
 
   const publishHandler = async () => {
     setDisplayHourglass(true);
-    const sendToChain = await connection.process().then((res) => {
+    const pf = await connection.preflight();
+    console.log("PF::", pf);
+    const getTransactions= await connection.process().then((res) => {
       console.log('PROCESS::', res);
       setDisplayHourglass(false);
       dispatch(setTaxonomiesIsPublishable(false));
@@ -204,7 +206,7 @@ const PublishBanner = (): JSX.Element => {
   const taxonomiesChanges = {
     changeCategory: 'Taxonomies',
     //
-    changeName: taxonomiesToPublish
+    changeName: taxonomiesToCreate
       .map((taxonomy: any) => taxonomy.label)
       .join(', '),
   };
@@ -221,7 +223,7 @@ const PublishBanner = (): JSX.Element => {
   };
 
   const changes = [];
-  if (taxonomiesToPublish.length > 0) {
+  if (taxonomiesToUpdate.length > 0) {
     changes.push(taxonomiesChanges);
   }
   if (templatesToPublish.length > 0) {

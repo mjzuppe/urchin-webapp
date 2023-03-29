@@ -41,7 +41,7 @@ const TaxonomiesEditor = (): JSX.Element => {
         updatedAt: Date.now(),
         solanaAddress: '',
         arweaveAddress: '',
-        publicKey: Keypair.generate().publicKey,
+        publicKey: Keypair.generate().publicKey.toString(),
       })
     );
     setTaxonomiesCount(taxonomiesCount + 1);

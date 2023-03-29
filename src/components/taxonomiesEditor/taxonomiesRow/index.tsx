@@ -43,7 +43,7 @@ const TaxonomiesRow = (): JSX.Element => {
           updatedAt: Date.now(),
           solanaAddress: '',
           arweaveAddress: '',
-          publicKey: Keypair.generate().publicKey,
+          publicKey: Keypair.generate().publicKey.toString(),
         })
       );
   });
