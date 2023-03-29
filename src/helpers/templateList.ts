@@ -1,6 +1,6 @@
 export const templatesList = (templates: any) => {
   let templateList = [...templates.templates]
-  const editedTemplates = [...templates.edited]
+  const editedTemplates = [...templates.edited || []]
 
   templateList.forEach((originalTemplate: { publicKey: any; }, originalIndex: number) => {
     editedTemplates.forEach((editedTemplate: { publicKey: any; }) => {
