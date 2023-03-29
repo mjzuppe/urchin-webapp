@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // Styles
 import classes from './PublishBanner.module.scss';
@@ -15,6 +15,9 @@ import { setTaxonomiesIsPublishable } from '../../../redux/slices/taxonomies';
 import { setTemplateIsPublishable } from '../../../redux/slices/templates';
 import { setEntryIsPublishable } from '../../../redux/slices/entries';
 import { setDisplayBanner } from '../../../redux/slices/banner';
+import { setTemplates } from '../../../redux/slices/templates';
+import { setTaxonomies } from '../../../redux/slices/taxonomies';
+import { setEntries } from '../../../redux/slices/entries';
 
 //  SDK
 // import connection from '../../../utils/connection';
@@ -57,9 +60,10 @@ const PublishBanner = (): JSX.Element => {
   const payer = Keypair.fromSecretKey(
     // TODO: change when available
     bs58.decode(
-      '3YNWe72jopyTiJWtRBWTGVkyYb3VtxBfqJ1yaonKfJNwLaTWWL89fMDaswTXX1CJQoFypHkdW4AmfuwhpUc1RwP6'
+      '5CxcteLbaDghQn5EM6AssiPVPhL5DZrrKboXEN5h8PDJBoW4nNNxpxUAub2GaMMxppSucmZy9N4knppM9w9UHXVU'
     )
   );
+
   const connection = urchin({
     payer,
     cluster: 'devnet',
@@ -197,10 +201,41 @@ const PublishBanner = (): JSX.Element => {
       dispatch(setTemplateIsPublishable(false));
       dispatch(setEntryIsPublishable(false));
       dispatch(setDisplayBanner(false));
+      //TODO:  works but ugly flash
+      // router.reload();
+      // Get taxonomies from chain
+      connection.taxonomy.getAll().then((res) => {
+        const pubKeyArray = res.map((taxonomy: any) => {
+          return taxonomy.publicKey;
+        });
+        connection.taxonomy.get(pubKeyArray).then((res) => {
+          return dispatch(setTaxonomies(res));
+        });
+      });
+
+      // Get templates from chain
+      connection.template.getAll().then((res) => {
+        const templatePubKeyArray = res.map((template: any) => {
+          return template.publicKey;
+        });
+        connection.template.get(templatePubKeyArray).then((res) => {
+          return dispatch(setTemplates(res));
+        });
+      });
+
+      // Get entries from chain
+      connection.entry.getAll().then((res) => {
+        const entryPubKeyArray = res.map((entry: any) => {
+          return entry.publicKey;
+        });
+        entryPubKeyArray.length > 0 &&
+          connection.entry.get(entryPubKeyArray).then((res) => {
+            return dispatch(setEntries(res));
+          });
+      });
     });
   };
 
-  // TODO:  the same for entries + assets
   const taxonomiesChanges = {
     changeCategory: 'Taxonomies',
     //
