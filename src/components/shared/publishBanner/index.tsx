@@ -190,8 +190,8 @@ const PublishBanner = (): JSX.Element => {
     // console.log('createTemplate', createTemplate);
 
     //* Create Entries
-    const createEntries =
-      entriesToPublish.length > 0 && connection.entry.create(entriesToPublish);
+    const createEntries = []; //TODO FIX
+      // entriesToPublish.length > 0 && connection.entry.create(entriesToPublish);
 
     //* Preflight
     const preflight = await connection.preflight().then((res) => {
@@ -200,13 +200,17 @@ const PublishBanner = (): JSX.Element => {
     });
     setCost(preflight.cost.sol);
   };
-
+  const wallet = useWallet();
   const publishHandler = async () => {
     setDisplayHourglass(true);
-    const pf = await connection.preflight();
-    console.log("PF::", pf);
     const getTransactions= await connection.process().then((res) => {
-      console.log('PROCESS::', res);
+      const transactions = [res.taxonomy] //TODO: add template and entry
+      
+      if (!wallet.signAllTransactions) throw new Error('No wallet found, connection failed');
+      const signedTransactions = wallet.signAllTransactions(transactions).then((res) => {
+        console.log('signedTransactions', res);
+        return res;
+      });
       setDisplayHourglass(false);
       dispatch(setTaxonomiesIsPublishable(false));
       dispatch(purgeTaxonomiesNew());
