@@ -15,7 +15,10 @@ import { setTaxonomiesIsPublishable } from '../../../redux/slices/taxonomies';
 import { setTemplateIsPublishable } from '../../../redux/slices/templates';
 import { setEntryIsPublishable } from '../../../redux/slices/entries';
 import { setDisplayBanner } from '../../../redux/slices/banner';
-import { setTemplates } from '../../../redux/slices/templates';
+import {
+  setTemplates,
+  purgeTemplatesNew,
+} from '../../../redux/slices/templates';
 import {
   setTaxonomies,
   purgeTaxonomiesNew,
@@ -198,6 +201,7 @@ const PublishBanner = (): JSX.Element => {
       dispatch(setTaxonomiesIsPublishable(false));
       dispatch(purgeTaxonomiesNew());
       dispatch(setTemplateIsPublishable(false));
+      dispatch(purgeTemplatesNew());
       dispatch(setEntryIsPublishable(false));
       dispatch(setDisplayBanner(false));
 
