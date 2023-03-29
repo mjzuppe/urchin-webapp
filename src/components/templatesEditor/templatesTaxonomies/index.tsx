@@ -10,10 +10,12 @@ import Separator from '../../shared/separator';
 import { CustomSelectMulti } from '../../shared/customSelectMulti';
 import { addNewTemplateTaxonomy } from '../../../redux/slices/templates';
 
+import { templatesList } from '../../../helpers/templateList'
+
 const TemplatesTaxonomies = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
-  const templates = useAppSelector((state) => state.templates.templates);
+  const templates = templatesList(useAppSelector((state) => state.templates));
 
   const currentTemplateId = useAppSelector(
     (state) => state.templates.currentTemplateId
@@ -56,7 +58,8 @@ const TemplatesTaxonomies = (): JSX.Element => {
     dispatch(
       addNewTemplateTaxonomy({
         templateIndex: currentTemplateIndex,
-        taxonomy: publickKeyValues,
+        taxonomies: publickKeyValues,
+        id: currentTemplateId
       })
     );
   };

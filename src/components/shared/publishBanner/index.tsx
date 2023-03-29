@@ -81,14 +81,12 @@ const PublishBanner = (): JSX.Element => {
 
   //* Taxonomies
   const taxonomies = useAppSelector(
-    (state: any) => state.taxonomies.taxonomies
+    (state: any) => state.taxonomies
   );
   // console.log('taxonomies', taxonomies);
 
-  // filter taxonomies with empty pubKey
-  const filteredTaxo = taxonomies.filter(
-    (taxonomy: Taxonomy) => taxonomy.publicKey === ''
-  );
+  // filter taxonomies that were created in the FE and not sent to urchin
+  const filteredTaxo = taxonomies.new
 
   const taxonomiesToPublish = filteredTaxo.map((taxonomy: Taxonomy) => {
     const { label, parent, publicKey }: Taxonomy = taxonomy;
@@ -100,13 +98,11 @@ const PublishBanner = (): JSX.Element => {
   // console.log('taxonomiesToPublish', taxonomiesToPublish);
 
   //* Templates
-  const templates = useAppSelector((state: any) => state.templates.templates);
+  const templates = useAppSelector((state: any) => state.templates);
   // console.log('templates', templates);
 
-  // filter taxonomies with empty pubKey
-  const filteredTemplate = templates.filter(
-    (template: Template) => template.publicKey === ''
-  );
+  // filter templates that were created in the FE and not sent to urchin
+  const filteredTemplate = templates.new
 
   const templatesToPublish = filteredTemplate.map((template: Template) => {
     const { title } = template;

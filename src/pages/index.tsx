@@ -3,6 +3,8 @@ import { useEffect } from 'react';
 
 // Libs
 import { useWallet } from '@solana/wallet-adapter-react';
+import { v4 as uuidv4 } from 'uuid';
+
 // redux
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
@@ -70,7 +72,13 @@ const Home: NextPage = (): JSX.Element => {
         return template.publicKey;
       });
       connection.template.get(templatePubKeyArray).then((res) => {
-        return dispatch(setTemplates(res));
+        let templates: any[] = [];
+        res.map((template) => {
+          templates.push(template);
+          templates[templates.length - 1].id = uuidv4();
+        });
+
+        return dispatch(setTemplates(templates));
       });
     });
 

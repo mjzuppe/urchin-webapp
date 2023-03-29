@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Taxonomies, Taxonomy, TaxonomyError} from '../../types/Taxonomies';
+import { Taxonomy, TaxonomyError} from '../../types/Taxonomies';
 
 interface TaxonomiesState {
   taxonomies: Array<Taxonomy>;

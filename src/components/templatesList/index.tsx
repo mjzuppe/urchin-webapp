@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react';
-
 // Styles
 import classes from './TemplatesList.module.scss';
 
 // Libs
 import { v4 as uuidv4 } from 'uuid';
-import * as AlertDialog from '@radix-ui/react-alert-dialog';
 
 // utils
 import paginate from '../../utils/paginate';
@@ -26,10 +24,12 @@ import OrangeButton from '../shared/orangeButton';
 import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
 
+import { templatesList } from '../../helpers/templateList'
+
 const TemplatesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const templates = useAppSelector((state) => state.templates.templates);
+  const templates = templatesList(useAppSelector((state) => state.templates));
   // const templatesStates = useAppSelector((state) => state.templates);
 
   const paginatedData = paginate(templates, currentPage, pageSize);
