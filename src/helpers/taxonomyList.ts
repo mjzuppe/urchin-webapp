@@ -1,4 +1,10 @@
 export const taxonomiesList = (taxonomies: any) => {
+  const editedTaxonomies = updatedTaxonomies(taxonomies)
+
+  return [...editedTaxonomies, ...taxonomies.new || []]
+}
+
+export const updatedTaxonomies = (taxonomies: any ) => {
   let taxonomyList = [...taxonomies.taxonomies]
   const editedTaxonomies = [...taxonomies.edited || []]
 
@@ -10,5 +16,5 @@ export const taxonomiesList = (taxonomies: any) => {
     });
   });
 
-  return [...taxonomyList, ...taxonomies.new || []]
+  return taxonomyList
 }
