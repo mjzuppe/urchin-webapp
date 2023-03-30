@@ -1,8 +1,10 @@
+import { useEffect } from 'react';
+
 // Styles
 import classes from './TemplatesInputsRow.module.scss';
 
 // Types
-import { TemplatesInputs } from '../../../types/Templates';
+import { TemplatesInputs, TemplateInput, TemplateInputsError} from '../../../types/Templates';
 
 // Utils
 import { useAppDispatch } from '../../../utils/useAppDispatch';
@@ -16,6 +18,8 @@ import { templatesList } from '../../../helpers/templateList'
 import {
   addOrUpdateTemplateInput,
   deleteTemplateInput,
+  updateTemplateInputErrors,
+  removeTemplateInputsErrors
 } from '../../../redux/slices/templates';
 
 // Components
@@ -23,6 +27,7 @@ import Separator from '../../shared/separator';
 import { CustomSelectSingle } from '../../shared/customSelectSingle';
 import { CustomCheckBox } from '../../shared/customCheckBox';
 
+const DUPLICATE_LABEL_ERROR = "Label must be unique"
 interface TemplatesInputsRowProps {
   templateInputs: TemplatesInputs;
   setTemplateInputs: React.Dispatch<React.SetStateAction<TemplatesInputs>>;
@@ -34,6 +39,7 @@ const TemplatesInputsRow = ({
 }: TemplatesInputsRowProps): JSX.Element => {
   const dispatch = useAppDispatch();
   const templates = templatesList(useAppSelector((state) => state.templates));
+  const inputErrors = useAppSelector((state) => state.templates.inputsErrors);
 
   const currentTemplateId = useAppSelector(
     (state) => state.templates.currentTemplateId
@@ -122,6 +128,45 @@ const TemplatesInputsRow = ({
     );
   };
 
+  const checkDuplicateLabelErrors = (input: TemplateInput, index: number) => {
+    const labels = templateInputs.map((input: { label: string; }) => input.label.toLowerCase().trim())
+    
+    const toFindDuplicates = () => labels.filter((label, index) => labels.indexOf(label) !== index)
+    const duplicateLabels = toFindDuplicates();
+
+    if(duplicateLabels.includes(input.label.toLowerCase().trim())) {
+      dispatch(
+        updateTemplateInputErrors({
+          templateId: currentTemplate.id, 
+          index, 
+          message: DUPLICATE_LABEL_ERROR
+        }),
+      )
+    } else {
+      dispatch(
+        removeTemplateInputsErrors({
+          templateId: currentTemplate.id, 
+          index
+        })
+      )
+    }
+  }
+  
+  useEffect(() => {
+    templateInputs.map((input, index )=> {
+      checkDuplicateLabelErrors(input, index)
+    })
+  }, [ templateInputs ] )
+
+  const renderInputErrorMessage = () => {
+    let errors = inputErrors.filter((err: TemplateInputsError) => err.templateId === currentTemplate.id)
+    if(errors.length > 0) {
+      return(
+        <span className="error_message">{inputErrors[0].message}</span>
+      ) 
+    }
+  }
+
   return (
     <div>
       {templateInputs?.map((templateInput, index) => (
@@ -142,6 +187,9 @@ const TemplatesInputsRow = ({
                 onChange={(event) => onChangeTemplateInputHandler(event, index)}
                 onBlur={onBlurTemplateInputHandler}
               />
+              {
+                renderInputErrorMessage()
+              }
             </div>
             <div className={`single_input input_wrapper`}>
               <CustomSelectSingle

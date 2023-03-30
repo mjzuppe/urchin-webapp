@@ -1,11 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Templates, TemplateError } from '../../types/Templates';
+import { Templates, TemplateError, TemplateInputsError } from '../../types/Templates';
 
 interface TemplatesState {
   templates: Array<Templates>;
   new: Array<Templates>;
   edited: Array<Templates>;
   errors: TemplateError[];
+  inputsErrors: TemplateInputsError[];
   templatesEditorActiveTab: string;
   currentTemplateId?: string;
   isPublishable: boolean;
@@ -16,6 +17,7 @@ const initialState: TemplatesState = {
   new: [],
   edited: [],
   errors: [],
+  inputsErrors: [],
   templatesEditorActiveTab: 'Inputs',
   isPublishable: false,
 };
@@ -36,7 +38,7 @@ const slice = createSlice({
     },
 
     addNewTemplate: (state, action: PayloadAction<any>) => {
-      state.new.push(action.payload);
+      state.templates.push(action.payload);
     },
     purgeTemplatesNew: (state) => {
       state.new = [];
@@ -215,6 +217,28 @@ const slice = createSlice({
         state.errors.splice(state.errors.indexOf(record[0]), 1);
       }
     },
+    updateTemplateInputErrors: (state, { payload }: PayloadAction<any>) => {
+      const { index, templateId, message } = payload;
+      let existingInputErrors = state.inputsErrors.filter(
+        (error: TemplateInputsError ) => error.templateId == templateId && error.index == index
+      );
+
+      if (existingInputErrors.length == 0) {
+        state.inputsErrors.push({
+          index,
+          templateId,
+          message,
+        });
+      }
+    },
+    removeTemplateInputsErrors: (state, { payload }: PayloadAction<any>) => {
+      const { index, templateId } = payload;
+      let record = state.inputsErrors.filter((error: TemplateInputsError) => error.templateId == templateId && error.index == index);
+
+      if (record.length > 0) {
+        state.inputsErrors.splice(state.inputsErrors.indexOf(record[0]), 1);
+      }
+    },
   },
 });
 
@@ -232,6 +256,8 @@ export const {
   setTemplateIsPublishable,
   updateTemplateErrors,
   removeTemplateErrors,
+  updateTemplateInputErrors, 
+  removeTemplateInputsErrors
 } = slice.actions;
 
 // Reducer

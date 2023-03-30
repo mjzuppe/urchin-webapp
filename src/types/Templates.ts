@@ -26,6 +26,14 @@ type TemplateError = {
   message: string
 };
 
+type TemplateInputsError = {
+  templateId: string
+  templateIndex: number
+  id: string
+  index: number
+  message: string
+};
+
 type TemplatesInputs = TemplateInput[];
 
-export type { Templates, TemplatesInputs, TemplateInput, TemplateError};
+export type { Templates, TemplatesInputs, TemplateInput, TemplateError, TemplateInputsError};
