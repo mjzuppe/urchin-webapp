@@ -20,7 +20,6 @@ import { useAppDispatch } from '../../../utils/useAppDispatch';
 
 // Redux
 import { setWalletConnected, setWalletPublicKey } from '../../../redux/slices/banner';
-import { loadProfile } from '../../../utils/loadProfile';
 import { useAppSelector } from '../../../utils/useAppSelector';
 import urchin from 'urchin-web3-cms';
 import { PublicKey } from '@solana/web3.js';

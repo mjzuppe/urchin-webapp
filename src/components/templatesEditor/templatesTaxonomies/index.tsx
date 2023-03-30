@@ -11,10 +11,11 @@ import { CustomSelectMulti } from '../../shared/customSelectMulti';
 import { addNewTemplateTaxonomy } from '../../../redux/slices/templates';
 
 import { templatesList } from '../../../helpers/templateList'
+import { updatedTaxonomies } from '../../../helpers/taxonomyList'
 
 const TemplatesTaxonomies = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
+  const taxonomies = updatedTaxonomies(useAppSelector((state) => state.taxonomies));
   const templates = templatesList(useAppSelector((state) => state.templates));
 
   const currentTemplateId = useAppSelector(
