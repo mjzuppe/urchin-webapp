@@ -31,12 +31,13 @@ import TaxonomiesEditor from '../components/taxonomiesEditor';
 import TemplatesEditor from '../components/templatesEditor';
 import EntriesEditor from '../components/entriesEditor';
 import PublishBanner from '../components/shared/publishBanner';
+import { PublicKey } from '@solana/web3.js';
 
 const Home: NextPage = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const { width } = useWindowSize();
   const isMobile = width! < 1024;
-  const { connected, publicKey } = useWallet();
+  // const { connected, publicKey } = useWallet();
   const activeTab = useAppSelector((state: any) => state.subNav.activeTab);
   const currentProcess = useAppSelector(
     (state: any) => state.process.currentProcess
@@ -47,6 +48,8 @@ const Home: NextPage = (): JSX.Element => {
   const taxonomies = useAppSelector((state: RootState) => state.taxonomies);
   const assets = useAppSelector((state: any) => state.assets);
 
+  const {connected, publicKey} = useWallet();
+
   useEffect(() => {
     dispatch(setCurrentProcess(currentProcess));
   });
@@ -55,54 +58,62 @@ const Home: NextPage = (): JSX.Element => {
     (state: any) => state.banner.displayBanner
   );
 
-  useEffect(() => {
-   console.log("connected && publicKey::", connected, publicKey)
-    if (connected && publicKey) {
-    const connection = urchin({
-      payer: publicKey,
-      cluster: 'devnet',
-    });
-    console.log("CONNECTION::", connection)
-    console.log("PREFLIGHT::", connection.preflight())
-    // Get taxonomies from chain
-    connection.taxonomy.getAll().then((res) => {
-      const pubKeyArray = res.map((taxonomy: any) => {
-        return taxonomy.publicKey;
-      });
-      console.log("PUBLICKEYARRAY::", pubKeyArray)
-      connection.taxonomy.get(pubKeyArray).then((res) => {
-        return dispatch(setTaxonomies(res));
-      });
-    });
 
-    // Get templates from chain
-    connection.template.getAll().then((res) => {
-      const templatePubKeyArray = res.map((template: any) => {
-        return template.publicKey;
-      });
-      connection.template.get(templatePubKeyArray).then((res) => {
-        let templates: any[] = [];
-        res.map((template) => {
-          templates.push(template);
-          templates[templates.length - 1].id = uuidv4();
-        });
 
-        return dispatch(setTemplates(templates));
-      });
-    });
 
-    // Get entries from chain
-    connection.entry.getAll().then((res) => {
-      const entryPubKeyArray = res.map((entry: any) => {
-        return entry.publicKey;
-      });
-      entryPubKeyArray.length > 0 &&
-        connection.entry.get(entryPubKeyArray).then((res) => {
-          return dispatch(setEntries(res));
-        });
-    });
+  // useEffect(() => {
 
-  }}, [dispatch]);
+  
+    // Todo LOAD ACCOUNT
+ 
+    // console.log("connected && publicKey::", connected, publicKey)
+   
+    // if (connected && publicKey) {
+    // const connection = urchin({
+    //   payer: new PublicKey(publicKey),
+    //   cluster: 'devnet',
+    // });
+    // console.log("CONNECTION::", publicKey.toString(), connection)
+
+    // // Get taxonomies from chain
+    // connection.taxonomy.getAll().then((res) => {
+    //   const pubKeyArray = res.map((taxonomy: any) => {
+    //     return taxonomy.publicKey;
+    //   });
+    //   console.log("PUBLICKEYARRAY::", pubKeyArray)
+    //   connection.taxonomy.get(pubKeyArray).then((res) => {
+    //     return dispatch(setTaxonomies(res));
+    //   });
+    // });
+
+    // // Get templates from chain
+    // connection.template.getAll().then((res) => {
+    //   const templatePubKeyArray = res.map((template: any) => {
+    //     return template.publicKey;
+    //   });
+    //   connection.template.get(templatePubKeyArray).then((res) => {
+    //     let templates: any[] = [];
+    //     res.map((template) => {
+    //       templates.push(template);
+    //       templates[templates.length - 1].id = uuidv4();
+    //     });
+
+    //     return dispatch(setTemplates(templates));
+    //   });
+    // });
+
+    // // Get entries from chain
+    // connection.entry.getAll().then((res) => {
+    //   const entryPubKeyArray = res.map((entry: any) => {
+    //     return entry.publicKey;
+    //   });
+    //   entryPubKeyArray.length > 0 &&
+    //     connection.entry.get(entryPubKeyArray).then((res) => {
+    //       return dispatch(setEntries(res));
+    //     });
+    // });
+
+  // }}, [dispatch]);
 
   useEffect(() => {
     if (connected) {

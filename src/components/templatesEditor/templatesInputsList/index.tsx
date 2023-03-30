@@ -83,12 +83,12 @@ const TemplatesInputsList = (): JSX.Element => {
   };
 
   const checkDuplicateTitleErrors = (template: Templates, index: number) => {
-    const titles = templates.map((template: { title: string; }) => template.title.toLowerCase().trim())
+    const titles = templates.map((template: { title: string; }) => template.title || ''.toLowerCase().trim())
     
     const toFindDuplicates = () => titles.filter((item, index) => titles.indexOf(item) !== index)
     const duplicateTitles = toFindDuplicates();
 
-    if(duplicateTitles.includes(template.title.toLowerCase().trim())) {
+    if(duplicateTitles.includes(template.title || ''.toLowerCase().trim())) {
       dispatch(
         updateTemplateErrors({
           id: template.id, 
@@ -143,7 +143,7 @@ const TemplatesInputsList = (): JSX.Element => {
   };
 
   const renderErrorMessage = () => {
-    let inputErrors = errors.filter((err: { id: string, index: number }) => err.id === currentTemplate.id)
+    let inputErrors = errors.filter((err: { id: string, index: number }) => err?.id === currentTemplate?.id)
     if(inputErrors.length > 0) {
       return(
         <span className="error_message">{inputErrors[0].message}</span>
