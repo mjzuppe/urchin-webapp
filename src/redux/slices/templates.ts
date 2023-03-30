@@ -38,7 +38,7 @@ const slice = createSlice({
     },
 
     addNewTemplate: (state, action: PayloadAction<any>) => {
-      state.templates.push(action.payload);
+      state.new.push(action.payload);
     },
     purgeTemplatesNew: (state) => {
       state.new = [];
