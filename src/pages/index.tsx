@@ -56,17 +56,20 @@ const Home: NextPage = (): JSX.Element => {
   );
 
   useEffect(() => {
+   console.log("connected && publicKey::", connected, publicKey)
     if (connected && publicKey) {
     const connection = urchin({
       payer: publicKey,
       cluster: 'devnet',
     });
+    console.log("CONNECTION::", connection)
     console.log("PREFLIGHT::", connection.preflight())
     // Get taxonomies from chain
     connection.taxonomy.getAll().then((res) => {
       const pubKeyArray = res.map((taxonomy: any) => {
         return taxonomy.publicKey;
       });
+      console.log("PUBLICKEYARRAY::", pubKeyArray)
       connection.taxonomy.get(pubKeyArray).then((res) => {
         return dispatch(setTaxonomies(res));
       });

@@ -16,10 +16,17 @@ const WalletMultiButtonDynamic = dynamic(
 // Utils
 import useOnClickOutside from '../../../utils/useOnClickOutside';
 import useWindowSize from '../../../utils/useWindowSize';
+import { useAppDispatch } from '../../../utils/useAppDispatch';
+
+// Redux
+import { setWalletConnected, setWalletPublicKey } from '../../../redux/slices/banner';
 
 // Components
 const Navbar = (): JSX.Element => {
+  const dispatch = useAppDispatch();
   const { publicKey, connected, disconnect } = useWallet();
+  dispatch(setWalletConnected(connected));
+  dispatch(setWalletPublicKey(publicKey));
   const [openWalletDropdown, setOpenWalletDropdown] = useState(false);
 
   const walletKey = publicKey?.toBase58();

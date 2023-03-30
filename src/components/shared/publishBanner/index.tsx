@@ -119,7 +119,7 @@ const PublishBanner = (): JSX.Element => {
   //* Templates
   const templates = useAppSelector((state: any) => state.templates);
   // console.log('templates', templates);
-  const templateErrorIds = templates.errors.map((error: { id: any; }) => error.id)
+  const templateErrorIds = templates.errors || [].map((error: { id: any; }) => error.id)
 
   const newTemplatesWithNoErrors = templates.new.filter((template: Template) => {
     if (!templateErrorIds.includes(template.id)) {
