@@ -28,8 +28,6 @@ type TemplateError = {
 
 type TemplateInputsError = {
   templateId: string
-  templateIndex: number
-  id: string
   index: number
   message: string
 };
