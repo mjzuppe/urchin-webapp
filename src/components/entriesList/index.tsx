@@ -27,11 +27,15 @@ import ListRow from '../shared/listRow';
 import Pagination from '../shared/pagination';
 import { CustomSelectSingle } from '../shared/customSelectSingle';
 
+import { updatedTemplates } from '../../helpers/templateList';
+
 const EntriesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const entries = useAppSelector((state) => state.entries.entries);
-  const templates = useAppSelector((state) => state.templates.templates);
+  // const templates = useAppSelector((state) => state.templates.templates);
+
+  const templates = updatedTemplates(useAppSelector((state) => state.templates));
 
   const [templateSelected, setTemplateSelected] = useState({
     template: '',
