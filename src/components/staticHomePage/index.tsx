@@ -35,6 +35,7 @@ const WalletMultiButtonDynamic = dynamic(
 import Separator from '../shared/separator';
 
 const StaticHomePage = () => {
+  const { connected } = useWallet();
 
   const { width } = useWindowSize();
   const isMobile = width! < 1024;
