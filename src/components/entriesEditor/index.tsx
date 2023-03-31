@@ -32,14 +32,16 @@ import OrangeButton from '../shared/orangeButton';
 import { CustomSelectMulti } from '../shared/customSelectMulti';
 import { CustomSelectSingle } from '../shared/customSelectSingle';
 import Breadcrumbs from '../shared/breadcrumbs';
+import { updatedTaxonomies } from '../../helpers/taxonomyList';
+import { updatedTemplates } from '../../helpers/templateList';
+
 
 const EntriesEditor = (): JSX.Element => {
   const { width } = useWindowSize();
   const dispatch = useAppDispatch();
   const entries = useAppSelector((state) => state.entries.entries);
-  const taxonomiesFromState = useAppSelector(
-    (state) => state.taxonomies.taxonomies
-  );
+
+  const taxonomiesFromState = updatedTaxonomies(useAppSelector((state) => state.taxonomies));
 
   const currentEntryId = useAppSelector(
     (state) => state.entries.currentEntryId
@@ -51,7 +53,7 @@ const EntriesEditor = (): JSX.Element => {
     (entry) => entry.id === currentEntry?.id
   );
 
-  const templates = useAppSelector((state) => state.templates.templates);
+  const templates = updatedTemplates(useAppSelector((state) => state.templates));
 
   const entryTemplate = templates.find(
     (template) => template.publicKey === currentEntry?.template
@@ -68,10 +70,14 @@ const EntriesEditor = (): JSX.Element => {
   // find entryTemplate.taxonomies in taxonomiesX
   const templatesTaxoWithValue = taxonomiesTransformed?.filter(
     (taxonomytoDisplay: any) => {
-      return entryTemplate?.taxonomies?.includes(taxonomytoDisplay.publicKey);
+      return entryTemplate?.taxonomies?.filter(
+        (taxonomy: any) => { 
+          taxonomy.publicKey == taxonomytoDisplay.publicKey
+        }
+      );
     }
   );
-
+    
   const [entryInputs, setEntryInputs] = useState<any>(
     currentEntry?.inputs.length !== 0 ? currentEntry?.inputs : ''
   );
@@ -226,7 +232,7 @@ const EntriesEditor = (): JSX.Element => {
             <span className="filler"></span>
           </div>
           {/* Inputs */}
-          {entryTemplate?.inputs.map((input: any, templateEntryInputIndex) => (
+          {entryTemplate?.inputs.map((input: any, templateEntryInputIndex: any) => (
             <div className={classes.entry_input_wrapper} key={input.label}>
               {input.type === 'text' && (
                 <div className={`input_wrapper`}>
