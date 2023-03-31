@@ -232,7 +232,7 @@ const EntriesEditor = (): JSX.Element => {
             <span className="filler"></span>
           </div>
           {/* Inputs */}
-          {entryTemplate?.inputs.map((input: any, templateEntryInputIndex) => (
+          {entryTemplate?.inputs.map((input: any, templateEntryInputIndex: any) => (
             <div className={classes.entry_input_wrapper} key={input.label}>
               {input.type === 'text' && (
                 <div className={`input_wrapper`}>

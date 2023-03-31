@@ -64,7 +64,7 @@ const EntriesList = () => {
   )?.inputs;
 
   const entryTitle = templateSelectedInputs?.find(
-    (input) => input.type === 'text'
+    (input: {type: any}) => input.type === 'text'
   )?.label;
 
   const templateSelectorSubmitHandler = () => {
