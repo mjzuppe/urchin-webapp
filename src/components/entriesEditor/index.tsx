@@ -77,9 +77,7 @@ const EntriesEditor = (): JSX.Element => {
       );
     }
   );
-  
-  console.log(templatesTaxoWithValue)
-  
+    
   const [entryInputs, setEntryInputs] = useState<any>(
     currentEntry?.inputs.length !== 0 ? currentEntry?.inputs : ''
   );
