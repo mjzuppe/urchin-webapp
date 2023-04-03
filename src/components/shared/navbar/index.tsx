@@ -27,6 +27,7 @@ import { useAppSelector } from '../../../utils/useAppSelector';
 import urchin from 'urchin-web3-cms';
 import { PublicKey } from '@solana/web3.js';
 import { setTaxonomies } from '../../../redux/slices/taxonomies';
+import { resetState } from '../../../redux/actions';
 
 const useWatch = useEffect;
 
@@ -95,6 +96,8 @@ const Navbar = (): JSX.Element => {
   // disconnect wallet
   const handleDisconnectWalletClick = () => {
     disconnect();
+    // reset state
+    dispatch(resetState());
   };
   return (
     <nav className={classes.navbar}>
