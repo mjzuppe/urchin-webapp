@@ -29,7 +29,13 @@ import { templatesList } from '../../helpers/templateList';
 const TemplatesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
+
+  // Templates published
   const templates = templatesList(useAppSelector((state) => state.templates));
+  // console.log('templates', templates);
+
+  // const templateToPublish = useAppSelector((state) => state.templates);
+  // console.log('templateToPublish', templateToPublish);
 
   const paginatedData = paginate(templates, currentPage, pageSize);
 

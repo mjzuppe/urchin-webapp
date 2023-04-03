@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { resetState } from './actions';
 import storage from 'redux-persist/lib/storage';
-import { AnyAction } from '@reduxjs/toolkit';
+import { AnyAction, Reducer } from '@reduxjs/toolkit';
 
 import subNav from './slices/subNav';
 import process from './slices/process';
@@ -21,7 +21,7 @@ const appReducer = combineReducers({
   assets: assets,
 });
 
-const rootReducer = (state: RootState, action: AnyAction) => {
+const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
   // Clear all data in redux store to initial.
   if (action.type === resetState) {
     // this applies to all keys defined in persistConfig(s)
