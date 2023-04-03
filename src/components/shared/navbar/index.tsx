@@ -19,7 +19,10 @@ import useWindowSize from '../../../utils/useWindowSize';
 import { useAppDispatch } from '../../../utils/useAppDispatch';
 
 // Redux
-import { setWalletConnected, setWalletPublicKey } from '../../../redux/slices/banner';
+import {
+  setWalletConnected,
+  setWalletPublicKey,
+} from '../../../redux/slices/banner';
 import { useAppSelector } from '../../../utils/useAppSelector';
 import urchin from 'urchin-web3-cms';
 import { PublicKey } from '@solana/web3.js';
@@ -27,33 +30,32 @@ import { setTaxonomies } from '../../../redux/slices/taxonomies';
 
 const useWatch = useEffect;
 
-
-
 // Components
-const Navbar =  (): JSX.Element => {
+const Navbar = (): JSX.Element => {
   const dispatch = useAppDispatch();
   const { publicKey, connected, disconnect } = useWallet();
   const originalConnected = useAppSelector(
     (state: any) => state.banner.walletConnected
   );
+
   useWatch(() => {
     if (!connected && originalConnected) {
       dispatch(setWalletConnected(connected));
     }
   });
-  useWatch(() => {
 
+  useWatch(() => {
     if (connected && !originalConnected) {
       dispatch(setWalletConnected(connected));
       dispatch(setWalletPublicKey(publicKey));
       // loadProfile(connected, publicKey)
 
-        if (connected && publicKey) {
+      if (connected && publicKey) {
         const connection = urchin({
           payer: new PublicKey(publicKey),
           cluster: 'devnet',
         });
-      
+
         // Get taxonomies from chain
         connection.taxonomy.getAll().then((res) => {
           const pubKeyArray = res.map((taxonomy: any) => {
@@ -63,14 +65,9 @@ const Navbar =  (): JSX.Element => {
             return dispatch(setTaxonomies(res));
           });
         });
-        }
-     
-      
-    };
- 
-    
+      }
+    }
   }, [connected]);
-  
 
   const [openWalletDropdown, setOpenWalletDropdown] = useState(false);
 

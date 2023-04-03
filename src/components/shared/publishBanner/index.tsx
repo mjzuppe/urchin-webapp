@@ -27,11 +27,16 @@ import { setEntries } from '../../../redux/slices/entries';
 
 //  SDK
 // import connection from '../../../utils/connection';
-import { Keypair, PublicKey, Transaction, clusterApiUrl, Connection } from '@solana/web3.js';
+import {
+  Keypair,
+  PublicKey,
+  Transaction,
+  clusterApiUrl,
+  Connection,
+} from '@solana/web3.js';
 import urchin from 'urchin-web3-cms';
 import bs58 from 'bs58';
 import { useWallet } from '@solana/wallet-adapter-react';
-
 
 // Components
 import Hourglass from '../hourglass';
@@ -64,8 +69,7 @@ const PublishBanner = (): JSX.Element => {
   const [openChangeLog, setOpenChangeLog] = useState(false);
   const [displayHourglass, setDisplayHourglass] = useState(false);
   const [cost, setCost] = useState(0);
-  const [loading, setLoading] = useState(false);
-
+  // const [loading, setLoading] = useState(false);
 
   // const payer = Keypair.fromSecretKey(
   //   // TODO: change when available
@@ -73,14 +77,26 @@ const PublishBanner = (): JSX.Element => {
   //     '3YNWe72jopyTiJWtRBWTGVkyYb3VtxBfqJ1yaonKfJNwLaTWWL89fMDaswTXX1CJQoFypHkdW4AmfuwhpUc1RwP6'
   //   )
   // );
-  const payer = useWallet().publicKey;
-  if (!payer) throw new Error('No payer found, connection failed');
 
-  const connection = urchin({
-    payer,
-    cluster: 'devnet',
-    walletContextState: useWallet(),
-  });
+  // const payer = useWallet().publicKey;
+  // if (!payer) throw new Error('No payer found, connection failed');
+
+  // const connection = urchin({
+  //   payer,
+  //   cluster: 'devnet',
+  //   walletContextState: useWallet(),
+  // });
+
+  const { connected, publicKey } = useWallet();
+
+  let connection: any = null;
+
+  if (connected && publicKey) {
+    connection = urchin({
+      payer: new PublicKey(publicKey),
+      cluster: 'devnet',
+    });
+  }
 
   const changelogHandler = () => {
     setOpenChangeLog(!openChangeLog);
@@ -92,73 +108,92 @@ const PublishBanner = (): JSX.Element => {
   };
 
   //* Taxonomies
-
   const taxonomies = useAppSelector((state: any) => state.taxonomies);
-  const taxonomyErrorPublicKeys = taxonomies.errors.map((error: { publicKey: any; }) => error.publicKey)
 
-  const newTaxonomiesWithNoErrors = taxonomies.new.filter((taxonomy: Taxonomy) => {
-    if (!taxonomyErrorPublicKeys.includes(taxonomy.publicKey)) {
-      return taxonomy
-    }
-  })
-  
-  const taxonomiesToCreate = newTaxonomiesWithNoErrors.map((taxonomy: Taxonomy) => {
-    const { label, parent, publicKey }: Taxonomy = taxonomy;
-    return {
-      label,
-    };
-  });
+  const taxonomyErrorPublicKeys = taxonomies.errors.map(
+    (error: { publicKey: any }) => error.publicKey
+  );
 
-  const editedTaxonomiesWithNoErrors = taxonomies.edited.filter((taxonomy: Taxonomy) => {
-    if (!taxonomyErrorPublicKeys.includes(taxonomy.publicKey)) {
-      return taxonomy
+  const newTaxonomiesWithNoErrors = taxonomies.new.filter(
+    (taxonomy: Taxonomy) => {
+      if (!taxonomyErrorPublicKeys.includes(taxonomy.publicKey)) {
+        return taxonomy;
+      }
     }
-  })
+  );
+
+  const taxonomiesToCreate = newTaxonomiesWithNoErrors.map(
+    (taxonomy: Taxonomy) => {
+      const { label, parent }: Taxonomy = taxonomy;
+      return {
+        label,
+      };
+    }
+  );
+
+  const editedTaxonomiesWithNoErrors = taxonomies.edited.filter(
+    (taxonomy: Taxonomy) => {
+      if (!taxonomyErrorPublicKeys.includes(taxonomy.publicKey)) {
+        return taxonomy;
+      }
+    }
+  );
   const taxonomiesToUpdate = editedTaxonomiesWithNoErrors || [];
 
   //* Templates
   const templates = useAppSelector((state: any) => state.templates);
 
-  const templateErrorIds = templates.errors.map((error: { id: any; }) => error.id)
-  const templateErrorInputIds = templates.inputsErrors.map((error: { templateId: any; }) => error.templateId)
+  const templateErrorIds = templates.errors.map(
+    (error: { id: any }) => error.id
+  );
+  const templateErrorInputIds = templates.inputsErrors.map(
+    (error: { templateId: any }) => error.templateId
+  );
 
-  const newTemplatesWithNoErrors = templates.new.filter((template: Template) => {
-    if (!templateErrorIds.includes(template.id) && !templateErrorInputIds.includes(template.id)) {
-      return template
+  const newTemplatesWithNoErrors = templates.new.filter(
+    (template: Template) => {
+      if (
+        !templateErrorIds.includes(template.id) &&
+        !templateErrorInputIds.includes(template.id)
+      ) {
+        return template;
+      }
     }
-  })
+  );
 
-  const templatesToPublish = newTemplatesWithNoErrors.map((template: Template) => {
-    const { title } = template;
-    const taxonomies = template?.taxonomies?.map((taxonomy: Taxonomy) => {
-      const { publicKey }: Taxonomy = taxonomy;
-      return publicKey;
-    });
+  const templatesToPublish = newTemplatesWithNoErrors.map(
+    (template: Template) => {
+      const { title } = template;
+      const taxonomies = template?.taxonomies?.map((taxonomy: Taxonomy) => {
+        const { publicKey }: Taxonomy = taxonomy;
+        return publicKey;
+      });
 
-    const inputs = template.inputs.map((input: TemplateInputs) => {
-      const { label, type, options, validateInputs, minLength, maxLength } =
-        input;
+      const inputs = template.inputs.map((input: TemplateInputs) => {
+        const { label, type, options, validateInputs, minLength, maxLength } =
+          input;
+
+        return {
+          label,
+          type,
+          ...(type === 'select' && { options }),
+          ...(validateInputs && {
+            validation: {
+              type,
+              min: minLength,
+              max: maxLength,
+            },
+          }),
+        };
+      });
 
       return {
-        label,
-        type,
-        ...(type === 'select' && { options }),
-        ...(validateInputs && {
-          validation: {
-            type,
-            min: minLength,
-            max: maxLength,
-          },
-        }),
+        title,
+        taxonomies,
+        inputs,
       };
-    });
-
-    return {
-      title,
-      taxonomies,
-      inputs,
-    };
-  });
+    }
+  );
 
   //* ENTRIES
   const entries = useAppSelector((state: any) => state.entries.entries);
@@ -192,7 +227,7 @@ const PublishBanner = (): JSX.Element => {
       taxonomiesToCreate.length > 0 &&
       connection.taxonomy.create(taxonomiesToCreate);
 
-    const updateTaxonomy = 
+    const updateTaxonomy =
       taxonomiesToUpdate.length > 0 &&
       connection.taxonomy.update(taxonomiesToUpdate);
     // console.log('createTaxonomy', createTaxonomy);
@@ -205,47 +240,54 @@ const PublishBanner = (): JSX.Element => {
 
     //* Create Entries
     const createEntries = []; //TODO FIX
-      // entriesToPublish.length > 0 && connection.entry.create(entriesToPublish);
+    // entriesToPublish.length > 0 && connection.entry.create(entriesToPublish);
 
     //* Preflight
-    const preflight = await connection.preflight().then((res) => {
+    const preflight = await connection.preflight().then((res: any) => {
       console.log('PREFLIGHT::', res);
       return res;
     });
     setCost(preflight.cost.sol);
   };
+
+  // Publish
   const wallet = useWallet();
+
   const publishHandler = async () => {
     setDisplayHourglass(true);
-    const getTransactions= await connection.process().then((res) => {
-      const txs = res.taxonomy.map((r:any) => {
+
+    const getTransactions = await connection.process().then((res: any) => {
+      const txs = res.taxonomy.map((r: any) => {
         const transactionDecoded = bs58.decode(r);
         const t = Transaction.from(transactionDecoded);
         return t;
-      })
-      const cluster = "devnet";
+      });
+      const cluster = 'devnet';
       const rpc = clusterApiUrl(cluster);
       let connection = new Connection(rpc, 'confirmed');
-      const transactions: Transaction[] = txs //TODO: add template and entry
-      if (!wallet.signAllTransactions) throw new Error('No wallet found, connection failed');
-      const signedTransactions = wallet.signAllTransactions(transactions).then((res) => {
-        for (const ta of res){
-          const txid = connection.sendRawTransaction(
-            ta.serialize(),
-            {
-              skipPreflight: false,
-            }
-          ).then((v)=>console.log("V: ", v));
-          
-          // const instrCnt = ta.instructions.length;
-        }
-    });
+      const transactions: Transaction[] = txs; //TODO: add template and entry
 
-  
-      
-      setDisplayHourglass(false);
-      dispatch(setTaxonomiesIsPublishable(false));
-      dispatch(purgeTaxonomiesNew());
+      if (!wallet.signAllTransactions)
+        throw new Error('No wallet found, connection failed');
+
+      const signedTransactions = wallet
+        .signAllTransactions(transactions)
+        .then((res) => {
+          for (const ta of res) {
+            const txid = connection
+              .sendRawTransaction(ta.serialize(), {
+                skipPreflight: false,
+              })
+              .then((v) => {
+                console.log('V: ', v);
+                dispatch(setTaxonomiesIsPublishable(false));
+                dispatch(purgeTaxonomiesNew());
+              });
+
+            // const instrCnt = ta.instructions.length;
+          }
+        });
+
       dispatch(setTemplateIsPublishable(false));
       dispatch(purgeTemplatesNew());
       dispatch(setEntryIsPublishable(false));
@@ -254,15 +296,23 @@ const PublishBanner = (): JSX.Element => {
       // // TODO: Implement a loading state
       // setLoading(true);
 
-      // // Get taxonomies from chain
-      // connection.taxonomy.getAll().then((res) => {
-      //   const pubKeyArray = res.map((taxonomy: any) => {
-      //     return taxonomy.publicKey;
+      // Get taxonomies from chain
+      // if (connected && publicKey) {
+      //   const connection = urchin({
+      //     payer: new PublicKey(publicKey),
+      //     cluster: 'devnet',
       //   });
-      //   connection.taxonomy.get(pubKeyArray).then((res) => {
-      //     return dispatch(setTaxonomies(res));
+
+      //   // Get taxonomies from chain
+      //   connection.taxonomy.getAll().then((res) => {
+      //     const pubKeyArray = res.map((taxonomy: any) => {
+      //       return new PublicKey(taxonomy.publicKey);
+      //     });
+      //     connection.taxonomy.get(pubKeyArray).then((res) => {
+      //       return dispatch(setTaxonomies(res));
+      //     });
       //   });
-      // });
+      // }
 
       // // Get templates from chain
       // connection.template.getAll().then((res) => {
@@ -285,16 +335,18 @@ const PublishBanner = (): JSX.Element => {
       //     });
       // });
 
+      setDisplayHourglass(false);
+
       // end loading state
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+      // setTimeout(() => {
+      //   setLoading(false);
+      // }, 1000);
     });
   };
 
-  if (loading) {
-    return <p>Loading...</p>;
-  }
+  // if (loading) {
+  //   return <p>Loading...</p>;
+  // }
 
   const taxonomiesChanges = {
     changeCategory: 'Taxonomies',
@@ -316,9 +368,10 @@ const PublishBanner = (): JSX.Element => {
   };
 
   const changes = [];
-  if (taxonomiesToUpdate.length > 0) {
+  if (taxonomiesToCreate.length > 0) {
     changes.push(taxonomiesChanges);
   }
+
   if (templatesToPublish.length > 0) {
     changes.push(templatesChanges);
   }
