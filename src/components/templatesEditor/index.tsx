@@ -48,7 +48,7 @@ const TemplatesEditor = (): JSX.Element => {
   );
 
   const currentTemplate = templates.find(
-    (template) => template.id === currentTemplateId
+    (template: any) => template.id === currentTemplateId
   );
 
   return (

@@ -12,7 +12,7 @@ import paginate from '../../utils/paginate';
 import { PAGE_SIZE as pageSize } from '../../utils/constants';
 import { useAppDispatch } from '../../utils/useAppDispatch';
 import { useAppSelector } from '../../utils/useAppSelector';
-import { loadTemplateInputData } from '../../helpers/lookup'
+import { loadTemplateInputData } from '../../helpers/lookup';
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
 import {
@@ -34,7 +34,9 @@ const EntriesList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const entries = useAppSelector((state) => state.entries.entries);
 
-  const templates = updatedTemplates(useAppSelector((state) => state.templates));
+  const templates = updatedTemplates(
+    useAppSelector((state) => state.templates)
+  );
 
   const [templateSelected, setTemplateSelected] = useState({
     template: '',
@@ -64,7 +66,7 @@ const EntriesList = () => {
   )?.inputs;
 
   const entryTitle = templateSelectedInputs?.find(
-    (input: {type: any}) => input.type === 'text'
+    (input: { type: any }) => input.type === 'text'
   )?.label;
 
   const templateSelectorSubmitHandler = () => {
@@ -96,7 +98,7 @@ const EntriesList = () => {
   // if taxonomies array has no empty value setIsPublishable to true
   useEffect(() => {
     if (entries.length > 0) {
-      const entryIsPublishable = entries.some((entry) => {
+      const entryIsPublishable = entries.some((entry: any) => {
         return (
           entry.inputs.length > 0 &&
           entry.title !== '' &&
@@ -173,9 +175,14 @@ const EntriesList = () => {
         <div className={classes.templates_list}>
           {paginatedData.map((entry: any) => {
             const { created, publicKey, arweaveId, inputs } = entry;
-            const templateInputs = templates.filter(template => template.publicKey === entry.template)[0].inputs
-            const updatedInputs = loadTemplateInputData(inputs, templateInputs)
-            const entryTitle = updatedInputs.entryInputData[updatedInputs.templateInputData.label]
+            const templateInputs = templates.filter(
+              (template) => template.publicKey === entry.template
+            )[0].inputs;
+            const updatedInputs = loadTemplateInputData(inputs, templateInputs);
+            const entryTitle =
+              updatedInputs.entryInputData[
+                updatedInputs.templateInputData.label
+              ];
             return (
               <ListRow
                 key={arweaveId}
