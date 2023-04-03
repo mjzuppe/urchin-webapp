@@ -139,6 +139,7 @@ const PublishBanner = (): JSX.Element => {
     }
   );
   const taxonomiesToUpdate = editedTaxonomiesWithNoErrors || [];
+  console.log('taxonomiesToUpdate', taxonomiesToUpdate);
 
   //* Templates
   const templates = useAppSelector((state: any) => state.templates);
@@ -230,7 +231,6 @@ const PublishBanner = (): JSX.Element => {
     const updateTaxonomy =
       taxonomiesToUpdate.length > 0 &&
       connection.taxonomy.update(taxonomiesToUpdate);
-    // console.log('createTaxonomy', createTaxonomy);
 
     //* Create template
     const createTemplate =
@@ -359,14 +359,23 @@ const PublishBanner = (): JSX.Element => {
   //   return <p>Loading...</p>;
   // }
 
-  const taxonomiesChanges = {
+  const taxonomiesCreateChanges = {
+    process: 'Create',
     changeCategory: 'Taxonomies',
-    //
     changeName: taxonomiesToCreate
       .map((taxonomy: any) => taxonomy.label)
       .join(', '),
   };
+  const taxonomiesUpdateChanges = {
+    process: 'Edit',
+    changeCategory: 'Taxonomies',
+    changeName: taxonomiesToUpdate
+      .map((taxonomy: any) => taxonomy.label)
+      .join(', '),
+  };
+
   const templatesChanges = {
+    process: 'Create',
     changeCategory: 'Templates',
     changeName: templatesToPublish
       .map((template: any) => template.title)
@@ -374,13 +383,17 @@ const PublishBanner = (): JSX.Element => {
   };
 
   const entriesChanges = {
+    process: 'Create',
     changeCategory: 'Entries',
     changeName: `${entriesToPublish.length} entries`,
   };
 
   const changes = [];
   if (taxonomiesToCreate.length > 0) {
-    changes.push(taxonomiesChanges);
+    changes.push(taxonomiesCreateChanges);
+  }
+  if (taxonomiesToUpdate.length > 0) {
+    changes.push(taxonomiesUpdateChanges);
   }
 
   if (templatesToPublish.length > 0) {
@@ -408,7 +421,7 @@ const PublishBanner = (): JSX.Element => {
               {changes.map((change, index) => (
                 <div key={`change-${change.changeName}-${index}`}>
                   <span className={classes.category}>
-                    Create {change.changeCategory}: {''}
+                    {change.process} {change.changeCategory}: {''}
                   </span>
                   <span className={classes.name}>{change.changeName}</span>
                 </div>

@@ -26,7 +26,8 @@ const TaxonomiesList = () => {
   const taxonomiesPublished = taxonomiesList(
     useAppSelector((state) => state.taxonomies)
   );
-  const taxonomiesToPublish = useAppSelector((state) => state.taxonomies.new);
+
+  const taxonomiesToPublish = useAppSelector((state) => state.taxonomies);
 
   const paginatedData = paginate(taxonomiesPublished, currentPage, pageSize);
 
@@ -40,9 +41,9 @@ const TaxonomiesList = () => {
 
   // if taxonomies array has no empty value setTaxonomiesIsPublishable to true
   useEffect(() => {
-    const taxoIsPublishable = taxonomiesToPublish.some(
-      (taxo: { label: string; publicKey: string }) => taxo.label !== ''
-    );
+    const taxoIsPublishable =
+      taxonomiesToPublish.new.length > 0 ||
+      taxonomiesToPublish.edited.length > 0;
 
     taxoIsPublishable
       ? dispatch(setTaxonomiesIsPublishable(true))
