@@ -236,7 +236,6 @@ const PublishBanner = (): JSX.Element => {
     const createTemplate =
       templatesToPublish.length > 0 &&
       connection.template.create(templatesToPublish);
-    // console.log('createTemplate', createTemplate);
 
     //* Create Entries
     const createEntries = []; //TODO FIX
@@ -256,16 +255,28 @@ const PublishBanner = (): JSX.Element => {
   const publishHandler = async () => {
     setDisplayHourglass(true);
 
-    const getTransactions = await connection.process().then((res: any) => {
-      const txs = res.taxonomy.map((r: any) => {
+    await connection.process().then((res: any) => {
+      console.log('PROCESS::', res);
+      const TaxosTransactions = res.taxonomy.map((r: any) => {
         const transactionDecoded = bs58.decode(r);
         const t = Transaction.from(transactionDecoded);
         return t;
       });
+
+      const TemplatesTransactions = res.template.map((r: any) => {
+        const transactionDecoded = bs58.decode(r);
+        const t = Transaction.from(transactionDecoded);
+        return t;
+      });
+      console.log('TemplatesTransactions', TemplatesTransactions);
+
       const cluster = 'devnet';
       const rpc = clusterApiUrl(cluster);
       let connection = new Connection(rpc, 'confirmed');
-      const transactions: Transaction[] = txs; //TODO: add template and entry
+
+      const transactions: Transaction[] = []; //TODO: add entry
+      TaxosTransactions.forEach((t: any) => transactions.push(t));
+      TemplatesTransactions.forEach((t: any) => transactions.push(t));
 
       if (!wallet.signAllTransactions)
         throw new Error('No wallet found, connection failed');
@@ -282,15 +293,15 @@ const PublishBanner = (): JSX.Element => {
                 console.log('V: ', v);
                 dispatch(setTaxonomiesIsPublishable(false));
                 dispatch(purgeTaxonomiesNew());
+                dispatch(setTemplateIsPublishable(false));
+                dispatch(purgeTemplatesNew());
+                dispatch(setEntryIsPublishable(false));
               });
 
             // const instrCnt = ta.instructions.length;
           }
         });
 
-      dispatch(setTemplateIsPublishable(false));
-      dispatch(purgeTemplatesNew());
-      dispatch(setEntryIsPublishable(false));
       dispatch(setDisplayBanner(false));
 
       // // TODO: Implement a loading state
