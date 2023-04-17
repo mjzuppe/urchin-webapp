@@ -8,6 +8,7 @@ import paginate from '../../utils/paginate';
 import { PAGE_SIZE as pageSize } from '../../utils/constants';
 import { useAppDispatch } from '../../utils/useAppDispatch';
 import { useAppSelector } from '../../utils/useAppSelector';
+import { taxonomiesList } from '../../helpers/taxonomyList';
 
 // Redux
 import { setCurrentProcess } from '../../redux/slices/process';
@@ -21,9 +22,14 @@ import Pagination from '../shared/pagination';
 const TaxonomiesList = () => {
   const dispatch = useAppDispatch();
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
 
-  const paginatedData = paginate(taxonomies, currentPage, pageSize);
+  const taxonomiesPublished = taxonomiesList(
+    useAppSelector((state) => state.taxonomies)
+  );
+
+  const taxonomiesToPublish = useAppSelector((state) => state.taxonomies);
+
+  const paginatedData = paginate(taxonomiesPublished, currentPage, pageSize);
 
   const onPageChange = (page: number) => {
     setCurrentPage(page);
@@ -35,17 +41,14 @@ const TaxonomiesList = () => {
 
   // if taxonomies array has no empty value setTaxonomiesIsPublishable to true
   useEffect(() => {
-    if (taxonomies.length > 0) {
-      const taxoIsPublishable = taxonomies.some(
-        (taxo) => taxo.label !== '' && taxo.publicKey === ''
-      );
-      // console.log('taxoIsPublishable', taxoIsPublishable);
+    const taxoIsPublishable =
+      taxonomiesToPublish.new.length > 0 ||
+      taxonomiesToPublish.edited.length > 0;
 
-      taxoIsPublishable
-        ? dispatch(setTaxonomiesIsPublishable(true))
-        : dispatch(setTaxonomiesIsPublishable(false));
-    }
-  }, [taxonomies, dispatch]);
+    taxoIsPublishable
+      ? dispatch(setTaxonomiesIsPublishable(true))
+      : dispatch(setTaxonomiesIsPublishable(false));
+  }, [taxonomiesToPublish, dispatch]);
 
   return (
     <section className={classes.taxonomies_list_section}>
@@ -80,7 +83,7 @@ const TaxonomiesList = () => {
         )}
       </div>
       <Pagination
-        items={taxonomies.length}
+        items={taxonomiesPublished.length}
         pageSize={pageSize}
         currentPage={currentPage}
         onPageChange={onPageChange}

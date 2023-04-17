@@ -34,7 +34,6 @@ const ListRow = ({
   const { width } = useWindowSize();
   const isDesktop = width! > 1024;
   const activeTab = useAppSelector((state: any) => state.subNav.activeTab);
-
   const publicKeyTruncated = `${publicKey?.slice(0, 4)}...${publicKey?.slice(
     publicKey?.length - 4,
     publicKey?.length

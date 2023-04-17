@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 
 //styles
 import classes from './Navbar.module.scss';
@@ -16,10 +16,60 @@ const WalletMultiButtonDynamic = dynamic(
 // Utils
 import useOnClickOutside from '../../../utils/useOnClickOutside';
 import useWindowSize from '../../../utils/useWindowSize';
+import { useAppDispatch } from '../../../utils/useAppDispatch';
+
+// Redux
+import {
+  setWalletConnected,
+  setWalletPublicKey,
+} from '../../../redux/slices/banner';
+import { useAppSelector } from '../../../utils/useAppSelector';
+import urchin from 'urchin-web3-cms';
+import { PublicKey } from '@solana/web3.js';
+import { setTaxonomies } from '../../../redux/slices/taxonomies';
+import { resetState } from '../../../redux/actions';
+
+const useWatch = useEffect;
 
 // Components
 const Navbar = (): JSX.Element => {
+  const dispatch = useAppDispatch();
   const { publicKey, connected, disconnect } = useWallet();
+  const originalConnected = useAppSelector(
+    (state: any) => state.banner.walletConnected
+  );
+
+  useWatch(() => {
+    if (!connected && originalConnected) {
+      dispatch(setWalletConnected(connected));
+    }
+  });
+
+  useWatch(() => {
+    if (connected && !originalConnected) {
+      dispatch(setWalletConnected(connected));
+      dispatch(setWalletPublicKey(publicKey));
+      // loadProfile(connected, publicKey)
+
+      if (connected && publicKey) {
+        const connection = urchin({
+          payer: new PublicKey(publicKey),
+          cluster: 'devnet',
+        });
+
+        // Get taxonomies from chain
+        connection.taxonomy.getAll().then((res) => {
+          const pubKeyArray = res.map((taxonomy: any) => {
+            return new PublicKey(taxonomy.publicKey);
+          });
+          connection.taxonomy.get(pubKeyArray).then((res) => {
+            return dispatch(setTaxonomies(res));
+          });
+        });
+      }
+    }
+  }, [connected]);
+
   const [openWalletDropdown, setOpenWalletDropdown] = useState(false);
 
   const walletKey = publicKey?.toBase58();
@@ -46,8 +96,9 @@ const Navbar = (): JSX.Element => {
   // disconnect wallet
   const handleDisconnectWalletClick = () => {
     disconnect();
+    // reset state
+    dispatch(resetState());
   };
-
   return (
     <nav className={classes.navbar}>
       <div className={classes.flex_left}>

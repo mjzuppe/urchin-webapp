@@ -1,6 +1,7 @@
 import { useState } from 'react';
 // Styles
 import classes from './TaxonomiesEditor.module.scss';
+import { Keypair } from '@solana/web3.js';
 
 // Utils
 import { useAppDispatch } from '../../utils/useAppDispatch';
@@ -40,7 +41,7 @@ const TaxonomiesEditor = (): JSX.Element => {
         updatedAt: Date.now(),
         solanaAddress: '',
         arweaveAddress: '',
-        publicKey: '',
+        publicKey: Keypair.generate().publicKey.toString(),
       })
     );
     setTaxonomiesCount(taxonomiesCount + 1);

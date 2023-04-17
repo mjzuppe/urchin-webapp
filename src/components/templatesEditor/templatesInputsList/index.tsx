@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // Styles
 import classes from './TemplatesInputsList.module.scss';
@@ -11,20 +11,28 @@ import { useAppDispatch } from '../../../utils/useAppDispatch';
 import {
   addOrUpdateTemplateInput,
   addOrUpdateTemplateTitle,
+  updateTemplateErrors, 
+  removeTemplateErrors
 } from '../../../redux/slices/templates';
 
 // Types
-import { TemplatesInputs } from '../../../types/Templates';
+import { TemplatesInputs, Templates } from '../../../types/Templates';
+
+import { templatesList } from '../../../helpers/templateList'
 
 // Components
 import OrangeButton from '../../shared/orangeButton';
 import TemplatesInputsRow from '../templatesInputsRow';
 
 const TemplatesInputsList = (): JSX.Element => {
+  const DUPLICATE_TITLE_ERROR = "Title must be unique"
+
   const dispatch = useAppDispatch();
   const [templateTitleError, setTemplateTitleError] = useState<boolean>(false);
-  const templates = useAppSelector((state) => state.templates.templates);
 
+  const templates = templatesList(useAppSelector((state) => state.templates));
+
+  const errors = useAppSelector((state) => state.templates.errors);
   const currentTemplateId = useAppSelector(
     (state) => state.templates.currentTemplateId
   );
@@ -68,18 +76,52 @@ const TemplatesInputsList = (): JSX.Element => {
     dispatch(
       addOrUpdateTemplateInput({
         templateIndex: currentTemplateIndex,
-        input: templateInputs,
+        inputs: templateInputs,
+        id: currentTemplateId
       } as any)
     );
   };
+
+  const checkDuplicateTitleErrors = (template: Templates, index: number) => {
+    const titles = templates.map((template: { title: string; }) => template.title || ''.toLowerCase().trim())
+    
+    const toFindDuplicates = () => titles.filter((item, index) => titles.indexOf(item) !== index)
+    const duplicateTitles = toFindDuplicates();
+
+    if(duplicateTitles.includes(template.title || ''.toLowerCase().trim())) {
+      dispatch(
+        updateTemplateErrors({
+          id: template.id, 
+          index, 
+          message: DUPLICATE_TITLE_ERROR
+        }),
+      )
+    } 
+    else {
+      dispatch(
+        removeTemplateErrors({
+          id: template.id
+        })
+      )
+    }
+  }
+    
+  useEffect(() => {
+    templates.map((template, index )=> {
+      checkDuplicateTitleErrors(template, index)
+    })
+  }, [templates.map(template => template.title)])
+
 
   const onChangeTemplateTitleHandler = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     event.target.value !== '' && setTemplateTitleError(false);
+
     dispatch(
       addOrUpdateTemplateTitle({
         templateIndex: currentTemplateIndex,
+        id: currentTemplateId,
         title: event.target.value,
       } as any)
     );
@@ -90,14 +132,26 @@ const TemplatesInputsList = (): JSX.Element => {
   ) => {
     // if value empty render an error
     event.target.value === '' && setTemplateTitleError(true);
+    
     dispatch(
       addOrUpdateTemplateTitle({
         templateIndex: currentTemplateIndex,
+        id: currentTemplateId,
         title: event.target.value,
       } as any)
     );
   };
 
+  const renderErrorMessage = () => {
+    let inputErrors = errors.filter((err: { id: string, index: number }) => err?.id === currentTemplate?.id)
+    if(inputErrors.length > 0) {
+      return(
+        <span className="error_message">{inputErrors[0].message}</span>
+      ) 
+    }
+  }
+
+  const currentTitle = currentTemplate?.title || ""
   return (
     <section className={classes.templates_inputs_list}>
       <div className="single_row_form">
@@ -111,11 +165,14 @@ const TemplatesInputsList = (): JSX.Element => {
             name="label"
             placeholder="Enter template Name"
             className="form_input"
-            value={currentTemplate?.title || ''}
             maxLength={200}
+            value={currentTitle}
             onChange={(event) => onChangeTemplateTitleHandler(event)}
             onBlur={onBlurTemplateTitleHandler}
           />
+          {
+            renderErrorMessage()
+          }
           {templateTitleError && (
             <span className="error_message">Template title is required</span>
           )}

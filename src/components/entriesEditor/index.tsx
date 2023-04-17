@@ -32,26 +32,33 @@ import OrangeButton from '../shared/orangeButton';
 import { CustomSelectMulti } from '../shared/customSelectMulti';
 import { CustomSelectSingle } from '../shared/customSelectSingle';
 import Breadcrumbs from '../shared/breadcrumbs';
+import { updatedTaxonomies } from '../../helpers/taxonomyList';
+import { updatedTemplates } from '../../helpers/templateList';
 
 const EntriesEditor = (): JSX.Element => {
   const { width } = useWindowSize();
   const dispatch = useAppDispatch();
   const entries = useAppSelector((state) => state.entries.entries);
-  const taxonomiesFromState = useAppSelector(
-    (state) => state.taxonomies.taxonomies
+
+  const taxonomiesFromState = updatedTaxonomies(
+    useAppSelector((state) => state.taxonomies)
   );
 
   const currentEntryId = useAppSelector(
     (state) => state.entries.currentEntryId
   );
 
-  const currentEntry = entries.find((entry) => entry.id === currentEntryId);
-
-  const currentEntryIndex = entries.findIndex(
-    (entry) => entry.id === currentEntry?.id
+  const currentEntry = entries.find(
+    (entry: any) => entry.id === currentEntryId
   );
 
-  const templates = useAppSelector((state) => state.templates.templates);
+  const currentEntryIndex = entries.findIndex(
+    (entry: any) => entry.id === currentEntry?.id
+  );
+
+  const templates = updatedTemplates(
+    useAppSelector((state) => state.templates)
+  );
 
   const entryTemplate = templates.find(
     (template) => template.publicKey === currentEntry?.template
@@ -68,7 +75,9 @@ const EntriesEditor = (): JSX.Element => {
   // find entryTemplate.taxonomies in taxonomiesX
   const templatesTaxoWithValue = taxonomiesTransformed?.filter(
     (taxonomytoDisplay: any) => {
-      return entryTemplate?.taxonomies?.includes(taxonomytoDisplay.publicKey);
+      return entryTemplate?.taxonomies?.filter((taxonomy: any) => {
+        taxonomy.publicKey == taxonomytoDisplay.publicKey;
+      });
     }
   );
 
@@ -226,147 +235,155 @@ const EntriesEditor = (): JSX.Element => {
             <span className="filler"></span>
           </div>
           {/* Inputs */}
-          {entryTemplate?.inputs.map((input: any, templateEntryInputIndex) => (
-            <div className={classes.entry_input_wrapper} key={input.label}>
-              {input.type === 'text' && (
-                <div className={`input_wrapper`}>
-                  <label className="form_label">{input.label}</label>
-                  <input
-                    type="text"
-                    name={`${input.label}`}
-                    placeholder={`Enter your ${input.label}`}
-                    className="form_input"
-                    value={
-                      entryInputs.length !== 0
-                        ? entryInputs[0][input.label]
-                        : ''
-                    }
-                    minLength={input.validateInputs ? input.minLength : 0}
-                    maxLength={input.validateInputs ? input.maxLength : 1000}
-                    onChange={(event: any) => onChangeEntryInputsHandler(event)}
-                    onBlur={onBlurEntryHandler}
-                  />
-                </div>
-              )}
-              {input.type === 'numeric' && (
-                <div
-                  className={`number_input input_wrapper`}
-                  id={classes.nbr_input_large}
-                >
-                  <label className="form_label">{input.label}</label>
-                  <input
-                    type="number"
-                    name={`${input.label}`}
-                    placeholder={`Enter your ${input.label}`}
-                    className="form_input"
-                    value={
-                      entryInputs.length !== 0
-                        ? entryInputs[0][input.label]
-                        : ''
-                    }
-                    minLength={input.validateInputs ? input.minLength : 0}
-                    maxLength={input.validateInputs ? input.maxLength : 1000}
-                    onChange={(event: any) => onChangeEntryInputsHandler(event)}
-                    onBlur={onBlurEntryHandler}
-                  />
-                </div>
-              )}
-              {input.type === 'select' && (
-                <div className={classes.select_wrapper}>
-                  <CustomSelectSingle
-                    id={`input_select_${templateEntryInputIndex}`}
-                    name={`${input.label}`}
-                    label={input.label}
-                    displayValue="label"
-                    optionsList={input.options.map((option: any) => {
-                      return {
-                        label: option,
-                        value: option,
-                      };
-                    })}
-                    onChange={(event: any) => onChangeEntryInputsHandler(event)}
-                    onBlur={onBlurEntryHandler}
-                    value={
-                      entryInputs.length !== 0
-                        ? entryInputs[0][input.label]
-                        : ''
-                    }
-                    placeholder={'Select one option'}
-                    className={classes.select}
-                  />
-                </div>
-              )}
-              {input.type === 'file' && (
-                <div className={classes.upload_section_left}>
-                  <div className={classes.uploader}>
+          {entryTemplate?.inputs.map(
+            (input: any, templateEntryInputIndex: any) => (
+              <div className={classes.entry_input_wrapper} key={input.label}>
+                {input.type === 'text' && (
+                  <div className={`input_wrapper`}>
                     <label className="form_label">{input.label}</label>
-                    <FileUploader
-                      handleChange={handleFileOnChange}
+                    <input
+                      type="text"
                       name={`${input.label}`}
-                      multiple={true}
-                      // eslint-disable-next-line react/no-children-prop
-                      children={
-                        <div className={classes.drop_area}>
-                          <Image
-                            src="/assets/camera-icon.svg"
-                            alt="camera icon - upload a file"
-                            height={40}
-                            width={35}
-                          />
-                          <span className="muted_text_small">
-                            Drop your file here
-                          </span>
-                        </div>
-                      }
-                    />
-                    {imgSrc && (
-                      <>
-                        <div className={classes.preview_img_wrapper}>
-                          <Image
-                            src={imgSrc}
-                            id="image_preview"
-                            width={width! < 950 ? 350 : 320}
-                            height={200}
-                            alt="Thumbnail of uploaded image"
-                          />
-                        </div>
-                      </>
-                    )}
-                  </div>
-                  <div className="actions_right">
-                    <p className={classes.file_name}>{fileName}</p>
-                    <p
-                      className={`orange_link ${classes.remove_img}`}
-                      onClick={removeImageHandler}
-                    >
-                      Remove File
-                    </p>
-                  </div>
-                </div>
-              )}
-              {input.type === 'textarea' && (
-                <div className={`input_wrapper ${classes.wysiwig_editor}`}>
-                  <label className="form_label">{input.label}</label>
-                  <div data-color-mode="dark">
-                    <MDEditor
-                      textareaProps={{
-                        name: `${input.label}`,
-                      }}
+                      placeholder={`Enter your ${input.label}`}
+                      className="form_input"
                       value={
                         entryInputs.length !== 0
                           ? entryInputs[0][input.label]
                           : ''
                       }
-                      onChange={(value) =>
-                        onChangeMarkdownHandler(value, input.label)
+                      minLength={input.validateInputs ? input.minLength : 0}
+                      maxLength={input.validateInputs ? input.maxLength : 1000}
+                      onChange={(event: any) =>
+                        onChangeEntryInputsHandler(event)
                       }
                       onBlur={onBlurEntryHandler}
                     />
                   </div>
-                </div>
-              )}
-            </div>
-          ))}
+                )}
+                {input.type === 'numeric' && (
+                  <div
+                    className={`number_input input_wrapper`}
+                    id={classes.nbr_input_large}
+                  >
+                    <label className="form_label">{input.label}</label>
+                    <input
+                      type="number"
+                      name={`${input.label}`}
+                      placeholder={`Enter your ${input.label}`}
+                      className="form_input"
+                      value={
+                        entryInputs.length !== 0
+                          ? entryInputs[0][input.label]
+                          : ''
+                      }
+                      minLength={input.validateInputs ? input.minLength : 0}
+                      maxLength={input.validateInputs ? input.maxLength : 1000}
+                      onChange={(event: any) =>
+                        onChangeEntryInputsHandler(event)
+                      }
+                      onBlur={onBlurEntryHandler}
+                    />
+                  </div>
+                )}
+                {input.type === 'select' && (
+                  <div className={classes.select_wrapper}>
+                    <CustomSelectSingle
+                      id={`input_select_${templateEntryInputIndex}`}
+                      name={`${input.label}`}
+                      label={input.label}
+                      displayValue="label"
+                      optionsList={input.options.map((option: any) => {
+                        return {
+                          label: option,
+                          value: option,
+                        };
+                      })}
+                      onChange={(event: any) =>
+                        onChangeEntryInputsHandler(event)
+                      }
+                      onBlur={onBlurEntryHandler}
+                      value={
+                        entryInputs.length !== 0
+                          ? entryInputs[0][input.label]
+                          : ''
+                      }
+                      placeholder={'Select one option'}
+                      className={classes.select}
+                    />
+                  </div>
+                )}
+                {input.type === 'file' && (
+                  <div className={classes.upload_section_left}>
+                    <div className={classes.uploader}>
+                      <label className="form_label">{input.label}</label>
+                      <FileUploader
+                        handleChange={handleFileOnChange}
+                        name={`${input.label}`}
+                        multiple={true}
+                        // eslint-disable-next-line react/no-children-prop
+                        children={
+                          <div className={classes.drop_area}>
+                            <Image
+                              src="/assets/camera-icon.svg"
+                              alt="camera icon - upload a file"
+                              height={40}
+                              width={35}
+                            />
+                            <span className="muted_text_small">
+                              Drop your file here
+                            </span>
+                          </div>
+                        }
+                      />
+                      {imgSrc && (
+                        <>
+                          <div className={classes.preview_img_wrapper}>
+                            <Image
+                              src={imgSrc}
+                              id="image_preview"
+                              width={width! < 950 ? 350 : 320}
+                              height={200}
+                              alt="Thumbnail of uploaded image"
+                            />
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    <div className="actions_right">
+                      <p className={classes.file_name}>{fileName}</p>
+                      <p
+                        className={`orange_link ${classes.remove_img}`}
+                        onClick={removeImageHandler}
+                      >
+                        Remove File
+                      </p>
+                    </div>
+                  </div>
+                )}
+                {input.type === 'textarea' && (
+                  <div className={`input_wrapper ${classes.wysiwig_editor}`}>
+                    <label className="form_label">{input.label}</label>
+                    <div data-color-mode="dark">
+                      <MDEditor
+                        textareaProps={{
+                          name: `${input.label}`,
+                        }}
+                        value={
+                          entryInputs.length !== 0
+                            ? entryInputs[0][input.label]
+                            : ''
+                        }
+                        onChange={(value) =>
+                          onChangeMarkdownHandler(value, input.label)
+                        }
+                        onBlur={onBlurEntryHandler}
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+            )
+          )}
         </div>
       </div>
     </section>

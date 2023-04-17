@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react';
+import { Key, useEffect, useState } from 'react';
 // Styles
 import classes from './TaxonomiesRow.module.scss';
+import { Keypair } from '@solana/web3.js';
 
 // Utils
 import { useAppDispatch } from '../../../utils/useAppDispatch';
 import { useAppSelector } from '../../../utils/useAppSelector';
 
+import { taxonomiesList } from '../../../helpers/taxonomyList'
 // redux
 import {
   addNewTaxonomy,
@@ -13,6 +15,8 @@ import {
   updateTaxonomyGrandParent,
   updateTaxonomyLabel,
   updateTaxonomyParent,
+  setTaxonomyErrors,
+  removeTaxonomyErrors,
 } from '../../../redux/slices/taxonomies';
 
 // Components
@@ -20,14 +24,14 @@ import Separator from '../../shared/separator';
 import { CustomSelectSingle } from '../../shared/customSelectSingle';
 import { Taxonomy } from '../../../types/Taxonomies';
 
+const DUPLICATE_LABEL_ERROR = "Label name must be unique"
+const REQUIRED_ERROR_MESSAGE = "Label is required"
+
 const TaxonomiesRow = (): JSX.Element => {
   const dispatch = useAppDispatch();
-  const [taxonomyLabelError, setTaxonomyLabelError] = useState<boolean>(false);
-  const [errorIndex, setErrorIndex] = useState<number>(-1);
 
-  const taxonomies = useAppSelector((state) => state.taxonomies.taxonomies);
-
-  //
+  const taxonomies =  taxonomiesList(useAppSelector((state) => state.taxonomies))  
+  const errors = useAppSelector((state) => state.taxonomies.errors)
 
   useEffect(() => {
     taxonomies.length === 0 &&
@@ -39,11 +43,40 @@ const TaxonomiesRow = (): JSX.Element => {
           updatedAt: Date.now(),
           solanaAddress: '',
           arweaveAddress: '',
-          publicKey: '',
+          publicKey: Keypair.generate().publicKey.toString(),
         })
       );
   });
+  
+  const checkDuplicateLabelErrors = (taxonomy: Taxonomy, index: number) => {
+    const labelNames = taxonomies.map((taxonomy: { label: string; }) => taxonomy.label.toLowerCase().trim())
+    
+    const toFindDuplicates = () => labelNames.filter((item, index) => labelNames.indexOf(item) !== index)
+    const duplicateLabels = toFindDuplicates();
 
+    if(duplicateLabels.includes(taxonomy.label.toLowerCase().trim())) {
+      dispatch(
+        setTaxonomyErrors({
+          publicKey: taxonomy.publicKey, 
+          index, 
+          message: DUPLICATE_LABEL_ERROR
+        }),
+      )
+    } else {
+      dispatch(
+        removeTaxonomyErrors({
+          publicKey: taxonomy.publicKey
+        })
+      )
+    }
+  }
+    
+  useEffect(() => {
+    taxonomies.map((taxonomy, index )=> {
+      checkDuplicateLabelErrors(taxonomy, index)
+    })
+  }, [taxonomies.map(taxo => taxo.label)])
+  
   const findParent = (parent: any) => {
     const parentIndex = taxonomies.findIndex(
       (taxonomy: any) => taxonomy.label.toLowerCase() === parent
@@ -56,16 +89,16 @@ const TaxonomiesRow = (): JSX.Element => {
 
   const onChangeTaxonomyHandler = (
     event: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number, 
+    publicKey: string
   ) => {
     const { name, value } = event.target;
-    if (name === 'label' && value !== '') {
-      setTaxonomyLabelError(false);
-    }
+
     const newTaxonomy = {
       [name]: value.trimStart(),
       grandparent: '',
       index,
+      publicKey
     };
     if (newTaxonomy.hasOwnProperty('label')) {
       dispatch(updateTaxonomyLabel(newTaxonomy));
@@ -73,23 +106,21 @@ const TaxonomiesRow = (): JSX.Element => {
     if (newTaxonomy.hasOwnProperty('parent')) {
       dispatch(updateTaxonomyParent(newTaxonomy));
       const grandParent = findParent(newTaxonomy.parent);
-      dispatch(updateTaxonomyGrandParent({ grandParent, index }));
+      dispatch(updateTaxonomyGrandParent({ grandParent, index, publicKey }));
     }
   };
 
   const onBlurTaxonomyHandler = (
     event: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number, 
+    publicKey: string
   ) => {
     const { name, value } = event.target;
-    if (name === 'label' && value === '') {
-      setTaxonomyLabelError(true);
-      setErrorIndex(index);
-    }
-
+    
     const newTaxonomy = {
       [name]: value.trimEnd(),
       index,
+      publicKey
     };
 
     if (newTaxonomy.hasOwnProperty('label')) {
@@ -100,11 +131,20 @@ const TaxonomiesRow = (): JSX.Element => {
     }
   };
 
-  const removeRowHandler = (index: number) => {
+  const removeRowHandler = (index: number, publicKey: string) => {
     if (taxonomies.length <= 1) return;
-    dispatch(deleteTaxonomy({ taxonomieIndex: index }));
+    dispatch(deleteTaxonomy({ taxonomieIndex: index, publicKey }));
   };
 
+  const renderTaxonomyErrorMesage = (taxonomy: Taxonomy, index: number) => {
+    let inputErrors = errors.filter((err: { publicKey: string, index: number }) => err.publicKey === taxonomy.publicKey)
+    if(inputErrors.length > 0) {
+      return(
+        <span className="error_message">{inputErrors[0].message}</span>
+      ) 
+    }
+  }
+  
   return (
     <>
       {taxonomies?.map((taxonomy: Taxonomy, index: number) => (
@@ -122,14 +162,16 @@ const TaxonomiesRow = (): JSX.Element => {
                 className="form_input"
                 value={taxonomy.label || ''}
                 maxLength={24}
-                onChange={(event) => onChangeTaxonomyHandler(event, index)}
-                onBlur={(event) => onBlurTaxonomyHandler(event, index)}
+                onChange={(event) => onChangeTaxonomyHandler(event, index, taxonomy.publicKey)}
+                onBlur={(event) => onBlurTaxonomyHandler(event, index, taxonomy.publicKey)}
               />
-              {/* Input error for correct index */}
-
-              {taxonomyLabelError && errorIndex === index && (
-                <span className="error_message">Label is required</span>
-              )}
+              {
+                renderTaxonomyErrorMesage(taxonomy, index) 
+              } {
+                taxonomy.label.length == 0 && (
+                  <span className="error_message">{REQUIRED_ERROR_MESSAGE}</span>
+                )
+              }
             </div>
             <div className={`single_input input_wrapper`}>
               <CustomSelectSingle
@@ -143,7 +185,7 @@ const TaxonomiesRow = (): JSX.Element => {
                   { value: 'rock', label: 'rock' },
                 ]}
                 onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                  onChangeTaxonomyHandler(event, index)
+                  onChangeTaxonomyHandler(event, index, taxonomy.publicKey)
                 }
                 value={taxonomy.parent}
                 className={`${classes.genres_container}`}
@@ -155,7 +197,7 @@ const TaxonomiesRow = (): JSX.Element => {
               {index >= 1 && (
                 <button
                   className={`${classes.btn_text} blue_white_link`}
-                  onClick={() => removeRowHandler(index)}
+                  onClick={() => removeRowHandler(index, taxonomy.publicKey)}
                 >
                   Remove
                 </button>

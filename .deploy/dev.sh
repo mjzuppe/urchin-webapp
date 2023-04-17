@@ -1,5 +1,6 @@
 #!/bin/bash
 echo "Start DEV deployment"
+set -e
 . ~/.nvm/nvm.sh
 cd ~/dev.playa.co
 git reset --hard
