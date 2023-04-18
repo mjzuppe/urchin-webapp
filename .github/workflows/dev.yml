@@ -20,7 +20,7 @@ jobs:
         if: always()
       - run: echo "🎉 Start dev deployment"
       - run: mkdir ~/.ssh && echo "${{ secrets.SSH_DEV_PRIVATE_KEY }}" > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
-      - run: ssh -o StrictHostKeyChecking=no playa@54.163.51.26 ". ./dev.playa.co/.deploy/dev.sh"
+      - run: ssh -o StrictHostKeyChecking=no playa@54.196.155.109 ". ./dev.urchin.so/.deploy/dev.sh"
       - run: echo "🍏 This dev deployment job's status is ${{ job.status }}."
       - name: slack - GitHub Actions Slack integration
         uses: act10ns/slack@v2.0.0
